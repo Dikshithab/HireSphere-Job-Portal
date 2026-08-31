@@ -1,0 +1,368 @@
+/* ==========================================
+   CREATE JOB PAGE
+========================================== */
+
+.create-job-page {
+  min-height: calc(100vh - 72px);
+  background: #f6f8fc;
+  padding: 45px 24px 70px;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.create-job-page > h1,
+.create-job-page > p,
+.create-job-page > div,
+.create-job-page > form {
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================
+   PAGE TITLE
+========================================== */
+
+.create-job-page > h1 {
+  margin-top: 0;
+  margin-bottom: 8px;
+
+  color: #172554;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+/* ==========================================
+   MESSAGE
+========================================== */
+
+.create-job-page > p {
+  padding: 13px 16px;
+  margin-top: 18px;
+  margin-bottom: 20px;
+
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
+
+  background: #eef2ff;
+  color: #4338ca;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ==========================================
+   COMPANY INFORMATION
+========================================== */
+
+.create-job-page > div {
+  margin-bottom: 22px;
+  padding: 16px 20px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  color: #475569;
+  font-size: 14px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.create-job-page > div strong {
+  color: #1e293b;
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.create-job-page form {
+  padding: 30px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.06);
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   FORM GROUP
+========================================== */
+
+.create-job-page form > div {
+  margin-bottom: 22px;
+}
+
+/* ==========================================
+   LABEL
+========================================== */
+
+.create-job-page label {
+  display: block;
+  margin-bottom: 8px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   INPUT + TEXTAREA + SELECT
+========================================== */
+
+.create-job-page input,
+.create-job-page textarea,
+.create-job-page select {
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #1e293b;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+/* ==========================================
+   INPUT
+========================================== */
+
+.create-job-page input {
+  height: 46px;
+  padding: 0 14px;
+}
+
+/* ==========================================
+   TEXTAREA
+========================================== */
+
+.create-job-page textarea {
+  min-height: 125px;
+  padding: 13px 14px;
+
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   SELECT
+========================================== */
+
+.create-job-page select {
+  height: 46px;
+  padding: 0 13px;
+
+  cursor: pointer;
+
+  appearance: auto;
+}
+
+/* ==========================================
+   PLACEHOLDER
+========================================== */
+
+.create-job-page input::placeholder,
+.create-job-page textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* ==========================================
+   FOCUS
+========================================== */
+
+.create-job-page input:focus,
+.create-job-page textarea:focus,
+.create-job-page select:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.12);
+
+  background: #fcfcff;
+}
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.create-job-page input:hover,
+.create-job-page textarea:hover,
+.create-job-page select:hover {
+  border-color: #c4cde0;
+}
+
+/* ==========================================
+   FORM LAYOUT
+========================================== */
+
+/*
+   Put Job Type, Salary and Experience
+   into a cleaner grid.
+*/
+
+.create-job-page form > div:nth-child(5),
+.create-job-page form > div:nth-child(6),
+.create-job-page form > div:nth-child(7) {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(33.333% - 12px);
+  margin-right: 14px;
+}
+
+.create-job-page form > div:nth-child(7) {
+  margin-right: 0;
+}
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+.create-job-page button[type="submit"] {
+  width: 100%;
+  height: 48px;
+
+  margin-top: 5px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #6366f1
+  );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(79, 70, 229, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* ==========================================
+   BUTTON HOVER
+========================================== */
+
+.create-job-page button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 20px rgba(79, 70, 229, 0.28);
+}
+
+/* ==========================================
+   BUTTON ACTIVE
+========================================== */
+
+.create-job-page button[type="submit"]:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ==========================================
+   DISABLED
+========================================== */
+
+.create-job-page button[type="submit"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ==========================================
+   LOADING STATE
+========================================== */
+
+.create-job-page > h1 + p {
+  color: #64748b;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 800px) {
+
+  .create-job-page {
+    padding: 35px 18px 60px;
+  }
+
+  .create-job-page > h1 {
+    font-size: 28px;
+  }
+
+  .create-job-page form {
+    padding: 24px;
+  }
+
+  .create-job-page form > div:nth-child(5),
+  .create-job-page form > div:nth-child(6),
+  .create-job-page form > div:nth-child(7) {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 500px) {
+
+  .create-job-page {
+    padding: 25px 14px 50px;
+  }
+
+  .create-job-page > h1 {
+    font-size: 25px;
+  }
+
+  .create-job-page form {
+    padding: 20px 16px;
+    border-radius: 13px;
+  }
+
+  .create-job-page input {
+    height: 44px;
+  }
+
+  .create-job-page select {
+    height: 44px;
+  }
+
+  .create-job-page textarea {
+    min-height: 110px;
+  }
+}

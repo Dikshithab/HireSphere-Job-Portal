@@ -1,0 +1,179 @@
+.edit-job-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 24px;
+}
+
+/* ================= CARD ================= */
+
+.edit-job-card {
+  background: #ffffff;
+  padding: 38px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ================= HEADER ================= */
+
+.edit-job-card h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.edit-job-subtitle {
+  margin: 0 0 32px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ================= MESSAGE ================= */
+
+.edit-job-message {
+  padding: 14px 16px;
+  border-radius: 9px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+/* ================= FORM ================= */
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font-size: 14px;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: #111827;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* ================= FOCUS ================= */
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ================= SELECT ================= */
+
+.form-group select {
+  cursor: pointer;
+}
+
+/* ================= ACTIONS ================= */
+
+.edit-job-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 25px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.edit-job-actions button {
+  padding: 11px 22px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* ================= CANCEL ================= */
+
+.cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.cancel-btn:hover {
+  background: #e5e7eb;
+}
+
+/* ================= UPDATE ================= */
+
+.update-job-btn {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.update-job-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.update-job-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ================= LOADING ================= */
+
+.edit-job-card p {
+  line-height: 1.6;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 600px) {
+
+  .edit-job-page {
+    padding: 30px 16px;
+  }
+
+  .edit-job-card {
+    padding: 25px 20px;
+    border-radius: 13px;
+  }
+
+  .edit-job-card h1 {
+    font-size: 27px;
+  }
+
+  .edit-job-actions {
+    flex-direction: column-reverse;
+  }
+
+  .edit-job-actions button {
+    width: 100%;
+  }
+}

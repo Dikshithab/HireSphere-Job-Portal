@@ -1,0 +1,293 @@
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-bg: #fef2f2;
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --text-heading: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --focus-ring: rgba(37, 99, 235, 0.15);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
+}
+
+/* Base Page Layout */
+.create-company-page {
+  min-height: 100vh;
+  background: var(--bg-page);
+  padding: 48px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.create-company-container {
+  width: 100%;
+  max-width: 760px;
+}
+
+/* Header */
+.create-company-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.create-company-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  background: rgba(37, 99, 235, 0.08);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.create-company-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.create-company-header p {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Alert Message Banner */
+.create-company-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  animation: slideDown 0.25s ease-out;
+}
+
+.create-company-message span {
+  font-weight: 700;
+}
+
+/* Card Container */
+.create-company-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  padding: 36px;
+}
+
+/* Section Divider */
+.create-company-section {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+
+.create-company-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.create-company-section p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Form Layout Grid */
+.create-company-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.create-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-form-group.full-width {
+  grid-column: span 2;
+}
+
+.create-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin-bottom: 6px;
+}
+
+.create-form-group input,
+.create-form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--text-heading);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.create-form-group textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.create-form-group input::placeholder,
+.create-form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.create-form-group input:focus,
+.create-form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
+.create-form-group small {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Action Buttons Container */
+.create-company-actions {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+/* Cancel Button */
+.create-company-cancel {
+  background: transparent;
+  color: var(--text-body);
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-company-cancel:hover {
+  background: var(--bg-page);
+  color: var(--text-heading);
+}
+
+/* Submit Button */
+.create-company-submit {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.create-company-submit:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.create-company-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Delete Button */
+.delete-company-btn {
+  background: var(--danger-bg);
+  color: var(--danger);
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-right: auto; /* Pushes delete button to the far left of the action row */
+  transition: all 0.2s ease;
+}
+
+.delete-company-btn:hover:not(:disabled) {
+  background: var(--danger);
+  color: #ffffff;
+  border-color: var(--danger);
+}
+
+.delete-company-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Layout */
+@media (max-width: 640px) {
+  .create-company-card {
+    padding: 24px;
+  }
+  
+  .create-company-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .create-form-group.full-width {
+    grid-column: span 1;
+  }
+
+  .create-company-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .delete-company-btn {
+    margin-right: 0;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .create-company-submit,
+  .create-company-cancel {
+    width: 100%;
+    text-align: center;
+  }
+}
