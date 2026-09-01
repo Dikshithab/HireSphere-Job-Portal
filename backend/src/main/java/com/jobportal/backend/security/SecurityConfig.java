@@ -126,7 +126,9 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(
                 List.of(
-                        "http://localhost:5173"
+                        "http://localhost:5173",
+                        "https://hiresphere-job-portal-2.onrender.com"
+
                 )
         );
 
