@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +27,9 @@ function Chatbot() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/chatbot",
-        {
-          message: userMessage,
-        }
-      );
+      const response = await api.post("/chatbot", {
+        message: userMessage,
+      });
 
       setMessages((prev) => [
         ...prev,
