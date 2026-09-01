@@ -73,14 +73,15 @@ public class ChatbotService {
 
             return "Sorry, I couldn't generate a response.";
 
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
 
-            System.out.println("=================================");
-            System.out.println("GROQ CHATBOT ERROR");
-            System.out.println("ERROR = " + e.getMessage());
-            System.out.println("=================================");
+    System.out.println("=================================");
+    System.out.println("GROQ CHATBOT ERROR");
+    e.printStackTrace();
+    System.out.println("=================================");
 
-            return "Sorry, I'm unable to respond right now.";
-        }
-    }
+    return "Sorry, I'm unable to respond right now.";
+}
+}
 }
