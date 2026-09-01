@@ -23,11 +23,13 @@ public class ChatbotService {
         String apiKey = System.getenv("GROQ_API_KEY");
 
         if (apiKey == null || apiKey.isBlank()) {
+            System.out.println("GROQ_API_KEY is missing!");
             return "Groq API key is not configured.";
         }
 
         Map<String, Object> request = Map.of(
                 "model", "llama-3.3-70b-versatile",
+
                 "messages", List.of(
                         Map.of(
                                 "role", "system",
@@ -37,11 +39,13 @@ public class ChatbotService {
                                 "career guidance, and using the HireSphere website. " +
                                 "Keep answers clear, useful, and concise."
                         ),
+
                         Map.of(
                                 "role", "user",
                                 "content", userMessage
                         )
                 ),
+
                 "temperature", 0.7
         );
 
@@ -73,15 +77,14 @@ public class ChatbotService {
 
             return "Sorry, I couldn't generate a response.";
 
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
 
-    System.out.println("=================================");
-    System.out.println("GROQ CHATBOT ERROR");
-    e.printStackTrace();
-    System.out.println("=================================");
+            System.out.println("========== GROQ ERROR ==========");
+            System.out.println("TYPE: " + e.getClass().getName());
+            System.out.println("MESSAGE: " + e.getMessage());
+            System.out.println("================================");
 
-    return "Sorry, I'm unable to respond right now.";
-}
-}
+            return "Sorry, I'm unable to respond right now.";
+        }
+    }
 }
