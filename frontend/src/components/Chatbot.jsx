@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import api from "../api/axios";
+import api from "../services/api";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
