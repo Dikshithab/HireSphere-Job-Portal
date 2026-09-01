@@ -1,8 +1,10 @@
 package com.jobportal.backend.service;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -12,34 +14,73 @@ public class ChatbotService {
 
     public ChatbotService() {
         this.restClient = RestClient.builder()
-                .baseUrl("http://localhost:11434")
+                .baseUrl("https://api.groq.com/openai/v1")
                 .build();
     }
 
     public String ask(String userMessage) {
 
-        String prompt =
-                "You are HireSphere AI, an assistant for a job portal. " +
-                        "Help users with finding jobs, applications, resumes, " +
-                        "employer questions, and using the HireSphere website.\n\n" +
-                        "User question: " + userMessage;
+        String apiKey = System.getenv("GROQ_API_KEY");
 
-        Map<String, Object> request = Map.of(
-                "model", "llama3.2",
-                "prompt", prompt,
-                "stream", false
-        );
-
-        Map response = restClient.post()
-                .uri("/api/generate")
-                .body(request)
-                .retrieve()
-                .body(Map.class);
-
-        if (response != null && response.get("response") != null) {
-            return response.get("response").toString();
+        if (apiKey == null || apiKey.isBlank()) {
+            return "Groq API key is not configured.";
         }
 
-        return "Sorry, I couldn't generate a response.";
+        Map<String, Object> request = Map.of(
+                "model", "llama-3.3-70b-versatile",
+                "messages", List.of(
+                        Map.of(
+                                "role", "system",
+                                "content",
+                                "You are HireSphere AI, a helpful assistant for a job portal. " +
+                                "Help users with jobs, applications, resumes, employers, " +
+                                "career guidance, and using the HireSphere website. " +
+                                "Keep answers clear, useful, and concise."
+                        ),
+                        Map.of(
+                                "role", "user",
+                                "content", userMessage
+                        )
+                ),
+                "temperature", 0.7
+        );
+
+        try {
+
+            Map response = restClient.post()
+                    .uri("/chat/completions")
+                    .header("Authorization", "Bearer " + apiKey)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(request)
+                    .retrieve()
+                    .body(Map.class);
+
+            if (response != null &&
+                    response.get("choices") instanceof List<?> choices &&
+                    !choices.isEmpty()) {
+
+                Map firstChoice = (Map) choices.get(0);
+
+                if (firstChoice.get("message") instanceof Map message) {
+
+                    Object content = message.get("content");
+
+                    if (content != null) {
+                        return content.toString();
+                    }
+                }
+            }
+
+            return "Sorry, I couldn't generate a response.";
+
+        } catch (Exception e) {
+
+            System.out.println("=================================");
+            System.out.println("GROQ CHATBOT ERROR");
+            System.out.println("ERROR = " + e.getMessage());
+            System.out.println("=================================");
+
+            return "Sorry, I'm unable to respond right now.";
+        }
     }
 }
