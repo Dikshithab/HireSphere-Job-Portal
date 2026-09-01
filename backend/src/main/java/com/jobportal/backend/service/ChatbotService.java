@@ -28,8 +28,8 @@ public class ChatbotService {
         }
 
         Map<String, Object> request = Map.of(
-                "model", "llama-3.3-70b-versatile",
-
+                "model", "llama-3.1-8b-instant",
+                "temperature", 0.7,
                 "messages", List.of(
                         Map.of(
                                 "role", "system",
