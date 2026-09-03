@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 function Chatbot() {
@@ -6,10 +7,13 @@ function Chatbot() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const [messages, setMessages] = useState([
     {
       sender: "bot",
       text: "Hi! 👋 I'm HireSphere AI. How can I help you today?",
+      jobs: [],
     },
   ]);
 
@@ -34,6 +38,7 @@ function Chatbot() {
         {
           sender: "bot",
           text: "Please keep your message under 1000 characters.",
+          jobs: [],
         },
       ]);
       return;
@@ -57,14 +62,16 @@ function Chatbot() {
 
       const botResponse =
         response.data?.response ||
-        response.data ||
         "Sorry, I couldn't generate a response.";
+
+      const jobs = response.data?.jobs || [];
 
       setMessages((prev) => [
         ...prev,
         {
           sender: "bot",
           text: botResponse,
+          jobs: jobs,
         },
       ]);
     } catch (error) {
@@ -75,6 +82,7 @@ function Chatbot() {
         {
           sender: "bot",
           text: "Sorry, I'm unable to respond right now. Please try again.",
+          jobs: [],
         },
       ]);
     } finally {
@@ -96,8 +104,15 @@ function Chatbot() {
       {
         sender: "bot",
         text: "Hi! 👋 I'm HireSphere AI. How can I help you today?",
+        jobs: [],
       },
     ]);
+  };
+
+  // Open job details page
+  const viewJob = (jobId) => {
+    navigate(`/job/${jobId}`);
+    setIsOpen(false);
   };
 
   return (
@@ -135,9 +150,9 @@ function Chatbot() {
             position: "fixed",
             right: "25px",
             bottom: "25px",
-            width: "360px",
+            width: "390px",
             maxWidth: "calc(100vw - 30px)",
-            height: "500px",
+            height: "560px",
             maxHeight: "calc(100vh - 50px)",
             background: "white",
             borderRadius: "15px",
@@ -238,16 +253,18 @@ function Chatbot() {
                 key={index}
                 style={{
                   display: "flex",
-                  justifyContent:
+                  flexDirection: "column",
+                  alignItems:
                     msg.sender === "user"
                       ? "flex-end"
                       : "flex-start",
-                  marginBottom: "12px",
+                  marginBottom: "15px",
                 }}
               >
+                {/* Message bubble */}
                 <div
                   style={{
-                    maxWidth: "78%",
+                    maxWidth: "82%",
                     padding: "10px 14px",
                     borderRadius:
                       msg.sender === "user"
@@ -269,6 +286,119 @@ function Chatbot() {
                 >
                   {msg.text}
                 </div>
+
+                {/* Job Cards */}
+                {msg.sender === "bot" &&
+                  msg.jobs &&
+                  msg.jobs.length > 0 && (
+                    <div
+                      style={{
+                        width: "100%",
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                      }}
+                    >
+                      {msg.jobs.map((job) => (
+                        <div
+                          key={job.id}
+                          style={{
+                            background: "white",
+                            border: "1px solid #e2e8f0",
+                            borderRadius: "12px",
+                            padding: "13px",
+                            boxShadow:
+                              "0 2px 8px rgba(0,0,0,0.06)",
+                          }}
+                        >
+                          {/* Title */}
+                          <div
+                            style={{
+                              fontWeight: "700",
+                              fontSize: "15px",
+                              color: "#111827",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            {job.title}
+                          </div>
+
+                          {/* Company */}
+                          <div
+                            style={{
+                              fontSize: "13px",
+                              fontWeight: "600",
+                              color: "#374151",
+                              marginBottom: "8px",
+                            }}
+                          >
+                            🏢 {job.companyName}
+                          </div>
+
+                          {/* Job information */}
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "4px",
+                              fontSize: "12px",
+                              color: "#4b5563",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            <div>
+                              📍 {job.location || "Location not specified"}
+                            </div>
+
+                            <div>
+                              💼 {job.jobType || "Job type not specified"}
+                            </div>
+
+                            <div>
+                              🧑‍💻{" "}
+                              {job.experienceLevel ||
+                                "Experience not specified"}
+                            </div>
+
+                            <div>
+                              💰{" "}
+                              {job.salary != null
+                                ? `₹${Number(
+                                    job.salary
+                                  ).toLocaleString("en-IN")}`
+                                : "Salary not specified"}
+                            </div>
+
+                            <div>
+                              🌐{" "}
+                              {job.remote
+                                ? "Remote"
+                                : "On-site"}
+                            </div>
+                          </div>
+
+                          {/* View Job */}
+                          <button
+                            onClick={() => viewJob(job.id)}
+                            style={{
+                              width: "100%",
+                              border: "none",
+                              borderRadius: "8px",
+                              padding: "9px",
+                              background: "#2563eb",
+                              color: "white",
+                              fontWeight: "600",
+                              cursor: "pointer",
+                              fontSize: "13px",
+                            }}
+                          >
+                            View Job →
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
               </div>
             ))}
 
