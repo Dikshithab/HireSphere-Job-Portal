@@ -1,3 +1,4 @@
+
 package com.jobportal.backend.service;
 
 import org.springframework.http.MediaType;
@@ -23,13 +24,16 @@ public class ChatbotService {
         String apiKey = System.getenv("GROQ_API_KEY");
 
         if (apiKey == null || apiKey.isBlank()) {
+            System.out.println("========== GROQ ERROR ==========");
             System.out.println("GROQ_API_KEY is missing!");
+            System.out.println("================================");
+
             return "Groq API key is not configured.";
         }
 
         Map<String, Object> request = Map.of(
-                "model", "llama-3.1-8b-instant",
-                "temperature", 0.7,
+                "model", "openai/gpt-oss-120b",
+
                 "messages", List.of(
                         Map.of(
                                 "role", "system",
