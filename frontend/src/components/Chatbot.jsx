@@ -1,26 +1,50 @@
-
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../services/api";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [messages, setMessages] = useState([
     {
       sender: "bot",
       text: "Hi! 👋 I'm HireSphere AI. How can I help you today?",
     },
   ]);
-  const [loading, setLoading] = useState(false);
+
+  const messagesEndRef = useRef(null);
+
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages, loading]);
 
   const sendMessage = async () => {
     if (!message.trim() || loading) return;
 
     const userMessage = message.trim();
 
+    // Prevent extremely long messages
+    if (userMessage.length > 1000) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "bot",
+          text: "Please keep your message under 1000 characters.",
+        },
+      ]);
+      return;
+    }
+
     setMessages((prev) => [
       ...prev,
-      { sender: "user", text: userMessage },
+      {
+        sender: "user",
+        text: userMessage,
+      },
     ]);
 
     setMessage("");
@@ -31,11 +55,16 @@ function Chatbot() {
         message: userMessage,
       });
 
+      const botResponse =
+        response.data?.response ||
+        response.data ||
+        "Sorry, I couldn't generate a response.";
+
       setMessages((prev) => [
         ...prev,
         {
           sender: "bot",
-          text: response.data.response || response.data,
+          text: botResponse,
         },
       ]);
     } catch (error) {
@@ -54,9 +83,21 @@ function Chatbot() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    // Enter sends the message
+    // Shift + Enter allows a new line
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
+  };
+
+  const clearChat = () => {
+    setMessages([
+      {
+        sender: "bot",
+        text: "Hi! 👋 I'm HireSphere AI. How can I help you today?",
+      },
+    ]);
   };
 
   return (
@@ -65,6 +106,7 @@ function Chatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
+          aria-label="Open HireSphere AI"
           style={{
             position: "fixed",
             right: "25px",
@@ -78,7 +120,8 @@ function Chatbot() {
             fontSize: "25px",
             cursor: "pointer",
             zIndex: 1000,
-            boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.25)",
+            transition: "transform 0.2s ease",
           }}
         >
           🤖
@@ -93,10 +136,12 @@ function Chatbot() {
             right: "25px",
             bottom: "25px",
             width: "360px",
+            maxWidth: "calc(100vw - 30px)",
             height: "500px",
+            maxHeight: "calc(100vh - 50px)",
             background: "white",
             borderRadius: "15px",
-            boxShadow: "0 5px 25px rgba(0,0,0,0.2)",
+            boxShadow: "0 5px 25px rgba(0,0,0,0.25)",
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",
@@ -108,31 +153,75 @@ function Chatbot() {
             style={{
               background: "#2563eb",
               color: "white",
-              padding: "16px",
-              fontWeight: "bold",
-              fontSize: "18px",
+              padding: "15px 16px",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
             }}
           >
-            <span>🤖 HireSphere AI</span>
+            <div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                }}
+              >
+                🤖 HireSphere AI
+              </div>
 
-            {/* Minimize Button */}
-            <button
-              onClick={() => setIsOpen(false)}
+              <div
+                style={{
+                  fontSize: "12px",
+                  opacity: 0.85,
+                  marginTop: "2px",
+                }}
+              >
+                Your career assistant
+              </div>
+            </div>
+
+            <div
               style={{
-                background: "transparent",
-                border: "none",
-                color: "white",
-                fontSize: "24px",
-                cursor: "pointer",
-                lineHeight: "1",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
               }}
-              title="Minimize"
             >
-              −
-            </button>
+              {/* Clear Chat */}
+              <button
+                onClick={clearChat}
+                title="Clear chat"
+                aria-label="Clear chat"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "white",
+                  fontSize: "17px",
+                  cursor: "pointer",
+                  padding: "5px",
+                }}
+              >
+                🗑️
+              </button>
+
+              {/* Minimize */}
+              <button
+                onClick={() => setIsOpen(false)}
+                title="Minimize"
+                aria-label="Minimize chatbot"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "white",
+                  fontSize: "24px",
+                  cursor: "pointer",
+                  lineHeight: "1",
+                  padding: "3px 6px",
+                }}
+              >
+                −
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
@@ -153,14 +242,17 @@ function Chatbot() {
                     msg.sender === "user"
                       ? "flex-end"
                       : "flex-start",
-                  marginBottom: "10px",
+                  marginBottom: "12px",
                 }}
               >
                 <div
                   style={{
-                    maxWidth: "75%",
+                    maxWidth: "78%",
                     padding: "10px 14px",
-                    borderRadius: "12px",
+                    borderRadius:
+                      msg.sender === "user"
+                        ? "14px 14px 3px 14px"
+                        : "14px 14px 14px 3px",
                     background:
                       msg.sender === "user"
                         ? "#2563eb"
@@ -169,6 +261,10 @@ function Chatbot() {
                       msg.sender === "user"
                         ? "white"
                         : "#111827",
+                    fontSize: "14px",
+                    lineHeight: "1.45",
+                    wordBreak: "break-word",
+                    whiteSpace: "pre-wrap",
                   }}
                 >
                   {msg.text}
@@ -176,11 +272,31 @@ function Chatbot() {
               </div>
             ))}
 
+            {/* Typing Indicator */}
             {loading && (
-              <div style={{ color: "#666" }}>
-                HireSphere AI is typing...
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  marginBottom: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    background: "#e5e7eb",
+                    padding: "10px 14px",
+                    borderRadius: "14px 14px 14px 3px",
+                    color: "#555",
+                    fontSize: "13px",
+                  }}
+                >
+                  <span>HireSphere AI is typing</span>
+                  <span> •••</span>
+                </div>
               </div>
             )}
+
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}
@@ -190,6 +306,7 @@ function Chatbot() {
               padding: "10px",
               borderTop: "1px solid #ddd",
               gap: "8px",
+              background: "white",
             }}
           >
             <input
@@ -198,25 +315,37 @@ function Chatbot() {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask HireSphere AI..."
+              maxLength={1000}
+              disabled={loading}
               style={{
                 flex: 1,
-                padding: "10px",
+                padding: "10px 12px",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 outline: "none",
+                fontSize: "14px",
+                minWidth: 0,
               }}
             />
 
             <button
               onClick={sendMessage}
-              disabled={loading}
+              disabled={loading || !message.trim()}
+              aria-label="Send message"
               style={{
-                padding: "10px 15px",
+                width: "45px",
                 border: "none",
                 borderRadius: "8px",
-                background: "#2563eb",
+                background:
+                  loading || !message.trim()
+                    ? "#9ca3af"
+                    : "#2563eb",
                 color: "white",
-                cursor: "pointer",
+                cursor:
+                  loading || !message.trim()
+                    ? "not-allowed"
+                    : "pointer",
+                fontSize: "18px",
               }}
             >
               ➤
