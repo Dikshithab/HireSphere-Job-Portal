@@ -21,11 +21,11 @@ public class AIResumeAnalyzerService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String OLLAMA_URL =
-            "http://localhost:11434/api/generate";
+    private static final String GROQ_URL =
+            "https://api.groq.com/openai/v1/chat/completions";
 
     private static final String MODEL =
-            "llama3.2:latest";
+            "openai/gpt-oss-20b";
 
     public AIResumeAnalysisResponse analyze(
             Long resumeId,
@@ -46,45 +46,108 @@ public class AIResumeAnalyzerService {
                 jobDescription
         );
 
+        String groqApiKey = System.getenv("GROQ_API_KEY");
+
+        if (groqApiKey == null || groqApiKey.isBlank()) {
+            throw new RuntimeException(
+                    "GROQ_API_KEY environment variable is not configured."
+            );
+        }
+
         Map<String, Object> requestBody = Map.of(
                 "model", MODEL,
-                "prompt", prompt,
-                "stream", false
+
+                "messages", List.of(
+                        Map.of(
+                                "role", "system",
+                                "content",
+                                "You are an expert ATS resume analyzer. " +
+                                "Always follow the user's instructions exactly."
+                        ),
+                        Map.of(
+                                "role", "user",
+                                "content", prompt
+                        )
+                ),
+
+                "temperature", 0.2,
+
+                "response_format", Map.of(
+                        "type", "json_object"
+                )
         );
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        headers.setContentType(
+                MediaType.APPLICATION_JSON
+        );
+
+        headers.setBearerAuth(groqApiKey);
 
         HttpEntity<Map<String, Object>> request =
-                new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<Map> response =
-                restTemplate.postForEntity(
-                        OLLAMA_URL,
-                        request,
-                        Map.class
+                new HttpEntity<>(
+                        requestBody,
+                        headers
                 );
 
-        if (!response.getStatusCode().is2xxSuccessful()
-                || response.getBody() == null) {
-
-            throw new RuntimeException(
-                    "Ollama request failed."
-            );
-        }
-
-        Object responseText =
-                response.getBody().get("response");
-
-        if (responseText == null) {
-            throw new RuntimeException(
-                    "Ollama returned an empty response."
-            );
-        }
-
         try {
+
+            ResponseEntity<Map> response =
+                    restTemplate.postForEntity(
+                            GROQ_URL,
+                            request,
+                            Map.class
+                    );
+
+            if (!response.getStatusCode().is2xxSuccessful()
+                    || response.getBody() == null) {
+
+                throw new RuntimeException(
+                        "Groq request failed with status: "
+                                + response.getStatusCode()
+                );
+            }
+
+            Map body = response.getBody();
+
+            Object choicesObject = body.get("choices");
+
+            if (!(choicesObject instanceof List)
+                    || ((List<?>) choicesObject).isEmpty()) {
+
+                throw new RuntimeException(
+                        "Groq returned no choices."
+                );
+            }
+
+            Map firstChoice =
+                    (Map) ((List<?>) choicesObject).get(0);
+
+            Map message =
+                    (Map) firstChoice.get("message");
+
+            if (message == null) {
+                throw new RuntimeException(
+                        "Groq response does not contain a message."
+                );
+            }
+
+            Object content =
+                    message.get("content");
+
+            if (content == null
+                    || content.toString().isBlank()) {
+
+                throw new RuntimeException(
+                        "Groq returned an empty response."
+                );
+            }
+
             String json =
-                    cleanJsonResponse(responseText.toString());
+                    cleanJsonResponse(
+                            content.toString()
+                    );
 
             return objectMapper.readValue(
                     json,
@@ -94,7 +157,7 @@ public class AIResumeAnalyzerService {
         } catch (Exception e) {
 
             throw new RuntimeException(
-                    "Failed to parse Ollama AI response: "
+                    "Groq AI analysis failed: "
                             + e.getMessage(),
                     e
             );
@@ -226,11 +289,6 @@ public class AIResumeAnalyzerService {
         """
                 + (jobDescription == null ? "" : jobDescription);
     }
-
-
-
-
-
 
     private String cleanJsonResponse(String response) {
 
