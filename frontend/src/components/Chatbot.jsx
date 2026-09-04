@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import "../css/Chatbot.css";
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,21 +19,26 @@ function Chatbot() {
   ]);
 
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-  // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
   }, [messages, loading]);
 
-  const sendMessage = async () => {
-    if (!message.trim() || loading) return;
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 250);
+    }
+  }, [isOpen]);
 
-    const userMessage = message.trim();
+  const sendMessage = async (customMessage = null) => {
+    const text = (customMessage ?? message).trim();
 
-    // Prevent extremely long messages
-    if (userMessage.length > 1000) {
+    if (!text || loading) return;
+
+    if (text.length > 1000) {
       setMessages((prev) => [
         ...prev,
         {
@@ -48,7 +54,7 @@ function Chatbot() {
       ...prev,
       {
         sender: "user",
-        text: userMessage,
+        text,
       },
     ]);
 
@@ -57,7 +63,7 @@ function Chatbot() {
 
     try {
       const response = await api.post("/chatbot", {
-        message: userMessage,
+        message: text,
       });
 
       const botResponse =
@@ -71,7 +77,7 @@ function Chatbot() {
         {
           sender: "bot",
           text: botResponse,
-          jobs: jobs,
+          jobs,
         },
       ]);
     } catch (error) {
@@ -91,8 +97,6 @@ function Chatbot() {
   };
 
   const handleKeyDown = (e) => {
-    // Enter sends the message
-    // Shift + Enter allows a new line
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
@@ -109,319 +113,211 @@ function Chatbot() {
     ]);
   };
 
-  // Open job details page
   const viewJob = (jobId) => {
     navigate(`/job/${jobId}`);
     setIsOpen(false);
   };
 
+  const suggestions = [
+    "Find Java developer jobs",
+    "How can I improve my resume?",
+    "Give me interview tips",
+  ];
+
   return (
     <>
-      {/* Floating Chatbot Button */}
       {!isOpen && (
         <button
+          className="chatbot-fab"
           onClick={() => setIsOpen(true)}
           aria-label="Open HireSphere AI"
-          style={{
-            position: "fixed",
-            right: "25px",
-            bottom: "25px",
-            width: "60px",
-            height: "60px",
-            borderRadius: "50%",
-            border: "none",
-            background: "#2563eb",
-            color: "white",
-            fontSize: "25px",
-            cursor: "pointer",
-            zIndex: 1000,
-            boxShadow: "0 4px 15px rgba(0,0,0,0.25)",
-            transition: "transform 0.2s ease",
-          }}
         >
-          🤖
+          <span className="chatbot-fab-icon">✦</span>
+          <span className="chatbot-fab-pulse" />
         </button>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
-        <div
-          style={{
-            position: "fixed",
-            right: "25px",
-            bottom: "25px",
-            width: "390px",
-            maxWidth: "calc(100vw - 30px)",
-            height: "560px",
-            maxHeight: "calc(100vh - 50px)",
-            background: "white",
-            borderRadius: "15px",
-            boxShadow: "0 5px 25px rgba(0,0,0,0.25)",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            zIndex: 999,
-          }}
-        >
+        <div className="chatbot-window">
           {/* Header */}
-          <div
-            style={{
-              background: "#2563eb",
-              color: "white",
-              padding: "15px 16px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "17px",
-                }}
-              >
-                🤖 HireSphere AI
+          <div className="chatbot-header">
+            <div className="chatbot-header-left">
+              <div className="chatbot-avatar">
+                ✦
+                <span className="online-dot" />
               </div>
 
-              <div
-                style={{
-                  fontSize: "12px",
-                  opacity: 0.85,
-                  marginTop: "2px",
-                }}
-              >
-                Your career assistant
+              <div>
+                <div className="chatbot-title">
+                  HireSphere AI
+                </div>
+
+                <div className="chatbot-status">
+                  <span>Online</span>
+                  <span className="status-separator">•</span>
+                  <span>Career Assistant</span>
+                </div>
               </div>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-              }}
-            >
-              {/* Clear Chat */}
+            <div className="chatbot-header-actions">
               <button
+                className="chatbot-icon-btn"
                 onClick={clearChat}
-                title="Clear chat"
-                aria-label="Clear chat"
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  color: "white",
-                  fontSize: "17px",
-                  cursor: "pointer",
-                  padding: "5px",
-                }}
+                title="Clear conversation"
+                aria-label="Clear conversation"
               >
-                🗑️
+                🗑
               </button>
 
-              {/* Minimize */}
               <button
+                className="chatbot-icon-btn close-btn"
                 onClick={() => setIsOpen(false)}
                 title="Minimize"
                 aria-label="Minimize chatbot"
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  color: "white",
-                  fontSize: "24px",
-                  cursor: "pointer",
-                  lineHeight: "1",
-                  padding: "3px 6px",
-                }}
               >
-                −
+                ×
               </button>
             </div>
           </div>
 
           {/* Messages */}
-          <div
-            style={{
-              flex: 1,
-              padding: "15px",
-              overflowY: "auto",
-              background: "#f8fafc",
-            }}
-          >
+          <div className="chatbot-messages">
+            {messages.length === 1 && (
+              <div className="chatbot-welcome">
+                <div className="welcome-icon">✦</div>
+
+                <h3>How can I help you?</h3>
+
+                <p>
+                  Ask me about jobs, resumes, interviews,
+                  skills, or your career.
+                </p>
+
+                <div className="suggestion-list">
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      className="suggestion-btn"
+                      onClick={() => sendMessage(suggestion)}
+                      disabled={loading}
+                    >
+                      <span>{suggestion}</span>
+                      <span>→</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {messages.map((msg, index) => (
               <div
                 key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems:
-                    msg.sender === "user"
-                      ? "flex-end"
-                      : "flex-start",
-                  marginBottom: "15px",
-                }}
+                className={`message-row ${
+                  msg.sender === "user"
+                    ? "user-row"
+                    : "bot-row"
+                }`}
               >
-                {/* Message bubble */}
-                <div
-                  style={{
-                    maxWidth: "82%",
-                    padding: "10px 14px",
-                    borderRadius:
+                {msg.sender === "bot" && (
+                  <div className="message-avatar">✦</div>
+                )}
+
+                <div className="message-content">
+                  <div
+                    className={`message-bubble ${
                       msg.sender === "user"
-                        ? "14px 14px 3px 14px"
-                        : "14px 14px 14px 3px",
-                    background:
-                      msg.sender === "user"
-                        ? "#2563eb"
-                        : "#e5e7eb",
-                    color:
-                      msg.sender === "user"
-                        ? "white"
-                        : "#111827",
-                    fontSize: "14px",
-                    lineHeight: "1.45",
-                    wordBreak: "break-word",
-                    whiteSpace: "pre-wrap",
-                  }}
-                >
-                  {msg.text}
+                        ? "user-bubble"
+                        : "bot-bubble"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+
+                  {msg.sender === "bot" &&
+                    msg.jobs &&
+                    msg.jobs.length > 0 && (
+                      <div className="job-list">
+                        {msg.jobs.map((job) => (
+                          <div
+                            className="chat-job-card"
+                            key={job.id}
+                          >
+                            <div className="job-card-top">
+                              <div className="job-card-title">
+                                {job.title}
+                              </div>
+
+                              <span className="job-badge">
+                                JOB
+                              </span>
+                            </div>
+
+                            <div className="job-company">
+                              🏢 {job.companyName}
+                            </div>
+
+                            <div className="job-details">
+                              <span>
+                                📍{" "}
+                                {job.location ||
+                                  "Location not specified"}
+                              </span>
+
+                              <span>
+                                💼{" "}
+                                {job.jobType ||
+                                  "Job type not specified"}
+                              </span>
+
+                              <span>
+                                🧑‍💻{" "}
+                                {job.experienceLevel ||
+                                  "Experience not specified"}
+                              </span>
+
+                              <span>
+                                💰{" "}
+                                {job.salary != null
+                                  ? `₹${Number(
+                                      job.salary
+                                    ).toLocaleString("en-IN")}`
+                                  : "Salary not specified"}
+                              </span>
+
+                              <span>
+                                🌐{" "}
+                                {job.remote
+                                  ? "Remote"
+                                  : "On-site"}
+                              </span>
+                            </div>
+
+                            <button
+                              className="view-job-btn"
+                              onClick={() =>
+                                viewJob(job.id)
+                              }
+                            >
+                              View Job
+                              <span>→</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                 </div>
-
-                {/* Job Cards */}
-                {msg.sender === "bot" &&
-                  msg.jobs &&
-                  msg.jobs.length > 0 && (
-                    <div
-                      style={{
-                        width: "100%",
-                        marginTop: "10px",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "10px",
-                      }}
-                    >
-                      {msg.jobs.map((job) => (
-                        <div
-                          key={job.id}
-                          style={{
-                            background: "white",
-                            border: "1px solid #e2e8f0",
-                            borderRadius: "12px",
-                            padding: "13px",
-                            boxShadow:
-                              "0 2px 8px rgba(0,0,0,0.06)",
-                          }}
-                        >
-                          {/* Title */}
-                          <div
-                            style={{
-                              fontWeight: "700",
-                              fontSize: "15px",
-                              color: "#111827",
-                              marginBottom: "4px",
-                            }}
-                          >
-                            {job.title}
-                          </div>
-
-                          {/* Company */}
-                          <div
-                            style={{
-                              fontSize: "13px",
-                              fontWeight: "600",
-                              color: "#374151",
-                              marginBottom: "8px",
-                            }}
-                          >
-                            🏢 {job.companyName}
-                          </div>
-
-                          {/* Job information */}
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "4px",
-                              fontSize: "12px",
-                              color: "#4b5563",
-                              marginBottom: "10px",
-                            }}
-                          >
-                            <div>
-                              📍 {job.location || "Location not specified"}
-                            </div>
-
-                            <div>
-                              💼 {job.jobType || "Job type not specified"}
-                            </div>
-
-                            <div>
-                              🧑‍💻{" "}
-                              {job.experienceLevel ||
-                                "Experience not specified"}
-                            </div>
-
-                            <div>
-                              💰{" "}
-                              {job.salary != null
-                                ? `₹${Number(
-                                    job.salary
-                                  ).toLocaleString("en-IN")}`
-                                : "Salary not specified"}
-                            </div>
-
-                            <div>
-                              🌐{" "}
-                              {job.remote
-                                ? "Remote"
-                                : "On-site"}
-                            </div>
-                          </div>
-
-                          {/* View Job */}
-                          <button
-                            onClick={() => viewJob(job.id)}
-                            style={{
-                              width: "100%",
-                              border: "none",
-                              borderRadius: "8px",
-                              padding: "9px",
-                              background: "#2563eb",
-                              color: "white",
-                              fontWeight: "600",
-                              cursor: "pointer",
-                              fontSize: "13px",
-                            }}
-                          >
-                            View Job →
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
               </div>
             ))}
 
-            {/* Typing Indicator */}
             {loading && (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  marginBottom: "10px",
-                }}
-              >
-                <div
-                  style={{
-                    background: "#e5e7eb",
-                    padding: "10px 14px",
-                    borderRadius: "14px 14px 14px 3px",
-                    color: "#555",
-                    fontSize: "13px",
-                  }}
-                >
-                  <span>HireSphere AI is typing</span>
-                  <span> •••</span>
+              <div className="message-row bot-row">
+                <div className="message-avatar">✦</div>
+
+                <div className="typing-bubble">
+                  <span />
+                  <span />
+                  <span />
                 </div>
               </div>
             )}
@@ -430,56 +326,40 @@ function Chatbot() {
           </div>
 
           {/* Input */}
-          <div
-            style={{
-              display: "flex",
-              padding: "10px",
-              borderTop: "1px solid #ddd",
-              gap: "8px",
-              background: "white",
-            }}
-          >
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask HireSphere AI..."
-              maxLength={1000}
-              disabled={loading}
-              style={{
-                flex: 1,
-                padding: "10px 12px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                outline: "none",
-                fontSize: "14px",
-                minWidth: 0,
-              }}
-            />
+          <div className="chatbot-input-area">
+            <div className="chatbot-input-wrapper">
+              <input
+                ref={inputRef}
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask HireSphere AI..."
+                maxLength={1000}
+                disabled={loading}
+              />
+
+              <span className="character-count">
+                {message.length}/1000
+              </span>
+            </div>
 
             <button
-              onClick={sendMessage}
+              className={`send-btn ${
+                loading || !message.trim()
+                  ? "send-disabled"
+                  : ""
+              }`}
+              onClick={() => sendMessage()}
               disabled={loading || !message.trim()}
               aria-label="Send message"
-              style={{
-                width: "45px",
-                border: "none",
-                borderRadius: "8px",
-                background:
-                  loading || !message.trim()
-                    ? "#9ca3af"
-                    : "#2563eb",
-                color: "white",
-                cursor:
-                  loading || !message.trim()
-                    ? "not-allowed"
-                    : "pointer",
-                fontSize: "18px",
-              }}
             >
-              ➤
+              {loading ? "..." : "➤"}
             </button>
+          </div>
+
+          <div className="chatbot-footer">
+            <span>✦</span> Powered by HireSphere AI
           </div>
         </div>
       )}
