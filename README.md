@@ -87,6 +87,22 @@ The application provides job discovery, applications, employer job management, r
 \* Manage applicant information
 
 
+## 📸 Product Preview
+
+### 📝 dashboard
+![HireSphere Register](screenshots/dashboard.png)
+
+### 🔐 resume
+![HireSphere Login](screenshots/resume.png)
+
+### 📝 dashboard
+![HireSphere Register](screenshots/dashboard.png)
+
+### 💼 Job 
+![HireSphere Jobs](screenshots/apps.png)
+
+
+
 
 \### 🤖 AI Resume Analyzer
 
