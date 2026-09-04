@@ -90,8 +90,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/chatbot"
-                        ).permitAll()
-
+                        ).authenticated()
                         // Test
                         .requestMatchers(
                                 "/api/users/test"

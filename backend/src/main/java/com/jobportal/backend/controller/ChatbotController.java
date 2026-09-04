@@ -17,13 +17,31 @@ public class ChatbotController {
     private final ChatbotService chatbotService;
 
     @PostMapping
-    public ChatbotResponse chat(
-            @RequestBody ChatbotRequest request) {
+public ChatbotResponse chat(
+        @RequestBody ChatbotRequest request) {
 
-        return chatbotService.ask(
-                request.getMessage()
+    if (request == null ||
+            request.getMessage() == null ||
+            request.getMessage().isBlank()) {
+
+        return new ChatbotResponse(
+                "Please enter a message.",
+                java.util.List.of()
         );
     }
+
+    if (request.getMessage().length() > 2000) {
+
+        return new ChatbotResponse(
+                "Please keep your message under 2000 characters.",
+                java.util.List.of()
+        );
+    }
+
+    return chatbotService.ask(
+            request.getMessage().trim()
+    );
+}
 
     public static class ChatbotRequest {
 
