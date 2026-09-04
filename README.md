@@ -12,6 +12,11 @@ The application provides job discovery, applications, employer job management, r
 
 \## 🌐 Live Application
 
+👉 [Visit HireSphere](https://hiresphere-job-portal-2.onrender.com)
+
+## 💻 GitHub Repository
+
+👉 [View Source Code](https://github.com/Dikshithab/HireSphere-Job-Portal)
 
 
 \*\*Frontend:\*\* https://hiresphere-job-portal-2.onrender.com
@@ -19,11 +24,6 @@ The application provides job discovery, applications, employer job management, r
 
 
 \*\*Backend API:\*\* https://hiresphere-job-portal-1.onrender.com
-
-
-
-\---
-
 
 
 \## ✨ Features
