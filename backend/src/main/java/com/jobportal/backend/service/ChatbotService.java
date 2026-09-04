@@ -6,7 +6,7 @@ import com.jobportal.backend.dto.JobResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-
+import com.jobportal.backend.dto.ChatbotResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +28,7 @@ public class ChatbotService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public ChatbotResult ask(String userMessage) {
-
+public ChatbotResponse ask(String userMessage){
         String apiKey = System.getenv("GROQ_API_KEY");
 
         if (apiKey == null || apiKey.isBlank()) {
@@ -38,7 +37,7 @@ public class ChatbotService {
             System.out.println("GROQ_API_KEY is missing!");
             System.out.println("================================");
 
-            return new ChatbotResult(
+            return new ChatbotResponse(
                     "Groq API key is not configured.",
                     List.of()
             );
@@ -46,7 +45,7 @@ public class ChatbotService {
 
         if (userMessage == null || userMessage.isBlank()) {
 
-            return new ChatbotResult(
+            return new ChatbotResponse(
                     "Please enter a message.",
                     List.of()
             );
@@ -243,7 +242,7 @@ public class ChatbotService {
                                 apiKey
                         );
 
-                return new ChatbotResult(
+                return new ChatbotResponse(
                         answer,
                         List.of()
                 );
@@ -499,7 +498,7 @@ public class ChatbotService {
                             answerResponse
                     );
 
-            return new ChatbotResult(
+            return new ChatbotResponse(
                     answer,
                     limitedJobs
             );
@@ -524,7 +523,7 @@ public class ChatbotService {
                     "==================================="
             );
 
-            return new ChatbotResult(
+            return new ChatbotResponse(
                     "Sorry, I'm unable to respond right now.",
                     List.of()
             );
@@ -763,25 +762,9 @@ public class ChatbotService {
      * =============================================================
      */
 
-    public static class ChatbotResult {
+    
 
-        private final String response;
-        private final List<JobResponse> jobs;
+        
 
-        public ChatbotResult(
-                String response,
-                List<JobResponse> jobs) {
-
-            this.response = response;
-            this.jobs = jobs;
-        }
-
-        public String getResponse() {
-            return response;
-        }
-
-        public List<JobResponse> getJobs() {
-            return jobs;
-        }
-    }
+        
 }

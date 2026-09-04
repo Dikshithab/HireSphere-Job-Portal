@@ -1,11 +1,9 @@
 package com.jobportal.backend.controller;
 
-import com.jobportal.backend.dto.JobResponse;
+import com.jobportal.backend.dto.ChatbotResponse;
 import com.jobportal.backend.service.ChatbotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/chatbot")
@@ -22,18 +20,10 @@ public class ChatbotController {
     public ChatbotResponse chat(
             @RequestBody ChatbotRequest request) {
 
-        ChatbotService.ChatbotResult result =
-                chatbotService.ask(request.getMessage());
-
-        return new ChatbotResponse(
-                result.getResponse(),
-                result.getJobs()
+        return chatbotService.ask(
+                request.getMessage()
         );
     }
-
-    // ==============================
-    // REQUEST
-    // ==============================
 
     public static class ChatbotRequest {
 
@@ -45,32 +35,6 @@ public class ChatbotController {
 
         public void setMessage(String message) {
             this.message = message;
-        }
-    }
-
-    // ==============================
-    // RESPONSE
-    // ==============================
-
-    public static class ChatbotResponse {
-
-        private String response;
-        private List<JobResponse> jobs;
-
-        public ChatbotResponse(
-                String response,
-                List<JobResponse> jobs) {
-
-            this.response = response;
-            this.jobs = jobs;
-        }
-
-        public String getResponse() {
-            return response;
-        }
-
-        public List<JobResponse> getJobs() {
-            return jobs;
         }
     }
 }
