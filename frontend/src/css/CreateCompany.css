@@ -1,293 +1,1192 @@
-:root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --danger-bg: #fef2f2;
-  --bg-page: #f8fafc;
-  --bg-card: #ffffff;
-  --text-heading: #0f172a;
-  --text-body: #334155;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --focus-ring: rgba(37, 99, 235, 0.15);
-  --radius-lg: 16px;
-  --radius-md: 10px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-card: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
+* {
+  box-sizing: border-box;
 }
 
-/* Base Page Layout */
+/* =========================================================
+   CREATE COMPANY PAGE
+   HireSphere Premium AI SaaS Theme
+   ========================================================= */
+
 .create-company-page {
+  position: relative;
   min-height: 100vh;
-  background: var(--bg-page);
-  padding: 48px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 42px 28px 70px;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 8% 5%,
+      rgba(124, 58, 237, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 10%,
+      rgba(6, 182, 212, 0.09),
+      transparent 28%
+    ),
+    #08080d;
+
+  color: #f8fafc;
 }
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.create-company-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+  opacity: 0.55;
+}
+
+.create-company-bg-orb.orb-one {
+  width: 360px;
+  height: 360px;
+  top: -180px;
+  left: 22%;
+  background: rgba(124, 58, 237, 0.16);
+}
+
+.create-company-bg-orb.orb-two {
+  width: 300px;
+  height: 300px;
+  right: -140px;
+  top: 35%;
+  background: rgba(6, 182, 212, 0.1);
+}
+
+.create-company-bg-orb.orb-three {
+  width: 250px;
+  height: 250px;
+  left: -120px;
+  bottom: 10%;
+  background: rgba(236, 72, 153, 0.07);
+}
+
+.create-company-bg-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 45px 45px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black,
+    transparent 88%
+  );
+}
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
 
 .create-company-container {
+  position: relative;
+  z-index: 2;
+
   width: 100%;
-  max-width: 760px;
+  max-width: 1080px;
+
+  margin: 0 auto;
 }
 
-/* Header */
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .create-company-header {
-  text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 27px;
 }
 
 .create-company-eyebrow {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--primary);
-  background: rgba(37, 99, 235, 0.08);
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 12px;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 14px;
+
+  color: #a78bfa;
+
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 1.8px;
+}
+
+.eyebrow-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #8b5cf6;
+
+  box-shadow:
+    0 0 12px rgba(139, 92, 246, 0.8);
+}
+
+.create-company-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
 }
 
 .create-company-header h1 {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-heading);
-  letter-spacing: -0.02em;
-  margin-bottom: 8px;
+  margin: 0;
+
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.05;
+
+  letter-spacing: -1.8px;
+
+  font-weight: 850;
+}
+
+.create-company-header h1 span {
+  background:
+    linear-gradient(
+      90deg,
+      #c084fc,
+      #818cf8,
+      #22d3ee
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .create-company-header p {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.6;
+  max-width: 690px;
+
+  margin: 16px 0 0;
+
+  color: #9293a5;
+
+  font-size: 14px;
+  line-height: 1.75;
 }
 
-/* Alert Message Banner */
+/* =========================================================
+   STATUS CARD
+   ========================================================= */
+
+.company-status-card {
+  min-width: 160px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 13px 15px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.status-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.25),
+      rgba(6, 182, 212, 0.1)
+    );
+
+  color: #c084fc;
+  font-size: 15px;
+}
+
+.company-status-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.status-label {
+  color: #626474;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.company-status-card strong {
+  color: #dfe1e8;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   INFO STRIP
+   ========================================================= */
+
+.create-company-info-strip {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  margin-top: 24px;
+  padding: 13px 15px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.info-strip-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.25),
+      rgba(6, 182, 212, 0.12)
+    );
+
+  color: #c084fc;
+}
+
+.info-strip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-strip-content strong {
+  color: #e5e7eb;
+
+  font-size: 12px;
+}
+
+.info-strip-content span {
+  color: #77798a;
+
+  font-size: 10px;
+}
+
+.info-strip-arrow {
+  margin-left: auto;
+
+  color: #8b5cf6;
+
+  font-size: 17px;
+}
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
 .create-company-message {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 18px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 24px;
-  background-color: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-  animation: slideDown 0.25s ease-out;
-}
 
-.create-company-message span {
-  font-weight: 700;
-}
+  margin-bottom: 18px;
+  padding: 13px 15px;
 
-/* Card Container */
-.create-company-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-card);
-  padding: 36px;
-}
+  border-radius: 13px;
 
-/* Section Divider */
-.create-company-section {
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 16px;
-}
-
-.create-company-section h2 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-heading);
-}
-
-.create-company-section p {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-/* Form Layout Grid */
-.create-company-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.create-form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.create-form-group.full-width {
-  grid-column: span 2;
-}
-
-.create-form-group label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--text-heading);
-  margin-bottom: 6px;
+
+  animation: messageIn 0.3s ease;
 }
 
-.create-form-group input,
-.create-form-group textarea {
-  width: 100%;
-  padding: 11px 14px;
-  font-size: 14px;
-  color: var(--text-heading);
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  outline: none;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-  font-family: inherit;
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.create-form-group textarea {
-  resize: vertical;
+.message-icon {
+  width: 21px;
+  height: 21px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.message-success {
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  background: rgba(34, 197, 94, 0.07);
+
+  color: #86efac;
+}
+
+.message-success .message-icon {
+  background: rgba(34, 197, 94, 0.16);
+}
+
+.message-error {
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  background: rgba(239, 68, 68, 0.07);
+
+  color: #fca5a5;
+}
+
+.message-error .message-icon {
+  background: rgba(239, 68, 68, 0.16);
+}
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.create-company-card {
+  position: relative;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(25px);
+
+  overflow: hidden;
+}
+
+.create-company-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 8%;
+  right: 8%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(167, 139, 250, 0.7),
+      rgba(34, 211, 238, 0.5),
+      transparent
+    );
+}
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.create-company-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  padding: 28px 30px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-header-icon {
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  border-radius: 13px;
+
+  background: rgba(124, 58, 237, 0.1);
+
+  font-size: 19px;
+}
+
+.card-kicker {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #8b5cf6;
+
+  font-size: 9px;
+  font-weight: 850;
+
+  letter-spacing: 1.5px;
+}
+
+.create-company-card-header h2 {
+  margin: 0;
+
+  color: #f1f5f9;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.create-company-card-header p {
+  margin: 5px 0 0;
+
+  color: #77798a;
+
+  font-size: 11px;
   line-height: 1.5;
 }
 
-.create-form-group input::placeholder,
-.create-form-group textarea::placeholder {
-  color: #94a3b8;
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.create-company-section {
+  padding: 30px;
 }
 
-.create-form-group input:focus,
+.create-company-section + .create-company-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+
+  margin-bottom: 23px;
+}
+
+.section-number {
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: 9px;
+
+  background: rgba(124, 58, 237, 0.08);
+
+  color: #a78bfa;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.section-heading h3 {
+  margin: 0 0 4px;
+
+  color: #e5e7eb;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.section-heading p {
+  margin: 0;
+
+  color: #6f7080;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.create-company-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 21px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.create-form-group {
+  min-width: 0;
+}
+
+.create-form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #d4d4dc;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.create-form-group label span {
+  margin-left: 3px;
+
+  color: #a78bfa;
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label-row label {
+  margin-bottom: 8px;
+}
+
+.field-hint {
+  color: #60616f;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.create-input-wrapper {
+  position: relative;
+}
+
+.create-input-icon {
+  position: absolute;
+
+  left: 14px;
+  top: 50%;
+
+  z-index: 1;
+
+  transform: translateY(-50%);
+
+  color: #696b7c;
+
+  font-size: 13px;
+
+  pointer-events: none;
+
+  transition: color 0.2s ease;
+}
+
+.create-input-wrapper input {
+  width: 100%;
+  height: 49px;
+
+  padding:
+    0 14px 0 42px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+
+  outline: none;
+
+  background: rgba(0, 0, 0, 0.16);
+
+  color: #f8fafc;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.create-input-wrapper input::placeholder,
+.create-form-group textarea::placeholder {
+  color: #555665;
+}
+
+.create-input-wrapper input:hover,
+.create-form-group textarea:hover {
+  border-color: rgba(255, 255, 255, 0.13);
+}
+
+.create-input-wrapper input:focus,
 .create-form-group textarea:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px var(--focus-ring);
+  border-color: rgba(139, 92, 246, 0.65);
+
+  background: rgba(124, 58, 237, 0.035);
+
+  box-shadow:
+    0 0 0 3px rgba(124, 58, 246, 0.08),
+    0 0 25px rgba(124, 58, 237, 0.07);
+}
+
+.create-input-wrapper:focus-within
+  .create-input-icon {
+  color: #a78bfa;
+}
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.create-form-group textarea {
+  width: 100%;
+
+  min-height: 145px;
+
+  padding: 14px;
+
+  resize: vertical;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+
+  outline: none;
+
+  background: rgba(0, 0, 0, 0.16);
+
+  color: #f8fafc;
+
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.65;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .create-form-group small {
   display: block;
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 6px;
+
+  margin-top: 7px;
+
+  color: #555665;
+
+  font-size: 9px;
+  line-height: 1.4;
 }
 
-/* Action Buttons Container */
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
 .create-company-actions {
-  margin-top: 32px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  border-top: 1px solid var(--border);
-  padding-top: 24px;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 30px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  background: rgba(0, 0, 0, 0.1);
 }
 
-/* Cancel Button */
+.company-actions-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================================================
+   CANCEL
+   ========================================================= */
+
 .create-company-cancel {
-  background: transparent;
-  color: var(--text-body);
-  padding: 11px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  height: 45px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 15px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #a1a1b2;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 700;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .create-company-cancel:hover {
-  background: var(--bg-page);
-  color: var(--text-heading);
+  border-color: rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: #f8fafc;
 }
 
-/* Submit Button */
-.create-company-submit {
-  background: var(--primary);
-  color: #ffffff;
-  padding: 11px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+.create-company-cancel span {
+  font-size: 15px;
 }
 
-.create-company-submit:hover:not(:disabled) {
-  background: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-}
+/* =========================================================
+   DELETE
+   ========================================================= */
 
-.create-company-submit:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-/* Delete Button */
 .delete-company-btn {
-  background: var(--danger-bg);
-  color: var(--danger);
-  padding: 11px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  border: 1px solid #fecaca;
-  border-radius: var(--radius-md);
+  height: 45px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 14px;
+
+  border: 1px solid rgba(239, 68, 68, 0.14);
+  border-radius: 11px;
+
+  background: rgba(239, 68, 68, 0.045);
+
+  color: #f87171;
+
+  font-family: inherit;
+
+  font-size: 10px;
+  font-weight: 700;
+
   cursor: pointer;
-  margin-right: auto; /* Pushes delete button to the far left of the action row */
-  transition: all 0.2s ease;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .delete-company-btn:hover:not(:disabled) {
-  background: var(--danger);
-  color: #ffffff;
-  border-color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.3);
+
+  background: rgba(239, 68, 68, 0.09);
+
+  transform: translateY(-1px);
 }
 
 .delete-company-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
+
   cursor: not-allowed;
 }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+/* =========================================================
+   SUBMIT
+   ========================================================= */
+
+.create-company-submit {
+  min-width: 185px;
+  height: 49px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1 48%,
+      #06b6d4
+    );
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 30px rgba(124, 58, 237, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
-/* Responsive Layout */
-@media (max-width: 640px) {
-  .create-company-card {
+.create-company-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  filter: brightness(1.08);
+
+  box-shadow:
+    0 15px 40px rgba(124, 58, 237, 0.3),
+    0 0 30px rgba(6, 182, 212, 0.08);
+}
+
+.create-company-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.create-company-submit:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+.submit-arrow {
+  font-size: 17px;
+
+  transition: transform 0.2s ease;
+}
+
+.create-company-submit:hover .submit-arrow {
+  transform: translateX(4px);
+}
+
+/* =========================================================
+   SPINNERS
+   ========================================================= */
+
+.save-spinner,
+.delete-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+
+  border-radius: 50%;
+
+  animation: createCompanySpin 0.7s linear infinite;
+}
+
+.delete-spinner {
+  border-color: rgba(239, 68, 68, 0.25);
+  border-top-color: #f87171;
+}
+
+@keyframes createCompanySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.create-company-loading-card {
+  min-height: 390px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.3);
+
+  text-align: center;
+}
+
+.loading-ai-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.2),
+      rgba(6, 182, 212, 0.1)
+    );
+
+  color: #c084fc;
+
+  font-size: 23px;
+
+  animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+.loading-spinner {
+  width: 25px;
+  height: 25px;
+
+  margin-bottom: 18px;
+
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-top-color: #8b5cf6;
+
+  border-right-color: #06b6d4;
+
+  border-radius: 50%;
+
+  animation: createCompanySpin 0.8s linear infinite;
+}
+
+.create-company-loading-card h2 {
+  margin: 0 0 7px;
+
+  color: #f1f5f9;
+
+  font-size: 18px;
+}
+
+.create-company-loading-card p {
+  margin: 0;
+
+  color: #77798a;
+
+  font-size: 11px;
+}
+
+@keyframes loadingPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.create-company-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 22px;
+
+  color: #555665;
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+.create-company-footer span:first-child {
+  color: #8b5cf6;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .create-company-page {
+    padding: 30px 18px 50px;
+  }
+
+  .create-company-title-row {
+    align-items: flex-start;
+  }
+
+  .company-status-card {
+    min-width: 145px;
+  }
+
+  .create-company-section,
+  .create-company-card-header {
     padding: 24px;
-  }
-  
-  .create-company-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .create-form-group.full-width {
-    grid-column: span 1;
   }
 
   .create-company-actions {
-    flex-direction: column-reverse;
-    align-items: stretch;
+    padding: 20px 24px;
+  }
+}
+
+@media (max-width: 680px) {
+  .create-company-title-row {
+    flex-direction: column;
   }
 
-  .delete-company-btn {
-    margin-right: 0;
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  .create-company-submit,
-  .create-company-cancel {
+  .company-status-card {
     width: 100%;
-    text-align: center;
+  }
+
+  .create-company-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .create-company-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .company-actions-left {
+    width: 100%;
+  }
+
+  .create-company-cancel,
+  .delete-company-btn {
+    flex: 1;
+  }
+
+  .create-company-submit {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-company-page {
+    padding: 22px 12px 40px;
+  }
+
+  .create-company-header h1 {
+    font-size: 31px;
+  }
+
+  .create-company-header p {
+    font-size: 12px;
+  }
+
+  .create-company-info-strip {
+    align-items: flex-start;
+  }
+
+  .info-strip-arrow {
+    display: none;
+  }
+
+  .create-company-card {
+    border-radius: 18px;
+  }
+
+  .create-company-card-header {
+    padding: 20px;
+  }
+
+  .create-company-section {
+    padding: 20px;
+  }
+
+  .create-company-actions {
+    padding: 18px 20px;
+  }
+
+  .company-actions-left {
+    flex-direction: column;
+  }
+
+  .create-company-cancel,
+  .delete-company-btn {
+    width: 100%;
+  }
+
+  .section-heading {
+    margin-bottom: 18px;
+  }
+
+  .create-company-footer {
+    line-height: 1.5;
   }
 }

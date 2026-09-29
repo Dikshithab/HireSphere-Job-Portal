@@ -33,47 +33,59 @@ function Register() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    setLoading(true);
-    setMessage("");
+  setLoading(true);
+  setMessage("");
 
-    try {
-      const response = await api.post(
-        "/users/register",
-        formData
+  try {
+    const payload = {
+      name: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+      role: formData.role,
+    };
+
+    const response = await api.post(
+      "/users/register/",
+      payload
+    );
+
+    console.log("Register Response:", response.data);
+
+    setMessage("Registration successful!");
+
+    setFormData({
+      fullName: "",
+      email: "",
+      password: "",
+      phone: "",
+      role: "JOB_SEEKER",
+    });
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
+
+  } catch (error) {
+    console.error("Register Error:", error);
+
+    if (error.response) {
+      console.log("Backend Error:", error.response.data);
+
+      setMessage(
+        error.response.data?.message ||
+        Object.values(error.response.data || {}).flat().join(" ") ||
+        "Registration failed"
       );
-
-      console.log("Register Response:", response.data);
-
-      setMessage("Registration successful!");
-
-      setFormData({
-        fullName: "",
-        email: "",
-        password: "",
-        phone: "",
-        role: "JOB_SEEKER",
-      });
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-    } catch (error) {
-      console.error("Register Error:", error);
-
-      if (error.response) {
-        setMessage(
-          error.response.data?.message ||
-            "Registration failed"
-        );
-      } else {
-        setMessage("Cannot connect to server");
-      }
-    } finally {
-      setLoading(false);
+    } else {
+      setMessage("Cannot connect to server");
     }
-  };
+
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="auth-page">

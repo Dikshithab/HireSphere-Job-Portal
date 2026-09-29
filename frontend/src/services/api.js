@@ -1,28 +1,51 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+    baseURL: "http://127.0.0.1:8000/api",
 });
 
 api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
+    (config) => {
+        const token = localStorage.getItem("token");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+        console.log("API Request:", config.method?.toUpperCase(), config.url);
+        console.log("Token exists:", !!token);
+
+        if (!config.skipAuth && token) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
+);
 
-    // Let Axios/browser automatically set Content-Type
-    // especially for FormData uploads.
-    if (config.data instanceof FormData) {
-      delete config.headers["Content-Type"];
-    } else {
-      config.headers["Content-Type"] = "application/json";
+api.interceptors.response.use(
+    (response) => response,
+
+    (error) => {
+        if (error.response?.status === 401) {
+            console.error(
+                "401 Unauthorized:",
+                error.response.data
+            );
+
+            console.error(
+                "Request URL:",
+                error.config?.url
+            );
+
+            console.error(
+                "Authorization Header:",
+                error.config?.headers?.Authorization
+            );
+        }
+
+        return Promise.reject(error);
     }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
 );
 
 export default api;

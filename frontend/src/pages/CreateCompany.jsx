@@ -30,8 +30,7 @@ function CreateCompany() {
 
   const loadCompany = async () => {
     try {
-      const response = await api.get("/companies/my");
-
+      const response = await api.get("/jobs/company/");
       const company = response.data;
 
       setFormData({
@@ -39,13 +38,12 @@ function CreateCompany() {
         description: company.description || "",
         website: company.website || "",
         location: company.location || "",
-        logoUrl: company.logoUrl || "",
+        logoUrl: company.logo_url || "",
       });
 
       setCompanyExists(true);
       setMessage("");
     } catch (error) {
-      // 404 means employer doesn't have a company yet
       if (error.response?.status === 404) {
         setCompanyExists(false);
       } else {
@@ -86,9 +84,8 @@ function CreateCompany() {
       let response;
 
       if (companyExists) {
-        // UPDATE
         response = await api.put(
-          "/companies/my",
+          "/jobs/company/",
           formData
         );
 
@@ -101,9 +98,8 @@ function CreateCompany() {
           "Company updated successfully!"
         );
       } else {
-        // CREATE
         response = await api.post(
-          "/companies",
+          "/jobs/company/",
           formData
         );
 
@@ -118,7 +114,6 @@ function CreateCompany() {
           "Company created successfully!"
         );
       }
-
     } catch (error) {
       console.error(
         "Company Save Error:",
@@ -161,7 +156,7 @@ function CreateCompany() {
     setMessage("");
 
     try {
-      await api.delete("/companies");
+      await api.delete("/jobs/company/");
 
       setFormData({
         name: "",
@@ -176,7 +171,6 @@ function CreateCompany() {
       setMessage(
         "Company deleted successfully!"
       );
-
     } catch (error) {
       console.error(
         "Delete Company Error:",
@@ -199,19 +193,27 @@ function CreateCompany() {
   if (loading) {
     return (
       <div className="create-company-page">
+        <div className="create-company-bg-orb orb-one" />
+        <div className="create-company-bg-orb orb-two" />
+        <div className="create-company-bg-grid" />
+
         <div className="create-company-container">
-
-          <div className="create-company-card">
-            <div className="create-company-section">
-              <h2>Loading Company...</h2>
-
-              <p>
-                Please wait while we load your
-                company information.
-              </p>
+          <div className="create-company-loading-card">
+            <div className="loading-ai-icon">
+              ✦
             </div>
-          </div>
 
+            <div className="loading-spinner" />
+
+            <h2>
+              Loading your company
+            </h2>
+
+            <p>
+              Please wait while we retrieve your
+              company information.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -224,222 +226,448 @@ function CreateCompany() {
   return (
     <div className="create-company-page">
 
+      {/* Background */}
+      <div className="create-company-bg-orb orb-one" />
+      <div className="create-company-bg-orb orb-two" />
+      <div className="create-company-bg-orb orb-three" />
+      <div className="create-company-bg-grid" />
+
       <div className="create-company-container">
 
-        {/* HEADER */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
-        <div className="create-company-header">
+        <header className="create-company-header">
 
-          <span className="create-company-eyebrow">
-            EMPLOYER
-          </span>
+          <div className="create-company-eyebrow">
+            <span className="eyebrow-dot" />
+            EMPLOYER WORKSPACE
+          </div>
 
-          <h1>
-            {companyExists
-              ? "Manage Your Company"
-              : "Create Your Company"}
-          </h1>
+          <div className="create-company-title-row">
 
-          <p>
-            {companyExists
-              ? "Update your company information whenever you need."
-              : "Add your company information before creating your first job posting."}
-          </p>
+            <div>
+              <h1>
+                {companyExists
+                  ? "Manage your "
+                  : "Build your "}
+                <span>
+                  company profile.
+                </span>
+              </h1>
 
-        </div>
+              <p>
+                {companyExists
+                  ? "Keep your company information up to date and maintain a strong presence for candidates."
+                  : "Create your company profile before publishing your first job and connecting with talented candidates."}
+              </p>
+            </div>
 
+            <div className="company-status-card">
 
-        {/* MESSAGE */}
+              <div className="status-icon">
+                {companyExists ? "✓" : "✦"}
+              </div>
+
+              <div>
+                <span className="status-label">
+                  PROFILE STATUS
+                </span>
+
+                <strong>
+                  {companyExists
+                    ? "Active"
+                    : "Not created"}
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Quick info */}
+          <div className="create-company-info-strip">
+
+            <div className="info-strip-icon">
+              {companyExists ? "✓" : "✦"}
+            </div>
+
+            <div className="info-strip-content">
+              <strong>
+                {companyExists
+                  ? "Your company profile is ready"
+                  : "One step closer to hiring"}
+              </strong>
+
+              <span>
+                {companyExists
+                  ? "You can update your company details whenever needed."
+                  : "Complete your profile to start creating job listings."}
+              </span>
+            </div>
+
+            <span className="info-strip-arrow">
+              →
+            </span>
+
+          </div>
+
+        </header>
+
+        {/* =================================================
+            MESSAGE
+        ================================================= */}
 
         {message && (
-          <div className="create-company-message">
+          <div
+            className={`create-company-message ${
+              message.includes("successfully")
+                ? "message-success"
+                : "message-error"
+            }`}
+            role="alert"
+          >
+            <span className="message-icon">
+              {message.includes("successfully")
+                ? "✓"
+                : "!"}
+            </span>
 
-            <span>✓</span>
-
-            {message}
-
+            <span>{message}</span>
           </div>
         )}
 
+        {/* =================================================
+            FORM CARD
+        ================================================= */}
 
-        {/* FORM CARD */}
+        <section className="create-company-card">
 
-        <div className="create-company-card">
+          {/* Card Header */}
+          <div className="create-company-card-header">
 
-          <form onSubmit={handleSubmit}>
+            <div className="card-header-icon">
+              🏢
+            </div>
 
-            {/* SECTION HEADER */}
-
-            <div className="create-company-section">
+            <div>
+              <span className="card-kicker">
+                COMPANY PROFILE
+              </span>
 
               <h2>
-                Company Information
+                Company information
               </h2>
 
               <p>
-                Provide accurate information so
-                candidates can learn about your company.
+                Give candidates a clear picture of
+                your organization.
               </p>
-
             </div>
 
+          </div>
 
-            <div className="create-company-grid">
+          <form onSubmit={handleSubmit}>
 
-              {/* COMPANY NAME */}
+            {/* =================================================
+                SECTION 01
+            ================================================= */}
 
-              <div className="create-form-group full-width">
+            <div className="create-company-section">
 
-                <label>
-                  Company Name
-                </label>
+              <div className="section-heading">
 
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="TechNova Solutions"
-                  required
-                />
+                <span className="section-number">
+                  01
+                </span>
 
-              </div>
+                <div>
+                  <h3>
+                    About your company
+                  </h3>
 
-
-              {/* DESCRIPTION */}
-
-              <div className="create-form-group full-width">
-
-                <label>
-                  Description
-                </label>
-
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  placeholder="Software development and technology solutions company."
-                  rows="5"
-                  required
-                />
+                  <p>
+                    Start with the essential details
+                    candidates need to know.
+                  </p>
+                </div>
 
               </div>
 
+              <div className="create-company-grid">
 
-              {/* WEBSITE */}
+                {/* Company Name */}
+                <div className="create-form-group full-width">
 
-              <div className="create-form-group">
+                  <label htmlFor="company-name">
+                    Company name
+                    <span>*</span>
+                  </label>
 
-                <label>
-                  Website
-                </label>
+                  <div className="create-input-wrapper">
 
-                <input
-                  type="url"
-                  name="website"
-                  value={formData.website}
-                  onChange={handleChange}
-                  placeholder="https://example.com"
-                />
+                    <span className="create-input-icon">
+                      🏢
+                    </span>
 
-              </div>
+                    <input
+                      id="company-name"
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="TechNova Solutions"
+                      required
+                    />
 
+                  </div>
 
-              {/* LOCATION */}
+                </div>
 
-              <div className="create-form-group">
+                {/* Description */}
+                <div className="create-form-group full-width">
 
-                <label>
-                  Location
-                </label>
+                  <div className="label-row">
 
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  placeholder="Hyderabad"
-                  required
-                />
+                    <label htmlFor="company-description">
+                      Company description
+                      <span>*</span>
+                    </label>
 
-              </div>
+                    <span className="field-hint">
+                      Tell your story
+                    </span>
 
+                  </div>
 
-              {/* LOGO */}
+                  <textarea
+                    id="company-description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Software development and technology solutions company. Tell candidates about your mission, products, culture, and team..."
+                    rows="6"
+                    required
+                  />
 
-              <div className="create-form-group full-width">
-
-                <label>
-                  Logo URL
-                </label>
-
-                <input
-                  type="url"
-                  name="logoUrl"
-                  value={formData.logoUrl}
-                  onChange={handleChange}
-                  placeholder="https://example.com/logo.png"
-                />
-
-                <small>
-                  Optional. Add a publicly accessible
-                  URL for your company logo.
-                </small>
+                </div>
 
               </div>
 
             </div>
 
+            {/* =================================================
+                SECTION 02
+            ================================================= */}
 
-            {/* ACTIONS */}
+            <div className="create-company-section">
+
+              <div className="section-heading">
+
+                <span className="section-number">
+                  02
+                </span>
+
+                <div>
+                  <h3>
+                    Company presence
+                  </h3>
+
+                  <p>
+                    Help candidates discover more about
+                    your organization.
+                  </p>
+                </div>
+
+              </div>
+
+              <div className="create-company-grid">
+
+                {/* Website */}
+                <div className="create-form-group">
+
+                  <label htmlFor="company-website">
+                    Website
+                  </label>
+
+                  <div className="create-input-wrapper">
+
+                    <span className="create-input-icon">
+                      ↗
+                    </span>
+
+                    <input
+                      id="company-website"
+                      type="url"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      placeholder="https://example.com"
+                    />
+
+                  </div>
+
+                  <small>
+                    Your official company website.
+                  </small>
+
+                </div>
+
+                {/* Location */}
+                <div className="create-form-group">
+
+                  <label htmlFor="company-location">
+                    Location
+                    <span>*</span>
+                  </label>
+
+                  <div className="create-input-wrapper">
+
+                    <span className="create-input-icon">
+                      ◎
+                    </span>
+
+                    <input
+                      id="company-location"
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      placeholder="Hyderabad"
+                      required
+                    />
+
+                  </div>
+
+                  <small>
+                    Your company's primary location.
+                  </small>
+
+                </div>
+
+                {/* Logo */}
+                <div className="create-form-group full-width">
+
+                  <label htmlFor="company-logo">
+                    Company logo URL
+                  </label>
+
+                  <div className="create-input-wrapper">
+
+                    <span className="create-input-icon">
+                      ◇
+                    </span>
+
+                    <input
+                      id="company-logo"
+                      type="url"
+                      name="logoUrl"
+                      value={formData.logoUrl}
+                      onChange={handleChange}
+                      placeholder="https://example.com/logo.png"
+                    />
+
+                  </div>
+
+                  <small>
+                    Optional. Add a publicly accessible
+                    URL for your company logo.
+                  </small>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =================================================
+                ACTIONS
+            ================================================= */}
 
             <div className="create-company-actions">
 
-              <button
-                type="button"
-                className="create-company-cancel"
-                onClick={() => navigate("/employer")}
-              >
-                Cancel
-              </button>
+              <div className="company-actions-left">
 
+                <button
+                  type="button"
+                  className="create-company-cancel"
+                  onClick={() =>
+                    navigate("/employer")
+                  }
+                >
+                  <span>←</span>
+                  Cancel
+                </button>
+
+                {companyExists && (
+                  <button
+                    type="button"
+                    className="delete-company-btn"
+                    onClick={handleDelete}
+                    disabled={deleting}
+                  >
+                    {deleting ? (
+                      <>
+                        <span className="delete-spinner" />
+                        Deleting...
+                      </>
+                    ) : (
+                      <>
+                        <span>🗑</span>
+                        Delete Company
+                      </>
+                    )}
+                  </button>
+                )}
+
+              </div>
 
               <button
                 type="submit"
                 className="create-company-submit"
                 disabled={saving}
               >
-                {saving
-                  ? "Saving..."
-                  : companyExists
-                  ? "Update Company"
-                  : "Create Company"}
+                {saving ? (
+                  <>
+                    <span className="save-spinner" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {companyExists
+                        ? "Update Company"
+                        : "Create Company"}
+                    </span>
+
+                    <span className="submit-arrow">
+                      →
+                    </span>
+                  </>
+                )}
               </button>
-
-
-              {/* DELETE */}
-
-              {companyExists && (
-                <button
-                  type="button"
-                  className="delete-company-btn"
-                  onClick={handleDelete}
-                  disabled={deleting}
-                >
-                  {deleting
-                    ? "Deleting..."
-                    : "🗑️ Delete Company"}
-                </button>
-              )}
 
             </div>
 
           </form>
 
+        </section>
+
+        {/* Footer hint */}
+        <div className="create-company-footer">
+
+          <span>✦</span>
+
+          <span>
+            {companyExists
+              ? "Your company information can be updated at any time."
+              : "Once your company is created, you'll be ready to publish jobs on HireSphere."}
+          </span>
+
         </div>
 
       </div>
-
     </div>
   );
 }

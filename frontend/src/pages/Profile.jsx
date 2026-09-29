@@ -36,13 +36,13 @@ function Profile() {
       setLoading(true);
       setError("");
 
-      const response = await api.get("/users/profile");
+      const response = await api.get("/users/profile/");
 
       const user = response.data;
 
       setProfile(user);
 
-      setFullName(user.fullName || "");
+      setFullName(user.name || "");
       setPhone(user.phone || "");
 
     } catch (error) {
@@ -81,9 +81,9 @@ function Profile() {
       setError("");
 
       const response = await api.put(
-        "/users/profile",
+        "/users/profile/",
         {
-          fullName: fullName.trim(),
+          name: fullName.trim(),
           phone: phone.trim()
         }
       );
@@ -93,7 +93,7 @@ function Profile() {
       setProfile(updatedProfile);
 
       setFullName(
-        updatedProfile.fullName || ""
+        updatedProfile.name || ""
       );
 
       setPhone(
@@ -107,7 +107,7 @@ function Profile() {
 
       localStorage.setItem(
         "fullName",
-        updatedProfile.fullName || ""
+        updatedProfile.name || ""
       );
 
       // Custom event for same browser tab
@@ -155,7 +155,7 @@ function Profile() {
     setError("");
 
     setFullName(
-      profile?.fullName || ""
+      profile?.name || ""
     );
 
     setPhone(
@@ -169,45 +169,33 @@ function Profile() {
   // ==========================================
 
   const handleDelete = async () => {
+  const confirmed = window.confirm(
+    "Are you sure you want to permanently delete your account?\n\nThis action cannot be undone."
+  );
 
-    const confirmed = window.confirm(
-      "Are you sure you want to permanently delete your account?\n\nThis action cannot be undone."
+  if (!confirmed) return;
+
+  try {
+    setError("");
+    setMessage("");
+
+    await api.delete("/users/profile/delete/");
+
+    localStorage.clear();
+
+    alert("Your account has been deleted successfully.");
+
+    navigate("/login");
+  } catch (error) {
+    console.error("Delete account error:", error);
+
+    setError(
+      error.response?.data?.message ||
+      error.response?.data ||
+      "Unable to delete account."
     );
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-
-      setError("");
-      setMessage("");
-
-      await api.delete("/users/profile");
-
-      // Remove all authentication/user data
-      localStorage.clear();
-
-      alert(
-        "Your account has been deleted successfully."
-      );
-
-      navigate("/login");
-
-    } catch (error) {
-
-      console.error(
-        "Delete account error:",
-        error
-      );
-
-      setError(
-        error.response?.data?.message ||
-        error.response?.data ||
-        "Unable to delete account."
-      );
-    }
-  };
+  }
+};
 
 
   // ==========================================

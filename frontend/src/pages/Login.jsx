@@ -1,56 +1,57 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
-import "../css/Auth.css";
+import "../css/login.css";
 
 function Login() {
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  /* =====================================================
+     LOGIN
+     ===================================================== */
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    setError("");
     setLoading(true);
-    setMessage("");
 
     try {
-      const response = await api.post("/users/login", {
+      const response = await api.post("/users/login/", {
         email,
         password,
       });
 
-      console.log("Login Response:", response.data);
+      localStorage.setItem(
+        "token",
+        response.data.access
+      );
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
-      localStorage.setItem("fullName", response.data.fullName);
+      localStorage.setItem(
+        "refreshToken",
+        response.data.refresh
+      );
 
-      const role = response.data.role;
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.user)
+      );
 
-      console.log("Logged in role:", role);
+      alert("Login successful!");
 
-      if (role === "EMPLOYER") {
-        navigate("/employer");
-      } else {
-        navigate("/jobs");
-      }
+      navigate("/");
     } catch (error) {
-      console.error("Login Error:", error);
+      console.error("Login error:", error);
 
-      if (error.response) {
-        setMessage(
-          error.response.data?.message ||
-            "Invalid email or password"
-        );
-      } else {
-        setMessage("Cannot connect to server");
-      }
+      setError(
+        error.response?.data?.message ||
+          "Login failed. Please check your email and password."
+      );
     } finally {
       setLoading(false);
     }
@@ -58,121 +59,330 @@ function Login() {
 
   return (
     <div className="auth-page">
-      <div className="auth-brand-panel">
+
+      {/* =================================================
+          BACKGROUND DECORATION
+          ================================================= */}
+
+      <div className="auth-orb auth-orb-one" />
+      <div className="auth-orb auth-orb-two" />
+      <div className="auth-grid" />
+
+
+      {/* =================================================
+          BRAND PANEL
+          ================================================= */}
+
+      <aside className="auth-brand-panel">
+
         <div className="auth-brand">
-          <div className="brand-icon">✦</div>
-          <span>HireSphere</span>
+
+          <div className="brand-icon">
+            💼
+          </div>
+
+          <span>
+            Hire<span>Sphere</span>
+          </span>
+
         </div>
+
 
         <div className="brand-content">
-          <span className="brand-badge">AI-POWERED CAREER PLATFORM</span>
+
+          <div className="brand-badge">
+            <span className="brand-badge-dot" />
+            YOUR CAREER. YOUR FUTURE.
+          </div>
+
 
           <h2>
-            Find opportunities.
+            Find the work
             <br />
-            Build your future.
+            <span>you love.</span>
           </h2>
 
+
           <p>
-            Connect with the right jobs, showcase your skills,
-            and take the next step in your career with HireSphere.
+            Discover opportunities, connect with
+            employers, and build a career that
+            moves with you.
           </p>
 
+
+          {/* =================================================
+              FEATURES
+              ================================================= */}
+
           <div className="brand-features">
-            <div>
-              <span className="feature-icon">✓</span>
-              <span>Smart job discovery</span>
+
+            <div className="brand-feature">
+
+              <span className="feature-icon">
+                ✓
+              </span>
+
+              <div>
+                <strong>
+                  Smart job discovery
+                </strong>
+
+                <span>
+                  Find roles that match your skills.
+                </span>
+              </div>
+
             </div>
 
-            <div>
-              <span className="feature-icon">✓</span>
-              <span>AI-powered resume analysis</span>
+
+            <div className="brand-feature">
+
+              <span className="feature-icon">
+                ✦
+              </span>
+
+              <div>
+                <strong>
+                  AI-powered career tools
+                </strong>
+
+                <span>
+                  Optimize your resume with AI.
+                </span>
+              </div>
+
             </div>
 
-            <div>
-              <span className="feature-icon">✓</span>
-              <span>Career assistance with AI</span>
+
+            <div className="brand-feature">
+
+              <span className="feature-icon">
+                ◈
+              </span>
+
+              <div>
+                <strong>
+                  Connect with employers
+                </strong>
+
+                <span>
+                  Take your next career step.
+                </span>
+              </div>
+
             </div>
+
           </div>
+
+
+          {/* =================================================
+              AI MINI CARD
+              ================================================= */}
+
+          <div className="brand-ai-card">
+
+            <div className="brand-ai-icon">
+              ✦
+            </div>
+
+            <div>
+
+              <span className="brand-ai-label">
+                HIRESPHERE AI
+              </span>
+
+              <p>
+                Your AI-powered career assistant
+              </p>
+
+            </div>
+
+            <span className="brand-ai-arrow">
+              →
+            </span>
+
+          </div>
+
         </div>
+
+
+        {/* BRAND FOOTER */}
 
         <div className="brand-footer">
-          © 2026 HireSphere
-        </div>
-      </div>
+          <span>
+            © 2026 HireSphere
+          </span>
 
-      <div className="auth-form-panel">
+          <span className="footer-separator">
+            •
+          </span>
+
+          <span>
+            Career intelligence platform
+          </span>
+        </div>
+
+      </aside>
+
+
+      {/* =================================================
+          FORM PANEL
+          ================================================= */}
+
+      <main className="auth-form-panel">
+
         <div className="auth-card">
+
+          {/* =================================================
+              MOBILE BRAND
+              ================================================= */}
+
           <div className="mobile-brand">
-            <div className="brand-icon">✦</div>
-            <span>HireSphere</span>
+
+            <div className="brand-icon">
+              💼
+            </div>
+
+            <span>
+              Hire<span>Sphere</span>
+            </span>
+
           </div>
+
+
+          {/* =================================================
+              HEADING
+              ================================================= */}
 
           <div className="auth-heading">
-            <span className="auth-eyebrow">WELCOME BACK</span>
 
-            <h1>Sign in to your account</h1>
+            <div className="auth-eyebrow">
+              <span>✦</span>
+              WELCOME BACK
+            </div>
+
+            <h1>
+              Sign in to your
+              <span> account.</span>
+            </h1>
 
             <p>
-              Continue your journey with HireSphere.
+              Continue your journey with
+              HireSphere and discover what's next.
             </p>
+
           </div>
 
+
+          {/* =================================================
+              LOGIN FORM
+              ================================================= */}
+
           <form onSubmit={handleLogin}>
+
+            {/* EMAIL */}
+
             <div className="auth-group">
-              <label>Email address</label>
+
+              <label htmlFor="login-email">
+                Email Address
+              </label>
 
               <div className="input-wrapper">
-                <span className="input-icon">✉</span>
+
+                <span
+                  className="input-icon"
+                  aria-hidden="true"
+                >
+                  @
+                </span>
 
                 <input
+                  id="login-email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
                   autoComplete="email"
                   required
                 />
+
               </div>
+
             </div>
 
+
+            {/* PASSWORD */}
+
             <div className="auth-group">
-              <label>Password</label>
+
+              <div className="password-label-row">
+
+                <label htmlFor="login-password">
+                  Password
+                </label>
+
+                <span className="secure-label">
+                  <span>●</span>
+                  Secure login
+                </span>
+
+              </div>
 
               <div className="input-wrapper">
-                <span className="input-icon">🔒</span>
+
+                <span
+                  className="input-icon"
+                  aria-hidden="true"
+                >
+                  ••
+                </span>
 
                 <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  id="login-password"
+                  type="password"
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
                   autoComplete="current-password"
                   required
                 />
 
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() =>
-                    setShowPassword(!showPassword)
-                  }
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
-                >
-                  {showPassword ? "◉" : "◌"}
-                </button>
               </div>
+
             </div>
+
+
+            {/* ERROR */}
+
+            {error && (
+              <div
+                className="auth-message auth-error"
+                role="alert"
+              >
+                <span className="message-icon">
+                  !
+                </span>
+
+                <span>
+                  {error}
+                </span>
+              </div>
+            )}
+
+
+            {/* LOGIN BUTTON */}
 
             <button
               type="submit"
               className="auth-button"
               disabled={loading}
             >
+
               {loading ? (
                 <>
                   <span className="button-spinner" />
@@ -180,34 +390,76 @@ function Login() {
                 </>
               ) : (
                 <>
-                  Sign In
-                  <span>→</span>
+                  <span>
+                    Sign In
+                  </span>
+
+                  <span className="button-arrow">
+                    →
+                  </span>
                 </>
               )}
+
             </button>
+
+
+            {/* DIVIDER */}
+
+            <div className="auth-divider">
+              <span />
+              <b>OR</b>
+              <span />
+            </div>
+
+
+            {/* REGISTER */}
+
+            <Link
+              to="/register"
+              className="secondary-auth-button"
+            >
+              <span>
+                Create a new account
+              </span>
+
+              <span>
+                →
+              </span>
+            </Link>
+
+
+            {/* BOTTOM TEXT */}
+
+            <p className="auth-bottom-text">
+              By continuing, you agree to HireSphere's
+              <span> terms</span> and
+              <span> privacy policy</span>.
+            </p>
+
           </form>
 
-          {message && (
-            <div className="auth-message auth-error">
-              <span>!</span>
-              {message}
-            </div>
-          )}
 
-          <div className="auth-divider">
-            <span>New to HireSphere?</span>
+          {/* =================================================
+              TRUST FOOTER
+              ================================================= */}
+
+          <div className="auth-trust">
+
+            <span>
+              🔒
+            </span>
+
+            <span>
+              Your account is protected with secure
+              authentication
+            </span>
+
           </div>
 
-          <Link to="/register" className="secondary-auth-button">
-            Create an account
-          </Link>
-
-          <p className="auth-bottom-text">
-            By continuing, you agree to use HireSphere responsibly
-            and provide accurate information.
-          </p>
         </div>
-      </div>
+
+      </main>
+
     </div>
   );
 }

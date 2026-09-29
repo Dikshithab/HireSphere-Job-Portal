@@ -4,35 +4,36 @@ import api from "../services/api";
 import "../css/MyApplication.css";
 
 function MyApplications() {
-
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
 
   // ==========================================
   // FETCH MY APPLICATIONS
   // ==========================================
 
   useEffect(() => {
-
     const fetchApplications = async () => {
-
       try {
+        setLoading(true);
+        setError("");
 
-        const response = await api.get(
-          "/applications/my"
+        const response = await api.get("/applications/my/");
+
+        console.log("My Applications Response:", response.data);
+
+        const formattedApplications = response.data.map(
+          (application) => ({
+            ...application,
+            jobId: application.job,
+            jobTitle: application.job_title,
+            companyName: application.company_name,
+            appliedAt: application.applied_at,
+          })
         );
 
-        console.log(
-          "My Applications:",
-          response.data
-        );
-
-        setApplications(response.data);
-
+        setApplications(formattedApplications);
       } catch (error) {
-
         console.error(
           "Error fetching applications:",
           error
@@ -40,37 +41,111 @@ function MyApplications() {
 
         setError(
           error.response?.data?.message ||
-          "Unable to load applications."
+            "Unable to load applications. Please try again."
         );
-
       } finally {
-
         setLoading(false);
-
       }
     };
 
-
     fetchApplications();
-
   }, []);
 
+  // ==========================================
+  // STATUS HELPERS
+  // ==========================================
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "◷";
+      case "SHORTLISTED":
+        return "✦";
+      case "REJECTED":
+        return "×";
+      case "HIRED":
+        return "✓";
+      default:
+        return "•";
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "Under Review";
+      case "SHORTLISTED":
+        return "Shortlisted";
+      case "REJECTED":
+        return "Not Selected";
+      case "HIRED":
+        return "Hired";
+      default:
+        return status || "Unknown";
+    }
+  };
+
+  const getStatusMessage = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "Your application is currently under review.";
+      case "SHORTLISTED":
+        return "Great news! You've been shortlisted.";
+      case "REJECTED":
+        return "This application was not selected.";
+      case "HIRED":
+        return "Congratulations! You have been hired.";
+      default:
+        return "Application status updated.";
+    }
+  };
+
+  // ==========================================
+  // STATISTICS
+  // ==========================================
+
+  const totalApplications = applications.length;
+
+  const pendingCount = applications.filter(
+    (application) => application.status === "PENDING"
+  ).length;
+
+  const shortlistedCount = applications.filter(
+    (application) => application.status === "SHORTLISTED"
+  ).length;
+
+  const hiredCount = applications.filter(
+    (application) => application.status === "HIRED"
+  ).length;
 
   // ==========================================
   // LOADING
   // ==========================================
 
   if (loading) {
-
     return (
       <div className="applications-page">
 
-        <div className="applications-header">
+        <div className="applications-bg-grid"></div>
+        <div className="applications-orb applications-orb-one"></div>
+        <div className="applications-orb applications-orb-two"></div>
 
-          <h1>My Applications</h1>
+        <div className="applications-loading">
+
+          <div className="applications-loading-ring">
+            <span>✦</span>
+          </div>
+
+          <span className="loading-label">
+            HIRESHERE
+          </span>
+
+          <h2>
+            Loading your applications
+          </h2>
 
           <p>
-            Loading applications...
+            Preparing your application workspace...
           </p>
 
         </div>
@@ -78,24 +153,44 @@ function MyApplications() {
       </div>
     );
   }
-
 
   // ==========================================
   // ERROR
   // ==========================================
 
   if (error) {
-
     return (
       <div className="applications-page">
 
-        <div className="applications-header">
+        <div className="applications-bg-grid"></div>
+        <div className="applications-orb applications-orb-one"></div>
+        <div className="applications-orb applications-orb-two"></div>
 
-          <h1>My Applications</h1>
+        <div className="applications-error-state">
 
-          <p className="applications-error">
+          <div className="error-state-icon">
+            !
+          </div>
+
+          <span className="error-label">
+            APPLICATIONS UNAVAILABLE
+          </span>
+
+          <h1>
+            Something went wrong
+          </h1>
+
+          <p>
             {error}
           </p>
+
+          <Link
+            to="/jobs"
+            className="browse-jobs-btn"
+          >
+            <span>Browse Jobs</span>
+            <span>→</span>
+          </Link>
 
         </div>
 
@@ -103,184 +198,410 @@ function MyApplications() {
     );
   }
 
-
   // ==========================================
   // MAIN PAGE
   // ==========================================
 
   return (
-
     <div className="applications-page">
 
+      {/* =====================================
+          BACKGROUND
+      ===================================== */}
 
-      {/* HEADER */}
+      <div className="applications-bg-grid"></div>
 
-      <div className="applications-header">
-
-        <h1>
-          My Applications
-        </h1>
-
-        <p>
-          Track the jobs you have applied for.
-        </p>
-
-      </div>
+      <div className="applications-orb applications-orb-one"></div>
+      <div className="applications-orb applications-orb-two"></div>
+      <div className="applications-orb applications-orb-three"></div>
 
 
-      {/* NO APPLICATIONS */}
+      <div className="applications-container">
 
-      {applications.length === 0 ? (
+        {/* =====================================
+            HEADER
+        ===================================== */}
 
-        <div className="no-applications">
+        <header className="applications-header">
 
-          <h2>
-            No Applications Yet
-          </h2>
+          <div className="applications-header-content">
 
-          <p>
-            You haven't applied for any jobs yet.
-          </p>
+            <div className="applications-eyebrow">
+
+              <span className="eyebrow-dot"></span>
+
+              CAREER WORKSPACE
+
+              <span className="ai-badge">
+                AI POWERED
+              </span>
+
+            </div>
+
+            <h1>
+              My{" "}
+              <span className="gradient-text">
+                Applications.
+              </span>
+            </h1>
+
+            <p>
+              Track every opportunity you've applied
+              for and stay updated throughout your
+              job search journey.
+            </p>
+
+          </div>
+
 
           <Link
             to="/jobs"
-            className="browse-jobs-btn"
+            className="browse-jobs-btn header-browse-btn"
           >
-            Browse Jobs
+            <span className="search-icon">
+              ⌕
+            </span>
+
+            <span>
+              Find More Jobs
+            </span>
+
+            <span>
+              →
+            </span>
           </Link>
 
-        </div>
-
-      ) : (
+        </header>
 
 
-        /* APPLICATION LIST */
+        {/* =====================================
+            STATISTICS
+        ===================================== */}
 
-        <div className="applications-list">
+        {applications.length > 0 && (
 
-          {applications.map((application) => (
+          <section className="application-stats">
 
-            <div
-              className="application-card"
-              key={application.id}
-            >
+            <div className="application-stat-card">
 
-
-              {/* APPLICATION DETAILS */}
-
-              <div className="application-main">
-
-                <h2>
-                  {application.jobTitle}
-                </h2>
-
-                <h3>
-                  {application.companyName}
-                </h3>
-
-
-                <p>
-                  <strong>
-                    Applicant:
-                  </strong>{" "}
-                  {application.applicantName}
-                </p>
-
-
-                <p>
-                  <strong>
-                    Applied on:
-                  </strong>{" "}
-
-                  {application.appliedAt
-                    ? new Date(
-                        application.appliedAt
-                      ).toLocaleDateString("en-IN")
-                    : "N/A"}
-                </p>
-
+              <div className="application-stat-icon total">
+                ◫
               </div>
 
-
-              {/* STATUS */}
-
-              <div className="application-status">
-
-                <span
-                  className={`status ${
-                    application.status
-                      ?.toLowerCase()
-                  }`}
-                >
-                  {application.status}
+              <div>
+                <span>
+                  Total
                 </span>
 
-
-                {/* PENDING */}
-
-                {application.status === "PENDING" && (
-
-                  <p>
-                    Your application is
-                    under review.
-                  </p>
-
-                )}
-
-
-                {/* SHORTLISTED */}
-
-                {application.status === "SHORTLISTED" && (
-
-                  <p>
-                    🎉 You have been shortlisted!
-                  </p>
-
-                )}
-
-
-                {/* REJECTED */}
-
-                {application.status === "REJECTED" && (
-
-                  <p>
-                    This application was
-                    not selected.
-                  </p>
-
-                )}
-
-
-                {/* HIRED */}
-
-                {application.status === "HIRED" && (
-
-                  <p>
-                    🎉 Congratulations!
-                    You have been hired.
-                  </p>
-
-                )}
-
-
-                {/* VIEW JOB */}
-
-                <Link
-                  to={`/jobs/${application.jobId}`}
-                  className="view-application-btn"
-                >
-                  View Job
-                </Link>
-
+                <strong>
+                  {totalApplications}
+                </strong>
               </div>
 
             </div>
 
-          ))}
 
-        </div>
+            <div className="application-stat-card">
 
-      )}
+              <div className="application-stat-icon pending">
+                ◷
+              </div>
+
+              <div>
+                <span>
+                  Under Review
+                </span>
+
+                <strong>
+                  {pendingCount}
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div className="application-stat-card">
+
+              <div className="application-stat-icon shortlisted">
+                ✦
+              </div>
+
+              <div>
+                <span>
+                  Shortlisted
+                </span>
+
+                <strong>
+                  {shortlistedCount}
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div className="application-stat-card">
+
+              <div className="application-stat-icon hired">
+                ✓
+              </div>
+
+              <div>
+                <span>
+                  Hired
+                </span>
+
+                <strong>
+                  {hiredCount}
+                </strong>
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
+
+        {/* =====================================
+            NO APPLICATIONS
+        ===================================== */}
+
+        {applications.length === 0 ? (
+
+          <section className="no-applications">
+
+            <div className="empty-glow"></div>
+
+            <div className="empty-application-icon">
+              ◫
+            </div>
+
+            <span className="empty-label">
+              YOUR CAREER JOURNEY
+            </span>
+
+            <h2>
+              No applications yet
+            </h2>
+
+            <p>
+              You haven't applied for any jobs yet.
+              Explore opportunities and take the first
+              step toward your next career move.
+            </p>
+
+            <Link
+              to="/jobs"
+              className="browse-jobs-btn empty-browse-btn"
+            >
+              <span>⌕</span>
+              Browse Jobs
+              <span>→</span>
+            </Link>
+
+          </section>
+
+        ) : (
+
+          /* ===================================
+             APPLICATION LIST
+          =================================== */
+
+          <section className="applications-section">
+
+            <div className="applications-section-header">
+
+              <div>
+
+                <span className="section-kicker">
+                  APPLICATION ACTIVITY
+                </span>
+
+                <h2>
+                  Your Applications
+                </h2>
+
+              </div>
+
+              <span className="application-count">
+                {totalApplications}{" "}
+                {totalApplications === 1
+                  ? "application"
+                  : "applications"}
+              </span>
+
+            </div>
+
+
+            <div className="applications-list">
+
+              {applications.map(
+                (application, index) => (
+
+                  <article
+                    className="application-card"
+                    key={application.id}
+                  >
+
+                    {/* CARD NUMBER */}
+
+                    <div className="application-number">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+
+
+                    {/* JOB ICON */}
+
+                    <div className="application-job-icon">
+                      <span>💼</span>
+                    </div>
+
+
+                    {/* APPLICATION DETAILS */}
+
+                    <div className="application-main">
+
+                      <h2>
+                        {application.jobTitle}
+                      </h2>
+
+                      <h3>
+                        <span>◈</span>
+                        {application.companyName}
+                      </h3>
+
+
+                      <div className="application-meta">
+
+                        <span>
+                          <b>⌖</b>
+                          {application.location ||
+                            "N/A"}
+                        </span>
+
+                        <span>
+                          <b>◷</b>
+
+                          Applied{" "}
+                          {application.appliedAt
+                            ? new Date(
+                                application.appliedAt
+                              ).toLocaleDateString(
+                                "en-IN",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                }
+                              )
+                            : "N/A"}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* STATUS */}
+
+                    <div className="application-status">
+
+                      <div
+                        className={`status status-${application.status?.toLowerCase()}`}
+                      >
+
+                        <span className="status-icon">
+                          {getStatusIcon(
+                            application.status
+                          )}
+                        </span>
+
+                        {getStatusText(
+                          application.status
+                        )}
+
+                      </div>
+
+
+                      <p>
+                        {getStatusMessage(
+                          application.status
+                        )}
+                      </p>
+
+
+                      <Link
+                        to={`/jobs/${application.jobId}`}
+                        className="view-application-btn"
+                      >
+                        <span>
+                          View Job
+                        </span>
+
+                        <span>
+                          ↗
+                        </span>
+                      </Link>
+
+                    </div>
+
+                  </article>
+
+                )
+              )}
+
+            </div>
+
+          </section>
+
+        )}
+
+
+        {/* =====================================
+            BOTTOM CAREER CTA
+        ===================================== */}
+
+        {applications.length > 0 && (
+
+          <section className="applications-cta">
+
+            <div className="cta-glow"></div>
+
+            <div className="cta-icon">
+              ✦
+            </div>
+
+            <div className="cta-content">
+
+              <span>
+                KEEP MOVING FORWARD
+              </span>
+
+              <h3>
+                Your next opportunity could be one
+                search away.
+              </h3>
+
+              <p>
+                Discover new jobs that match your
+                skills and career goals.
+              </p>
+
+            </div>
+
+            <Link
+              to="/jobs"
+              className="cta-jobs-btn"
+            >
+              Explore Jobs
+              <span>→</span>
+            </Link>
+
+          </section>
+
+        )}
+
+      </div>
 
     </div>
   );

@@ -1,20 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState} from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
+import api from "../services/api";
 
 function Navbar() {
   const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const [unreadCount, setUnreadCount] = useState(0);
   const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-  const userName = localStorage.getItem("fullName");
+  const storedUser = localStorage.getItem("user");
+
+  let user = null;
+
+  try {
+    user = storedUser ? JSON.parse(storedUser) : null;
+  } catch (error) {
+    console.error("Invalid user data in localStorage");
+  }
+
+  const role = user?.role;
+  const userName = user?.name;
 
   const isJobSeeker = role === "JOB_SEEKER";
   const isEmployer = role === "EMPLOYER";
+  useEffect(() => {
+
+  if (!token) {
+    setUnreadCount(0);
+    return;
+  }
+
+  const fetchUnreadCount = async () => {
+
+    try {
+
+      const response = await api.get(
+        "/notifications/unread-count/"
+      );
+
+      setUnreadCount(
+        response.data.unread_count || 0
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Error fetching notification count:",
+        error
+      );
+
+    }
+
+  };
+
+  fetchUnreadCount();
+
+}, [token]);
 
   const dashboardPath = isEmployer ? "/employer" : "/seeker";
+
+  /* =====================================================
+     ACTIONS
+  ===================================================== */
 
   const handleLogout = () => {
     localStorage.clear();
@@ -26,54 +74,84 @@ function Navbar() {
     setMobileMenuOpen(false);
   };
 
+  const openProfile = () => {
+    navigate("/profile");
+    closeMenu();
+  };
+
+  /* =====================================================
+     USER INITIAL
+  ===================================================== */
+
   const getUserInitial = () => {
     if (!userName) return "U";
+
     return userName.charAt(0).toUpperCase();
   };
+
+  /* =====================================================
+     NAV LINK CLASS
+  ===================================================== */
 
   const navLinkClass = ({ isActive }) =>
     isActive ? "nav-link active" : "nav-link";
 
   return (
     <nav className="navbar">
+      <div className="navbar-glow"></div>
 
       <div className="navbar-container">
 
-        {/* LOGO */}
+        {/* =================================================
+            LOGO
+        ================================================= */}
 
         <Link
           to={token ? dashboardPath : "/"}
           className="navbar-logo"
           onClick={closeMenu}
+          aria-label="HireSphere Home"
         >
-          <span className="logo-icon">
-            💼
+          <span className="logo-mark">
+            <span className="logo-mark-inner">H</span>
           </span>
 
           <span className="logo-text">
             Hire<span>Sphere</span>
           </span>
+
+          <span className="logo-ai-badge">
+            AI
+          </span>
         </Link>
 
-
-        {/* MOBILE MENU */}
+        {/* =================================================
+            MOBILE MENU BUTTON
+        ================================================= */}
 
         <button
+          type="button"
           className={`menu-toggle ${
             mobileMenuOpen ? "is-active" : ""
           }`}
           onClick={() =>
             setMobileMenuOpen(!mobileMenuOpen)
           }
-          aria-label="Toggle navigation"
+          aria-label={
+            mobileMenuOpen
+              ? "Close navigation"
+              : "Open navigation"
+          }
+          aria-expanded={mobileMenuOpen}
         >
           <span></span>
           <span></span>
           <span></span>
         </button>
 
-
-        {/* NAVIGATION */}
+        {/* =================================================
+            NAVIGATION
+        ================================================= */}
 
         <div
           className={`navbar-links ${
@@ -81,10 +159,11 @@ function Navbar() {
           }`}
         >
 
-          {/* NOT LOGGED IN */}
+          {/* =================================================
+              GUEST USER
+          ================================================= */}
 
           {!token ? (
-
             <div className="guest-navigation">
 
               <NavLink
@@ -92,7 +171,11 @@ function Navbar() {
                 className={navLinkClass}
                 onClick={closeMenu}
               >
-                Sign In
+                <span className="nav-icon">
+                  →
+                </span>
+
+                <span>Sign In</span>
               </NavLink>
 
               <Link
@@ -100,146 +183,219 @@ function Navbar() {
                 className="register-btn"
                 onClick={closeMenu}
               >
-                Get Started
+                <span>Get Started</span>
+
+                <span className="cta-arrow">
+                  →
+                </span>
               </Link>
 
             </div>
-
           ) : (
 
             <>
 
-              {/* JOB SEEKER */}
+              {/* =============================================
+                  JOB SEEKER NAVIGATION
+              ============================================= */}
 
               {isJobSeeker && (
-  <div className="role-navigation">
+                <div className="role-navigation">
 
-    <NavLink
-      to="/seeker"
-      className={navLinkClass}
-      onClick={closeMenu}
-    >
-      <span className="nav-icon">⌂</span>
-      Dashboard
-    </NavLink>
+                  <NavLink
+                    to="/seeker"
+                    className={navLinkClass}
+                    onClick={closeMenu}
+                    title="Dashboard"
+                  >
+                    <span className="nav-icon">
+                      ⌂
+                    </span>
 
-    <NavLink
-      to="/jobs"
-      className={navLinkClass}
-      onClick={closeMenu}
-    >
-      <span className="nav-icon">⌕</span>
-      Find Jobs
-    </NavLink>
+                    <span>Dashboard</span>
+                  </NavLink>
 
-    <NavLink
-      to="/applications"
-      className={navLinkClass}
-      onClick={closeMenu}
-    >
-      <span className="nav-icon">▤</span>
-      Applications
-    </NavLink>
+                  <NavLink
+                    to="/jobs"
+                    className={navLinkClass}
+                    onClick={closeMenu}
+                    title="Find Jobs"
+                  >
+                    <span className="nav-icon">
+                      ⌕
+                    </span>
 
-    <NavLink
-      to="/resume-analyzer"
-      className={navLinkClass}
-      onClick={closeMenu}
-    >
-      <span className="nav-icon">✦</span>
-      AI Analyzer
-    </NavLink>
+                    <span>Find Jobs</span>
+                  </NavLink>
+                  <NavLink
+  to="/saved-jobs"
+  className={navLinkClass}
+  onClick={closeMenu}
+  title="Saved Jobs"
+>
+  <span className="nav-icon">
+    ♡
+  </span>
 
-    <NavLink
-      to="/job-matches"
-      className={navLinkClass}
-      onClick={closeMenu}
-    >
-      <span className="nav-icon">◎</span>
-      Job Matches
-    </NavLink>
+  <span>Saved Jobs</span>
+                </NavLink>
 
-    <NavLink
-      to="/resume-builder"
-      className="resume-builder-nav"
-      onClick={closeMenu}
-    >
-      <span>＋</span>
-      Resume Builder
-    </NavLink>
+                  <NavLink
+                    to="/applications"
+                    className={navLinkClass}
+                    onClick={closeMenu}
+                    title="My Applications"
+                  >
+                    <span className="nav-icon">
+                      ▤
+                    </span>
 
-  </div>
-)}
+                    <span>Applications</span>
+                  </NavLink>
 
+                  {/* AI ANALYZER */}
 
-              {/* EMPLOYER */}
+                  <NavLink
+                    to="/resume-analyzer"
+                    className={({ isActive }) =>
+                      `nav-link ai-nav-link ${
+                        isActive ? "active" : ""
+                      }`
+                    }
+                    onClick={closeMenu}
+                    title="AI Resume Analyzer"
+                  >
+                    <span className="nav-icon ai-icon">
+                      ✦
+                    </span>
+
+                    <span>AI Analyzer</span>
+
+                    <span className="ai-badge">
+                      AI
+                    </span>
+                  </NavLink>
+
+                  {/* JOB MATCHES */}
+
+                  <NavLink
+                    to="/job-matches"
+                    className={navLinkClass}
+                    onClick={closeMenu}
+                    title="AI Job Matches"
+                  >
+                    <span className="nav-icon">
+                      ◎
+                    </span>
+
+                    <span>Job Matches</span>
+                  </NavLink>
+
+                  {/* RESUME BUILDER */}
+
+                  <NavLink
+                    to="/resume-builder"
+                    className="resume-builder-nav"
+                    onClick={closeMenu}
+                    title="Build your resume"
+                  >
+                    <span className="resume-icon">
+                      ✦
+                    </span>
+
+                    <span>Build Resume</span>
+                  </NavLink>
+
+                </div>
+              )}
+
+              {/* =============================================
+                  EMPLOYER NAVIGATION
+              ============================================= */}
 
               {isEmployer && (
-
                 <div className="role-navigation">
 
                   <NavLink
                     to="/employer"
                     className={navLinkClass}
                     onClick={closeMenu}
+                    title="Employer Dashboard"
                   >
-                    <span>⌂</span>
-                    Dashboard
+                    <span className="nav-icon">
+                      ⌂
+                    </span>
+
+                    <span>Dashboard</span>
                   </NavLink>
 
                   <NavLink
                     to="/create-job"
                     className={navLinkClass}
                     onClick={closeMenu}
+                    title="Post a new job"
                   >
-                    <span>＋</span>
-                    Post Job
+                    <span className="nav-icon">
+                      ＋
+                    </span>
+
+                    <span>Post Job</span>
                   </NavLink>
 
                   <NavLink
                     to="/employer/jobs"
                     className={navLinkClass}
                     onClick={closeMenu}
+                    title="Manage Jobs"
                   >
-                    <span>▣</span>
-                    Manage Jobs
+                    <span className="nav-icon">
+                      ▣
+                    </span>
+
+                    <span>Manage Jobs</span>
                   </NavLink>
 
                   <NavLink
                     to="/employer/applications"
                     className={navLinkClass}
                     onClick={closeMenu}
+                    title="Applications"
                   >
-                    <span>♙</span>
-                    Applications
+                    <span className="nav-icon">
+                      ♙
+                    </span>
+
+                    <span>Applications</span>
                   </NavLink>
 
                   <NavLink
                     to="/create-company"
                     className={navLinkClass}
                     onClick={closeMenu}
+                    title="Company Profile"
                   >
-                    <span>▤</span>
-                    Company
+                    <span className="nav-icon">
+                      ▤
+                    </span>
+
+                    <span>Company</span>
                   </NavLink>
 
                 </div>
-
               )}
 
-
-              {/* USER */}
+              {/* =============================================
+                  USER PROFILE
+              ============================================= */}
 
               <div className="navbar-user">
 
-                <div
+                <button
+                  type="button"
                   className="user-profile"
-                  onClick={() => {
-                    navigate("/profile");
-                    closeMenu();
-                  }}
+                  onClick={openProfile}
+                  aria-label="Open profile"
                 >
-
                   <div className="user-avatar">
                     {getUserInitial()}
                   </div>
@@ -258,30 +414,58 @@ function Navbar() {
 
                   </div>
 
-                  <span className="profile-arrow">
-                    ›
+                  <span
+                    className="profile-arrow"
+                    aria-hidden="true"
+                  >
+                    →
                   </span>
+                </button>
 
-                </div>
-
+                {/* LOGOUT */}
 
                 <button
+                  type="button"
                   className="logout-btn"
                   onClick={handleLogout}
+                  title="Logout"
                 >
-                  <span>↪</span>
-                  Logout
+                  <span className="logout-icon">
+                    ↪
+                  </span>
+
+                  <span>
+                    Logout
+                  </span>
                 </button>
 
               </div>
 
-            </>
+          <NavLink
+  to="/notifications"
+  className="notification-nav-link"
+  onClick={closeMenu}
+  title="Notifications"
+>
+  <span className="notification-icon">
+    🔔
+  </span>
+
+  <span className="notification-text">
+    Notifications
+  </span>
+
+  {unreadCount > 0 && (
+    <span className="notification-badge">
+      {unreadCount > 99 ? "99+" : unreadCount}
+    </span>
+  )}
+</NavLink>
+</>
           )}
 
         </div>
-
       </div>
-
     </nav>
   );
 }

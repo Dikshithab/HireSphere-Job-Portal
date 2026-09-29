@@ -20,3 +20,9 @@ backend/.env
 # OS
 .DS_Store
 Thumbs.db
+
+# Python / Django
+python-backend/venv/
+python-backend/__pycache__/
+python-backend/**/*.pyc
+python-backend/db.sqlite3

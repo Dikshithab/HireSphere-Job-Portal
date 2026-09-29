@@ -7,7 +7,6 @@ import {
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Chatbot from "./components/Chatbot";
-import AnimatedRoutes from "./components/AnimatedRoutes";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Jobs from "./pages/Jobs";
@@ -27,6 +26,8 @@ import JobMatches from "./pages/JobMatches";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import MyResume from "./pages/MyResume";
 import ResumePreview from "./pages/ResumePreview";
+import SavedJobs from "./pages/SavedJobs";
+import Notifications from "./pages/Notifications";
 function App() {
 
   return (
@@ -37,7 +38,7 @@ function App() {
 
       <Chatbot />
       
-<AnimatedRoutes>
+<Routes>
         {/* =====================================
             PUBLIC ROUTES
         ===================================== */}
@@ -310,7 +311,9 @@ function App() {
     />
   }
 />
-</AnimatedRoutes>
+<Route path="/saved-jobs" element={<SavedJobs />} />
+<Route path="/notifications" element={<Notifications />}/>
+</Routes>
 
     </BrowserRouter>
   );

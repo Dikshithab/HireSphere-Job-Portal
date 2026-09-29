@@ -3,18 +3,55 @@ import { Navigate } from "react-router-dom";
 function ProtectedRoute({ children, allowedRoles }) {
 
   const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  const storedUser = localStorage.getItem("user");
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  let user = null;
+
+  try {
+    user = storedUser
+      ? JSON.parse(storedUser)
+      : null;
+  } catch (error) {
+    console.error(
+      "Invalid user data:",
+      error
+    );
   }
+
+  const role = user?.role;
+
+  // ================================
+  // NOT LOGGED IN
+  // ================================
+
+  if (!token || !user) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  // ================================
+  // ROLE CHECK
+  // ================================
 
   if (
     allowedRoles &&
     !allowedRoles.includes(role)
   ) {
-    return <Navigate to="/jobs" replace />;
+    return (
+      <Navigate
+        to="/jobs"
+        replace
+      />
+    );
   }
+
+  // ================================
+  // AUTHORIZED
+  // ================================
 
   return children;
 }

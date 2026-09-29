@@ -1,346 +1,550 @@
-/* ==========================================
-   PROFILE PAGE
-========================================== */
+/* =========================================================
+   HIRESPHERE PROFILE
+   Premium AI SaaS / Dark Glassmorphism
+========================================================= */
 
 .profile-page {
-  min-height: calc(100vh - 70px);
-  padding: 45px 20px 60px;
-  background: #f7f9fc;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
-  color: #111827;
+  min-height: calc(100vh - 74px);
+
+  padding: 52px 24px 90px;
+
+  color: #f8fafc;
+
+  background:
+    radial-gradient(
+      circle at 12% 8%,
+      rgba(124, 58, 237, 0.13),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(6, 182, 212, 0.07),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(99, 102, 241, 0.07),
+      transparent 30%
+    ),
+    #08080e;
+
+  position: relative;
+
+  overflow: hidden;
 }
 
+/* =========================================================
+   BACKGROUND GLOWS
+========================================================= */
+
+.profile-page::before {
+  content: "";
+
+  position: fixed;
+
+  width: 420px;
+  height: 420px;
+
+  top: 180px;
+  left: -230px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(124, 58, 237, 0.07);
+
+  filter: blur(110px);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+.profile-page::after {
+  content: "";
+
+  position: fixed;
+
+  width: 400px;
+  height: 400px;
+
+  right: -220px;
+  bottom: 50px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(6, 182, 212, 0.045);
+
+  filter: blur(110px);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
 .profile-container {
-  max-width: 900px;
+  position: relative;
+
+  z-index: 1;
+
+  width: min(900px, 100%);
+
   margin: 0 auto;
 }
 
-
-/* ==========================================
-   HEADER
-========================================== */
+/* =========================================================
+   PROFILE HEADER
+========================================================= */
 
 .profile-header {
   display: flex;
+
+  align-items: flex-end;
+
   justify-content: space-between;
-  align-items: flex-start;
+
   gap: 25px;
+
   margin-bottom: 30px;
 }
 
 .profile-label {
-  margin: 0 0 7px;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #2563eb;
+  margin: 0 0 9px;
+
+  color: #a78bfa;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
 }
 
 .profile-header h1 {
   margin: 0;
-  font-size: 34px;
-  line-height: 1.2;
-  font-weight: 800;
-  color: #111827;
+
+  font-size: clamp(32px, 4vw, 42px);
+
+  line-height: 1.08;
+
+  font-weight: 850;
+
+  letter-spacing: -0.045em;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #ddd6fe 48%,
+      #a5b4fc 75%,
+      #67e8f9 100%
+    );
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color: transparent;
 }
 
-.profile-header p {
-  margin: 8px 0 0;
-  color: #64748b;
-  font-size: 15px;
+.profile-header > div > p:last-child {
+  margin: 11px 0 0;
+
+  color: #777786;
+
+  font-size: 13px;
+
+  line-height: 1.6;
 }
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
 .profile-back-btn {
-  margin-top: 15px;
-  padding: 11px 18px;
-  border: 1px solid #cbd5e1;
-  border-radius: 9px;
-  background: #ffffff;
-  color: #111827;
-  font-size: 14px;
-  font-weight: 600;
+  min-height: 39px;
+
+  padding: 0 14px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #9999a7;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 750;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .profile-back-btn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
+  color: #ddd6fe;
+
+  background:
+    rgba(124, 58, 237, 0.08);
+
+  border-color:
+    rgba(124, 58, 237, 0.22);
+
+  transform: translateX(-2px);
 }
 
-
-/* ==========================================
-   SUCCESS / ERROR MESSAGES
-========================================== */
-
-.profile-success,
-.profile-error-message {
-  padding: 14px 18px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-}
+/* =========================================================
+   SUCCESS MESSAGE
+========================================================= */
 
 .profile-success {
-  background: #dcfce7;
-  border: 1px solid #bbf7d0;
-  color: #166534;
+  margin-bottom: 18px;
+
+  padding: 13px 16px;
+
+  border-radius: 11px;
+
+  color: #bbf7d0;
+
+  background:
+    rgba(22, 163, 74, 0.09);
+
+  border:
+    1px solid rgba(34, 197, 94, 0.17);
+
+  font-size: 12px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
+
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
 
 .profile-error-message {
-  background: #fee2e2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  margin-bottom: 18px;
+
+  padding: 13px 16px;
+
+  border-radius: 11px;
+
+  color: #fecaca;
+
+  background:
+    rgba(127, 29, 29, 0.13);
+
+  border:
+    1px solid rgba(239, 68, 68, 0.18);
+
+  font-size: 12px;
+
+  line-height: 1.5;
 }
 
-
-/* ==========================================
+/* =========================================================
    PROFILE CARD
-========================================== */
+========================================================= */
 
 .profile-card {
-  background: #ffffff;
-  border: 1px solid #eef2f7;
-  border-radius: 18px;
-  padding: 32px;
+  padding: 28px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18, 18, 28, 0.95),
+      rgba(10, 10, 17, 0.96)
+    );
+
+  border:
+    1px solid rgba(255, 255, 255, 0.075);
+
   box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.06),
-    0 2px 8px rgba(15, 23, 42, 0.03);
+    0 25px 65px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(24px);
+
+  -webkit-backdrop-filter: blur(24px);
 }
 
-
-/* ==========================================
-   PROFILE TOP
-========================================== */
+/* =========================================================
+   PROFILE CARD TOP
+========================================================= */
 
 .profile-card-top {
   display: flex;
+
   align-items: center;
-  gap: 20px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid #e5e7eb;
+
+  gap: 17px;
+
+  padding-bottom: 25px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.065);
 }
 
+/* =========================================================
+   PROFILE AVATAR
+========================================================= */
+
 .profile-avatar {
-  width: 80px;
-  height: 80px;
+  width: 68px;
+  height: 68px;
+
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
+  border-radius: 18px;
 
-  background: #2563eb;
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1 55%,
+      #4f46e5
+    );
+
   color: #ffffff;
 
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 24px;
 
-  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.18);
+  font-weight: 900;
+
+  box-shadow:
+    0 10px 30px rgba(124, 58, 237, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  position: relative;
+}
+
+.profile-avatar::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -5px;
+
+  border-radius: 21px;
+
+  border:
+    1px solid rgba(124, 58, 237, 0.13);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   PROFILE HEADING
+========================================================= */
+
+.profile-heading {
+  min-width: 0;
 }
 
 .profile-heading h2 {
-  margin: 0 0 9px;
+  margin: 0 0 7px;
 
-  font-size: 25px;
-  line-height: 1.2;
+  color: #f1f1f7;
 
-  font-weight: 750;
-  color: #111827;
+  font-size: 20px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.025em;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .profile-role {
   display: inline-flex;
+
   align-items: center;
 
-  padding: 6px 12px;
+  padding: 5px 9px;
 
-  border-radius: 20px;
+  border-radius: 6px;
 
-  background: #eff6ff;
-  color: #2563eb;
+  color: #c4b5fd;
 
-  font-size: 12px;
-  font-weight: 700;
+  background:
+    rgba(124, 58, 237, 0.1);
+
+  border:
+    1px solid rgba(124, 58, 237, 0.18);
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.1em;
 }
 
-
-/* ==========================================
+/* =========================================================
    PROFILE DETAILS
-========================================== */
+========================================================= */
 
 .profile-details {
   display: grid;
-  grid-template-columns: 1fr 1fr;
 
-  gap: 18px;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
-  padding: 30px 0;
+  gap: 13px;
+
+  padding: 25px 0;
 }
 
+/* =========================================================
+   DETAIL ITEM
+========================================================= */
+
 .profile-detail {
-  min-height: 76px;
+  min-height: 82px;
 
   display: flex;
+
   align-items: center;
 
-  gap: 15px;
+  gap: 13px;
 
-  padding: 16px 18px;
+  padding: 15px;
 
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 13px;
 
-  background: #ffffff;
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.055);
 
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
+    background 0.2s ease,
     transform 0.2s ease;
 }
 
 .profile-detail:hover {
-  border-color: #cbd5e1;
+  transform: translateY(-2px);
 
-  box-shadow:
-    0 5px 15px rgba(15, 23, 42, 0.04);
+  background:
+    rgba(124, 58, 237, 0.045);
 
-  transform: translateY(-1px);
+  border-color:
+    rgba(124, 58, 237, 0.14);
 }
 
+/* =========================================================
+   DETAIL ICON
+========================================================= */
+
 .detail-icon {
-  width: 38px;
-  height: 38px;
+  width: 39px;
+  height: 39px;
 
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  font-size: 20px;
+  border-radius: 10px;
 
-  border-radius: 9px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.13),
+      rgba(99, 102, 241, 0.06)
+    );
 
-  background: #f8fafc;
+  border:
+    1px solid rgba(167, 139, 250, 0.12);
+
+  font-size: 15px;
+}
+
+/* =========================================================
+   DETAIL TEXT
+========================================================= */
+
+.profile-detail > div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
 }
 
 .profile-detail small {
-  display: block;
+  color: #686976;
 
-  margin-bottom: 5px;
+  font-size: 8px;
 
-  font-size: 12px;
-  color: #64748b;
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.1em;
 }
 
 .profile-detail strong {
-  display: block;
+  color: #dcdce5;
 
-  font-size: 14px;
+  font-size: 12px;
+
   font-weight: 700;
 
-  color: #111827;
+  overflow: hidden;
 
-  word-break: break-word;
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
-
-/* ==========================================
-   ACTIONS
-========================================== */
-
-.profile-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding-top: 25px;
-
-  border-top: 1px solid #e5e7eb;
-}
-
-.edit-profile-btn,
-.delete-profile-btn,
-.save-profile-btn,
-.cancel-profile-btn {
-  min-height: 44px;
-
-  padding: 11px 20px;
-
-  border: none;
-  border-radius: 9px;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
-}
-
-.edit-profile-btn:active,
-.delete-profile-btn:active,
-.save-profile-btn:active,
-.cancel-profile-btn:active {
-  transform: scale(0.98);
-}
-
-
-/* EDIT BUTTON */
-
-.edit-profile-btn,
-.save-profile-btn {
-  background: #2563eb;
-  color: #ffffff;
-
-  box-shadow:
-    0 4px 10px rgba(37, 99, 235, 0.15);
-}
-
-.edit-profile-btn:hover,
-.save-profile-btn:hover {
-  background: #1d4ed8;
-
-  box-shadow:
-    0 6px 14px rgba(37, 99, 235, 0.2);
-}
-
-
-/* DELETE BUTTON */
-
-.delete-profile-btn {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.delete-profile-btn:hover {
-  background: #fecaca;
-}
-
-
-/* ==========================================
+/* =========================================================
    EDIT FORM
-========================================== */
+========================================================= */
 
 .profile-edit-form {
-  padding: 30px 0;
+  padding: 25px 0;
 }
 
+/* =========================================================
+   INPUT GROUP
+========================================================= */
+
 .profile-input-group {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .profile-input-group label {
@@ -348,293 +552,555 @@
 
   margin-bottom: 8px;
 
-  font-size: 14px;
-  font-weight: 700;
+  color: #a5a5b2;
 
-  color: #374151;
+  font-size: 10px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
 }
 
 .profile-input-group input {
   width: 100%;
-  box-sizing: border-box;
 
-  padding: 13px 14px;
+  height: 45px;
 
-  border: 1px solid #cbd5e1;
-  border-radius: 9px;
+  padding: 0 14px;
 
-  background: #ffffff;
+  border-radius: 10px;
 
-  color: #111827;
-
-  font-size: 15px;
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
 
   outline: none;
 
+  background:
+    rgba(5, 5, 10, 0.65);
+
+  color: #e5e7eb;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .profile-input-group input::placeholder {
-  color: #94a3b8;
+  color: #555663;
+}
+
+.profile-input-group input:hover:not(:disabled) {
+  border-color:
+    rgba(255, 255, 255, 0.13);
 }
 
 .profile-input-group input:focus {
-  border-color: #2563eb;
+  border-color:
+    rgba(124, 58, 237, 0.55);
+
+  background:
+    rgba(7, 7, 13, 0.85);
 
   box-shadow:
-    0 0 0 3px rgba(37, 99, 235, 0.1);
+    0 0 0 3px rgba(124, 58, 237, 0.08);
 }
 
 .profile-input-group input:disabled {
-  background: #f1f5f9;
-  color: #64748b;
+  opacity: 0.48;
 
   cursor: not-allowed;
+
+  background:
+    rgba(255, 255, 255, 0.018);
 }
 
-.profile-input-group small {
+.profile-input-group > small {
   display: block;
 
   margin-top: 6px;
 
-  font-size: 12px;
-  color: #64748b;
+  color: #5e5e6b;
+
+  font-size: 9px;
 }
 
-
-/* ==========================================
+/* =========================================================
    EDIT ACTIONS
-========================================== */
+========================================================= */
 
 .profile-edit-actions {
   display: flex;
-  align-items: center;
-  gap: 12px;
 
-  margin-top: 25px;
+  align-items: center;
+
+  gap: 9px;
+
+  padding-top: 5px;
+}
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
+.save-profile-btn {
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 22px rgba(124, 58, 237, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.save-profile-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  filter: brightness(1.07);
+
+  box-shadow:
+    0 10px 28px rgba(124, 58, 237, 0.3);
 }
 
 .save-profile-btn:disabled {
-  opacity: 0.65;
+  opacity: 0.45;
+
   cursor: not-allowed;
 }
 
+/* =========================================================
+   CANCEL BUTTON
+========================================================= */
+
 .cancel-profile-btn {
-  background: #e5e7eb;
-  color: #374151;
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #888894;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.cancel-profile-btn:hover {
-  background: #d1d5db;
+.cancel-profile-btn:hover:not(:disabled) {
+  color: #ddd6fe;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  border-color:
+    rgba(255, 255, 255, 0.13);
 }
 
+/* =========================================================
+   PROFILE ACTIONS
+========================================================= */
 
-/* ==========================================
-   ACCOUNT SECURITY
-========================================== */
-
-.profile-info-card {
+.profile-actions {
   display: flex;
+
   align-items: center;
 
-  gap: 15px;
+  justify-content: space-between;
 
-  margin-top: 20px;
+  gap: 10px;
 
-  padding: 22px 26px;
+  padding-top: 20px;
 
-  background: #ffffff;
+  border-top:
+    1px solid rgba(255, 255, 255, 0.065);
+}
 
-  border: 1px solid #e2e8f0;
+/* =========================================================
+   EDIT PROFILE
+========================================================= */
+
+.edit-profile-btn {
+  min-height: 41px;
+
+  padding: 0 16px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(124, 58, 237, 0.2);
+
+  background:
+    rgba(124, 58, 237, 0.07);
+
+  color: #c4b5fd;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.edit-profile-btn:hover {
+  transform: translateY(-1px);
+
+  background:
+    rgba(124, 58, 237, 0.13);
+
+  border-color:
+    rgba(124, 58, 237, 0.3);
+}
+
+/* =========================================================
+   DELETE ACCOUNT
+========================================================= */
+
+.delete-profile-btn {
+  min-height: 41px;
+
+  padding: 0 16px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(239, 68, 68, 0.13);
+
+  background:
+    rgba(239, 68, 68, 0.035);
+
+  color: #a57575;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.delete-profile-btn:hover {
+  color: #fca5a5;
+
+  background:
+    rgba(239, 68, 68, 0.08);
+
+  border-color:
+    rgba(239, 68, 68, 0.23);
+}
+
+/* =========================================================
+   SECURITY CARD
+========================================================= */
+
+.profile-info-card {
+  margin-top: 18px;
+
+  padding: 18px 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
   border-radius: 15px;
 
+  background:
+    linear-gradient(
+      135deg,
+      rgba(6, 182, 212, 0.045),
+      rgba(99, 102, 241, 0.035)
+    );
+
+  border:
+    1px solid rgba(6, 182, 212, 0.1);
+
   box-shadow:
-    0 5px 18px rgba(15, 23, 42, 0.03);
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
 .info-card-icon {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
 
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  font-size: 25px;
-
   border-radius: 10px;
 
-  background: #f8fafc;
+  background:
+    rgba(6, 182, 212, 0.08);
+
+  border:
+    1px solid rgba(6, 182, 212, 0.12);
+
+  font-size: 16px;
 }
 
 .profile-info-card h3 {
-  margin: 0 0 5px;
+  margin: 0 0 4px;
 
-  font-size: 18px;
-  font-weight: 750;
+  color: #dceff2;
 
-  color: #111827;
+  font-size: 12px;
+
+  font-weight: 800;
 }
 
 .profile-info-card p {
   margin: 0;
 
-  font-size: 14px;
-  color: #64748b;
+  color: #707782;
+
+  font-size: 10px;
+
+  line-height: 1.5;
 }
 
-
-/* ==========================================
+/* =========================================================
    LOADING
-========================================== */
+========================================================= */
 
 .profile-loading {
-  max-width: 600px;
+  min-height: 55vh;
 
-  margin: 100px auto;
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
 
   text-align: center;
 }
 
 .profile-loading-icon {
-  width: 70px;
-  height: 70px;
-
-  margin: 0 auto 20px;
+  width: 60px;
+  height: 60px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
+  margin-bottom: 18px;
 
-  background: #eff6ff;
+  border-radius: 17px;
 
-  font-size: 36px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.18),
+      rgba(99, 102, 241, 0.08)
+    );
+
+  border:
+    1px solid rgba(124, 58, 237, 0.15);
+
+  font-size: 23px;
+
+  animation:
+    profilePulse 1.5s ease-in-out infinite;
 }
 
 .profile-loading h2 {
   margin: 0;
 
-  font-size: 22px;
+  color: #eeeeF5;
 
-  color: #111827;
+  font-size: 17px;
+
+  font-weight: 750;
 }
 
 .profile-loading p {
-  margin-top: 8px;
+  margin: 7px 0 0;
 
-  color: #64748b;
+  color: #686976;
+
+  font-size: 11px;
 }
 
+@keyframes profilePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
 
-/* ==========================================
-   ERROR PAGE
-========================================== */
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   PROFILE LOAD ERROR
+========================================================= */
 
 .profile-error {
-  max-width: 600px;
+  width: min(500px, calc(100% - 30px));
 
   margin: 100px auto;
 
-  padding: 35px;
+  padding: 30px;
 
   text-align: center;
 
-  background: #ffffff;
+  border-radius: 18px;
 
-  border-radius: 16px;
+  background:
+    rgba(18, 18, 28, 0.94);
 
-  border: 1px solid #e2e8f0;
+  border:
+    1px solid rgba(239, 68, 68, 0.15);
 
   box-shadow:
-    0 10px 25px rgba(15, 23, 42, 0.05);
+    0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
 .profile-error h2 {
-  margin-top: 0;
+  margin: 0 0 10px;
 
-  color: #111827;
+  color: #f3f4f6;
+
+  font-size: 20px;
 }
 
 .profile-error p {
-  margin-bottom: 22px;
+  margin: 0 0 20px;
 
-  color: #64748b;
+  color: #888894;
+
+  font-size: 12px;
+
+  line-height: 1.6;
 }
 
 .profile-error button {
-  padding: 11px 20px;
+  min-height: 40px;
+
+  padding: 0 17px;
 
   border: none;
-  border-radius: 8px;
 
-  background: #2563eb;
-  color: #ffffff;
+  border-radius: 9px;
 
-  font-size: 14px;
-  font-weight: 700;
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #6366f1
+    );
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 800;
 
   cursor: pointer;
 }
 
-.profile-error button:hover {
-  background: #1d4ed8;
-}
-
-
-/* ==========================================
-   MOBILE
-========================================== */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 700px) {
 
   .profile-page {
-    padding: 30px 15px 45px;
+    padding:
+      40px
+      16px
+      70px;
   }
 
   .profile-header {
-    flex-direction: column;
-    gap: 15px;
-  }
+    align-items: flex-start;
 
-  .profile-header h1 {
-    font-size: 28px;
+    flex-direction: column;
+
+    gap: 18px;
   }
 
   .profile-back-btn {
-    margin-top: 0;
+    align-self: flex-start;
   }
 
   .profile-card {
-    padding: 22px;
-  }
+    padding: 21px;
 
-  .profile-card-top {
-    gap: 15px;
-  }
-
-  .profile-avatar {
-    width: 65px;
-    height: 65px;
-
-    font-size: 27px;
-  }
-
-  .profile-heading h2 {
-    font-size: 21px;
+    border-radius: 17px;
   }
 
   .profile-details {
     grid-template-columns: 1fr;
-
-    gap: 12px;
-
-    padding: 22px 0;
   }
 
   .profile-actions {
@@ -646,6 +1112,55 @@
   .edit-profile-btn,
   .delete-profile-btn {
     width: 100%;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .profile-page {
+    padding:
+      30px
+      12px
+      55px;
+  }
+
+  .profile-header h1 {
+    font-size: 29px;
+  }
+
+  .profile-header > div > p:last-child {
+    font-size: 11px;
+  }
+
+  .profile-card {
+    padding: 17px;
+  }
+
+  .profile-card-top {
+    padding-bottom: 20px;
+  }
+
+  .profile-avatar {
+    width: 57px;
+    height: 57px;
+
+    border-radius: 15px;
+
+    font-size: 20px;
+  }
+
+  .profile-heading h2 {
+    font-size: 17px;
+  }
+
+  .profile-detail {
+    min-height: 75px;
+
+    padding: 12px;
   }
 
   .profile-edit-actions {
@@ -660,44 +1175,38 @@
   }
 
   .profile-info-card {
-    padding: 18px;
-  }
+    align-items: flex-start;
 
+    padding: 15px;
+  }
 }
 
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
 
-/* ==========================================
-   VERY SMALL SCREENS
-========================================== */
+.profile-back-btn:focus-visible,
+.edit-profile-btn:focus-visible,
+.delete-profile-btn:focus-visible,
+.save-profile-btn:focus-visible,
+.cancel-profile-btn:focus-visible,
+.profile-input-group input:focus-visible {
+  outline: 2px solid #8b5cf6;
 
-@media (max-width: 400px) {
+  outline-offset: 3px;
+}
 
-  .profile-page {
-    padding-left: 10px;
-    padding-right: 10px;
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .profile-page *,
+  .profile-page *::before,
+  .profile-page *::after {
+    animation: none !important;
+
+    transition: none !important;
   }
-
-  .profile-card {
-    padding: 18px;
-    border-radius: 14px;
-  }
-
-  .profile-card-top {
-    align-items: flex-start;
-  }
-
-  .profile-avatar {
-    width: 58px;
-    height: 58px;
-    font-size: 24px;
-  }
-
-  .profile-heading h2 {
-    font-size: 19px;
-  }
-
-  .profile-detail {
-    padding: 14px;
-  }
-
 }
