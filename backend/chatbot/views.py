@@ -1,4 +1,6 @@
 import os
+import urllib.request
+import urllib.error
 
 from groq import Groq
 from rest_framework.views import APIView
@@ -27,8 +29,41 @@ class ChatbotView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+        # -------------------------------------------------
+        # TEST 1: Can Render reach Groq?
+        # -------------------------------------------------
         try:
-            # Official Groq client
+            req = urllib.request.Request(
+                "https://api.groq.com",
+                headers={
+                    "User-Agent": "HireSphere/1.0"
+                }
+            )
+
+            with urllib.request.urlopen(req, timeout=15) as response:
+                print(
+                    "GROQ NETWORK TEST:",
+                    response.status
+                )
+
+        except Exception as network_error:
+            print(
+                "GROQ NETWORK ERROR:",
+                repr(network_error)
+            )
+
+            return Response(
+                {
+                    "error": "Render cannot connect to Groq.",
+                    "details": str(network_error)
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        # -------------------------------------------------
+        # TEST 2: Groq API request
+        # -------------------------------------------------
+        try:
             client = Groq(api_key=api_key)
 
             response = client.chat.completions.create(
@@ -59,14 +94,15 @@ Give clear, practical and concise answers.
                 temperature=0.3,
             )
 
-            reply = response.choices[0].message.content
-
             return Response({
-                "reply": reply
+                "reply": response.choices[0].message.content
             })
 
         except Exception as e:
-            print("CHATBOT ERROR:", repr(e))
+            print(
+                "GROQ API ERROR:",
+                repr(e)
+            )
 
             return Response(
                 {
