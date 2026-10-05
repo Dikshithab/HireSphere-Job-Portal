@@ -22,7 +22,7 @@ backend/.env
 Thumbs.db
 
 # Python / Django
-python-backend/venv/
-python-backend/__pycache__/
-python-backend/**/*.pyc
-python-backend/db.sqlite3
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/db.sqlite3
