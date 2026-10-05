@@ -151,9 +151,9 @@ function Chatbot() {
      ===================================================== */
 
   const viewJob = (jobId) => {
-    navigate(`/job/${jobId}`);
-    setIsOpen(false);
-  };
+  navigate(`/jobs/${jobId}`);
+  setIsOpen(false);
+};
 
   /* =====================================================
      AI SUGGESTIONS

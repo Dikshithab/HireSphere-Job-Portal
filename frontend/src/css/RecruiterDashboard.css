@@ -1,0 +1,388 @@
+
+/* =========================================
+   RECRUITER DASHBOARD
+========================================= */
+
+.recruiter-dashboard {
+  min-height: 100vh;
+  padding: 50px 7%;
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(99, 102, 241, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(139, 92, 246, 0.12),
+      transparent 30%
+    ),
+    #f7f8fc;
+  color: #171827;
+  font-family: Inter, Arial, sans-serif;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dashboard-header {
+  max-width: 1150px;
+  margin: 0 auto 35px;
+}
+
+.dashboard-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #6366f1;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.dashboard-header p {
+  margin: 10px 0 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* =========================================
+   STATISTICS GRID
+========================================= */
+
+.dashboard-stats {
+  max-width: 1150px;
+  margin: 0 auto 35px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* =========================================
+   STAT CARD
+========================================= */
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 22px;
+
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.05);
+
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #c7d2fe;
+
+  box-shadow:
+    0 15px 35px rgba(15, 23, 42, 0.09);
+}
+
+.stat-card > span {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: #eef2ff;
+
+  font-size: 24px;
+}
+
+.stat-card small {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #6b7280;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.stat-card strong {
+  display: block;
+
+  color: #18181b;
+
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* =========================================
+   JOB STATISTICS
+========================================= */
+
+.job-statistics {
+  max-width: 1150px;
+  margin: 0 auto;
+
+  padding: 28px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid #eef0f4;
+}
+
+.section-header span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #6366f1;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.section-header h2 {
+  margin: 0;
+
+  color: #18181b;
+
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* =========================================
+   JOB LIST
+========================================= */
+
+.job-stat-list {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 5px;
+}
+
+/* =========================================
+   JOB ROW
+========================================= */
+
+.job-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 5px;
+
+  border-bottom: 1px solid #eef0f4;
+
+  transition: 0.2s ease;
+}
+
+.job-stat-row:last-child {
+  border-bottom: none;
+}
+
+.job-stat-row:hover {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background: #fafaff;
+  border-radius: 12px;
+}
+
+.job-stat-row h3 {
+  margin: 0;
+
+  color: #18181b;
+
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.job-stat-row p {
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   APPLICATION COUNT
+========================================= */
+
+.application-count {
+  min-width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-dashboard {
+  padding: 50px 20px;
+
+  text-align: center;
+
+  color: #6b7280;
+
+  font-size: 15px;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.dashboard-loading {
+  max-width: 1150px;
+  margin: 150px auto;
+
+  text-align: center;
+
+  color: #6366f1;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.dashboard-error {
+  max-width: 600px;
+
+  margin: 120px auto;
+  padding: 20px;
+
+  text-align: center;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+
+  color: #dc2626;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .recruiter-dashboard {
+    padding: 40px 25px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .recruiter-dashboard {
+    padding: 30px 16px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 29px;
+  }
+
+  .dashboard-header p {
+    font-size: 14px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  .stat-card strong {
+    font-size: 24px;
+  }
+
+  .job-statistics {
+    padding: 20px 16px;
+  }
+
+  .section-header h2 {
+    font-size: 19px;
+  }
+
+  .job-stat-row {
+    padding: 17px 2px;
+  }
+
+  .job-stat-row h3 {
+    font-size: 14px;
+  }
+
+  .application-count {
+    min-width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+}

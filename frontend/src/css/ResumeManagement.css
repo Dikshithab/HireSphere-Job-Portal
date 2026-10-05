@@ -1,0 +1,348 @@
+/* =========================================
+   RESUME MANAGEMENT PAGE
+========================================= */
+
+.resume-management-page {
+  min-height: 100vh;
+  padding: 50px 7%;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.14), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(139, 92, 246, 0.12), transparent 30%),
+    #f7f8fc;
+  color: #171827;
+  font-family: Inter, Arial, sans-serif;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.resume-management-header {
+  max-width: 1100px;
+  margin: 0 auto 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.resume-management-header span {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #6366f1;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.resume-management-header h1 {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.resume-management-header p {
+  margin: 10px 0 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.upload-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.22);
+  transition: 0.25s ease;
+}
+
+.upload-resume-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(99, 102, 241, 0.3);
+}
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.resume-message {
+  max-width: 1100px;
+  margin: 0 auto 20px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.resume-message.success {
+  background: #ecfdf3;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.resume-message.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* =========================================
+   RESUME LIST
+========================================= */
+
+.resume-list {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* =========================================
+   RESUME CARD
+========================================= */
+
+.resume-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+  transition: 0.25s ease;
+}
+
+.resume-card:hover {
+  transform: translateY(-2px);
+  border-color: #c7d2fe;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+}
+
+.resume-card.primary {
+  border: 2px solid #6366f1;
+  box-shadow: 0 12px 35px rgba(99, 102, 241, 0.12);
+}
+
+/* =========================================
+   RESUME ICON
+========================================= */
+
+.resume-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: #eef2ff;
+  font-size: 27px;
+}
+
+/* =========================================
+   RESUME INFO
+========================================= */
+
+.resume-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.resume-title-row h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 750;
+  color: #18181b;
+}
+
+.resume-info p {
+  margin: 7px 0 4px;
+  color: #6b7280;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.resume-info small {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+/* =========================================
+   PRIMARY BADGE
+========================================= */
+
+.primary-badge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.resume-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.resume-actions button {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.resume-actions button:hover {
+  border-color: #6366f1;
+  color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.resume-actions .delete-resume {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.resume-actions .delete-resume:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-resumes {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 55px 30px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.06);
+}
+
+.empty-resumes > div {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-resumes h2 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.empty-resumes p {
+  max-width: 450px;
+  margin: 10px auto 25px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.resume-management-page > h2 {
+  text-align: center;
+  margin-top: 100px;
+  color: #6366f1;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .resume-management-page {
+    padding: 35px 20px;
+  }
+
+  .resume-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .resume-management-header h1 {
+    font-size: 30px;
+  }
+
+  .resume-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .resume-info {
+    width: calc(100% - 80px);
+  }
+
+  .resume-actions {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .resume-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-management-header h1 {
+    font-size: 26px;
+  }
+
+  .upload-resume-btn {
+    width: 100%;
+  }
+
+  .resume-card {
+    padding: 17px;
+  }
+
+  .resume-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+
+  .resume-title-row h2 {
+    font-size: 16px;
+  }
+}

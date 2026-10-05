@@ -22,7 +22,17 @@ function MyApplications() {
 
         console.log("My Applications Response:", response.data);
 
-        const formattedApplications = response.data.map(
+        // New backend response:
+        // {
+        //   count: 2,
+        //   applications: [...]
+        // }
+
+        const applicationData = Array.isArray(response.data)
+          ? response.data
+          : response.data.applications || [];
+
+        const formattedApplications = applicationData.map(
           (application) => ({
             ...application,
             jobId: application.job,
@@ -33,6 +43,7 @@ function MyApplications() {
         );
 
         setApplications(formattedApplications);
+
       } catch (error) {
         console.error(
           "Error fetching applications:",
@@ -59,12 +70,16 @@ function MyApplications() {
     switch (status) {
       case "PENDING":
         return "◷";
+
       case "SHORTLISTED":
         return "✦";
+
       case "REJECTED":
         return "×";
+
       case "HIRED":
         return "✓";
+
       default:
         return "•";
     }
@@ -74,12 +89,16 @@ function MyApplications() {
     switch (status) {
       case "PENDING":
         return "Under Review";
+
       case "SHORTLISTED":
         return "Shortlisted";
+
       case "REJECTED":
         return "Not Selected";
+
       case "HIRED":
         return "Hired";
+
       default:
         return status || "Unknown";
     }
@@ -89,15 +108,36 @@ function MyApplications() {
     switch (status) {
       case "PENDING":
         return "Your application is currently under review.";
+
       case "SHORTLISTED":
         return "Great news! You've been shortlisted.";
+
       case "REJECTED":
         return "This application was not selected.";
+
       case "HIRED":
         return "Congratulations! You have been hired.";
+
       default:
         return "Application status updated.";
     }
+  };
+
+  // ==========================================
+  // DATE FORMATTER
+  // ==========================================
+
+  const formatDate = (date) => {
+    if (!date) return null;
+
+    return new Date(date).toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
   };
 
   // ==========================================
@@ -107,15 +147,23 @@ function MyApplications() {
   const totalApplications = applications.length;
 
   const pendingCount = applications.filter(
-    (application) => application.status === "PENDING"
+    (application) =>
+      application.status === "PENDING"
   ).length;
 
   const shortlistedCount = applications.filter(
-    (application) => application.status === "SHORTLISTED"
+    (application) =>
+      application.status === "SHORTLISTED"
+  ).length;
+
+  const rejectedCount = applications.filter(
+    (application) =>
+      application.status === "REJECTED"
   ).length;
 
   const hiredCount = applications.filter(
-    (application) => application.status === "HIRED"
+    (application) =>
+      application.status === "HIRED"
   ).length;
 
   // ==========================================
@@ -127,6 +175,7 @@ function MyApplications() {
       <div className="applications-page">
 
         <div className="applications-bg-grid"></div>
+
         <div className="applications-orb applications-orb-one"></div>
         <div className="applications-orb applications-orb-two"></div>
 
@@ -163,6 +212,7 @@ function MyApplications() {
       <div className="applications-page">
 
         <div className="applications-bg-grid"></div>
+
         <div className="applications-orb applications-orb-one"></div>
         <div className="applications-orb applications-orb-two"></div>
 
@@ -205,9 +255,7 @@ function MyApplications() {
   return (
     <div className="applications-page">
 
-      {/* =====================================
-          BACKGROUND
-      ===================================== */}
+      {/* BACKGROUND */}
 
       <div className="applications-bg-grid"></div>
 
@@ -253,7 +301,6 @@ function MyApplications() {
 
           </div>
 
-
           <Link
             to="/jobs"
             className="browse-jobs-btn header-browse-btn"
@@ -282,6 +329,8 @@ function MyApplications() {
 
           <section className="application-stats">
 
+            {/* TOTAL */}
+
             <div className="application-stat-card">
 
               <div className="application-stat-icon total">
@@ -289,9 +338,7 @@ function MyApplications() {
               </div>
 
               <div>
-                <span>
-                  Total
-                </span>
+                <span>Total</span>
 
                 <strong>
                   {totalApplications}
@@ -301,6 +348,8 @@ function MyApplications() {
             </div>
 
 
+            {/* PENDING */}
+
             <div className="application-stat-card">
 
               <div className="application-stat-icon pending">
@@ -308,9 +357,7 @@ function MyApplications() {
               </div>
 
               <div>
-                <span>
-                  Under Review
-                </span>
+                <span>Under Review</span>
 
                 <strong>
                   {pendingCount}
@@ -320,6 +367,8 @@ function MyApplications() {
             </div>
 
 
+            {/* SHORTLISTED */}
+
             <div className="application-stat-card">
 
               <div className="application-stat-icon shortlisted">
@@ -327,9 +376,7 @@ function MyApplications() {
               </div>
 
               <div>
-                <span>
-                  Shortlisted
-                </span>
+                <span>Shortlisted</span>
 
                 <strong>
                   {shortlistedCount}
@@ -339,6 +386,27 @@ function MyApplications() {
             </div>
 
 
+            {/* REJECTED */}
+
+            <div className="application-stat-card">
+
+              <div className="application-stat-icon rejected">
+                ×
+              </div>
+
+              <div>
+                <span>Rejected</span>
+
+                <strong>
+                  {rejectedCount}
+                </strong>
+              </div>
+
+            </div>
+
+
+            {/* HIRED */}
+
             <div className="application-stat-card">
 
               <div className="application-stat-icon hired">
@@ -346,9 +414,7 @@ function MyApplications() {
               </div>
 
               <div>
-                <span>
-                  Hired
-                </span>
+                <span>Hired</span>
 
                 <strong>
                   {hiredCount}
@@ -475,29 +541,87 @@ function MyApplications() {
 
                         <span>
                           <b>⌖</b>
-                          {application.location ||
-                            "N/A"}
+                          {application.location || "N/A"}
                         </span>
 
                         <span>
                           <b>◷</b>
 
                           Applied{" "}
-                          {application.appliedAt
-                            ? new Date(
-                                application.appliedAt
-                              ).toLocaleDateString(
-                                "en-IN",
-                                {
-                                  day: "2-digit",
-                                  month: "short",
-                                  year: "numeric",
-                                }
-                              )
-                            : "N/A"}
+                          {formatDate(
+                            application.appliedAt
+                          )}
                         </span>
 
+                        {application.job_type && (
+                          <span>
+                            <b>▣</b>
+                            {application.job_type}
+                          </span>
+                        )}
+
                       </div>
+
+
+                      {/* =================================
+                          APPLICATION TIMELINE
+                      ================================= */}
+
+                      {application.timeline &&
+                        application.timeline.length > 0 && (
+
+                          <div className="application-timeline">
+
+                            <div className="timeline-title">
+                              APPLICATION TIMELINE
+                            </div>
+
+                            <div className="timeline">
+
+                              {application.timeline.map(
+                                (event, timelineIndex) => (
+
+                                  <div
+                                    className={`timeline-item ${
+                                      event.completed
+                                        ? "completed"
+                                        : ""
+                                    }`}
+                                    key={`${application.id}-${event.status}-${timelineIndex}`}
+                                  >
+
+                                    <div className="timeline-marker">
+                                      {event.completed
+                                        ? "✓"
+                                        : "○"}
+                                    </div>
+
+                                    <div className="timeline-content">
+
+                                      <strong>
+                                        {event.label}
+                                      </strong>
+
+                                      {event.date && (
+                                        <span>
+                                          {formatDate(
+                                            event.date
+                                          )}
+                                        </span>
+                                      )}
+
+                                    </div>
+
+                                  </div>
+
+                                )
+                              )}
+
+                            </div>
+
+                          </div>
+
+                        )}
 
                     </div>
 

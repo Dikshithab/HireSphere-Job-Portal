@@ -1,0 +1,692 @@
+/* =========================================
+   AI JOB RECOMMENDATIONS
+   ========================================= */
+
+.ai-recommendations-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(99, 102, 241, 0.12), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.10), transparent 35%),
+    #f7f8fc;
+  padding: 50px 24px 80px;
+  font-family: Inter, Arial, sans-serif;
+  color: #171827;
+}
+
+.ai-recommendations-container {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.ai-recommendations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 42px;
+}
+
+.ai-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #6366f1;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.ai-recommendations-header h1 {
+  margin: 0 0 10px;
+  font-size: 38px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.ai-recommendations-header p {
+  margin: 0;
+  max-width: 650px;
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ai-header-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #8b5cf6
+  );
+
+  color: white;
+  font-size: 34px;
+
+  box-shadow:
+    0 15px 35px rgba(99, 102, 241, 0.25);
+}
+
+/* =========================================
+   RECOMMENDATION LIST
+   ========================================= */
+
+.recommendation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* =========================================
+   RECOMMENDATION CARD
+   ========================================= */
+
+.recommendation-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e8e9f2;
+  border-radius: 24px;
+  padding: 28px;
+
+  box-shadow:
+    0 10px 35px rgba(30, 35, 90, 0.06);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(99, 102, 241, 0.25);
+
+  box-shadow:
+    0 20px 45px rgba(30, 35, 90, 0.11);
+}
+
+/* =========================================
+   TOP SECTION
+   ========================================= */
+
+.recommendation-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.company-logo {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background: linear-gradient(
+    135deg,
+    #eef2ff,
+    #ede9fe
+  );
+
+  color: #4f46e5;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.job-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.job-heading h2 {
+  margin: 0 0 5px;
+
+  font-size: 21px;
+  font-weight: 750;
+  color: #171827;
+
+  word-break: break-word;
+}
+
+.job-heading p {
+  margin: 0;
+
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================
+   MATCH SCORE
+   ========================================= */
+
+.match-score {
+  min-width: 90px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 11px 15px;
+
+  border-radius: 15px;
+
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+}
+
+.match-score strong {
+  color: #059669;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.match-score span {
+  margin-top: 5px;
+
+  color: #047857;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   META
+   ========================================= */
+
+.recommendation-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin: 22px 0;
+
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================================
+   WHY THIS MATCHES
+   ========================================= */
+
+.recommendation-reason {
+  padding: 18px 20px;
+
+  border-radius: 16px;
+
+  background: #f8f7ff;
+  border: 1px solid #ebe9ff;
+}
+
+.recommendation-reason > span {
+  display: block;
+  margin-bottom: 8px;
+
+  color: #635bdb;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.recommendation-reason p {
+  margin: 0;
+
+  color: #5f6272;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* =========================================
+   SKILLS
+   ========================================= */
+
+.recommendation-skills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  margin-top: 24px;
+}
+
+.recommendation-skills h4 {
+  margin: 0 0 12px;
+
+  color: #303342;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tags span {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 7px 11px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.skill-tags .matched {
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+}
+
+.skill-tags .missing {
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+.recommendation-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 26px;
+  padding-top: 20px;
+
+  border-top: 1px solid #eeeeF4;
+}
+
+.view-job-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 19px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #7c3aed
+  );
+
+  color: white;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  box-shadow:
+    0 8px 20px rgba(99, 102, 241, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.view-job-btn span {
+  font-size: 17px;
+  transition: transform 0.2s ease;
+}
+
+.view-job-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(99, 102, 241, 0.28);
+}
+
+.view-job-btn:hover span {
+  transform: translateX(3px);
+}
+
+/* =========================================
+   LOADING
+   ========================================= */
+
+.ai-recommendations-loading {
+  min-height: 70vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.ai-loading-icon {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #8b5cf6
+  );
+
+  color: white;
+  font-size: 32px;
+
+  animation: aiPulse 1.5s infinite;
+}
+
+.ai-recommendations-loading h2 {
+  margin: 0 0 8px;
+
+  font-size: 24px;
+}
+
+.ai-recommendations-loading p {
+  margin: 0;
+
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@keyframes aiPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(99, 102, 241, 0);
+  }
+
+  50% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 35px rgba(99, 102, 241, 0.25);
+  }
+}
+
+/* =========================================
+   ERROR
+   ========================================= */
+
+.ai-recommendations-error {
+  max-width: 550px;
+  margin: 100px auto;
+
+  padding: 45px 35px;
+
+  text-align: center;
+
+  background: white;
+  border: 1px solid #ececf3;
+  border-radius: 24px;
+
+  box-shadow:
+    0 15px 45px rgba(30, 35, 90, 0.08);
+}
+
+.ai-recommendations-error > div {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.ai-recommendations-error h2 {
+  margin: 0 0 10px;
+  font-size: 23px;
+}
+
+.ai-recommendations-error p {
+  margin: 0 0 25px;
+
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.ai-recommendations-error a,
+.no-recommendations a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 20px;
+
+  border-radius: 12px;
+
+  background: #6366f1;
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.ai-recommendations-error a:hover,
+.no-recommendations a:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   NO RECOMMENDATIONS
+   ========================================= */
+
+.no-recommendations {
+  max-width: 600px;
+
+  margin: 60px auto;
+  padding: 55px 30px;
+
+  text-align: center;
+
+  background: white;
+  border: 1px solid #ececf3;
+  border-radius: 24px;
+
+  box-shadow:
+    0 15px 45px rgba(30, 35, 90, 0.06);
+}
+
+.empty-icon {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 20px;
+
+  border-radius: 22px;
+
+  background: #f5f3ff;
+
+  font-size: 30px;
+}
+
+.no-recommendations h2 {
+  margin: 0 0 10px;
+
+  font-size: 24px;
+}
+
+.no-recommendations p {
+  margin: 0 auto 25px;
+
+  max-width: 430px;
+
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 768px) {
+
+  .ai-recommendations-page {
+    padding: 35px 18px 60px;
+  }
+
+  .ai-recommendations-header {
+    align-items: flex-start;
+  }
+
+  .ai-recommendations-header h1 {
+    font-size: 30px;
+  }
+
+  .ai-header-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+    font-size: 27px;
+  }
+
+  .recommendation-card {
+    padding: 22px;
+  }
+
+  .recommendation-skills {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 560px) {
+
+  .ai-recommendations-page {
+    padding: 25px 14px 50px;
+  }
+
+  .ai-recommendations-header {
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .ai-recommendations-header h1 {
+    font-size: 27px;
+  }
+
+  .ai-recommendations-header p {
+    font-size: 14px;
+  }
+
+  .ai-header-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+  }
+
+  .recommendation-card {
+    padding: 18px;
+    border-radius: 19px;
+  }
+
+  .recommendation-top {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .company-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    font-size: 19px;
+  }
+
+  .job-heading h2 {
+    font-size: 17px;
+  }
+
+  .job-heading p {
+    font-size: 12px;
+  }
+
+  .match-score {
+    min-width: 68px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .match-score strong {
+    font-size: 17px;
+  }
+
+  .match-score span {
+    font-size: 9px;
+  }
+
+  .recommendation-meta {
+    gap: 7px;
+    font-size: 11px;
+  }
+
+  .recommendation-reason {
+    padding: 15px;
+  }
+
+  .recommendation-reason p {
+    font-size: 13px;
+  }
+
+  .recommendation-footer {
+    justify-content: stretch;
+  }
+
+  .view-job-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

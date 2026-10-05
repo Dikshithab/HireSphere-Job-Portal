@@ -4,54 +4,80 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Chatbot from "./components/Chatbot";
+
+// Public Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Jobs from "./pages/Jobs";
 import JobDetails from "./pages/JobDetails";
-import MyApplications from "./pages/MyApplications";
-import CreateCompany from "./pages/CreateCompany";
-import Company from "./pages/Company";
-import JobSeekerDashboard from "./pages/JobSeekerDashboard";
-import EmployerDashboard from "./pages/EmployerDashboard";
-import CreateJob from "./pages/CreateJob";
-import ManageJobs from "./pages/ManageJobs";
-import EmployerApplications from "./pages/EmployerApplications";
-import EditJob from "./pages/EditJob";
+
+// Common
 import Profile from "./pages/Profile";
+
+// Job Seeker
+import JobSeekerDashboard from "./pages/JobSeekerDashboard";
+import MyApplications from "./pages/MyApplications";
+import SavedJobs from "./pages/SavedJobs";
 import ResumeAnalyzer from "./pages/ResumeAnalyzer";
 import JobMatches from "./pages/JobMatches";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import MyResume from "./pages/MyResume";
 import ResumePreview from "./pages/ResumePreview";
-import SavedJobs from "./pages/SavedJobs";
 import Notifications from "./pages/Notifications";
+
+// Employer
+import EmployerDashboard from "./pages/EmployerDashboard";
+import CreateCompany from "./pages/CreateCompany";
+import Company from "./pages/Company";
+import CreateJob from "./pages/CreateJob";
+import ManageJobs from "./pages/ManageJobs";
+import EmployerApplications from "./pages/EmployerApplications";
+import EditJob from "./pages/EditJob";
+
+// Recruiter / AI
+import RecruiterDashboard from "./pages/RecruiterDashboard";
+import AIJobRecommendations from "./pages/AIJobRecommendations";
+import CandidateRanking from "./pages/CandidateRanking";
+import RecruiterCandidateSearch from "./pages/RecruiterCandidateSearch";
+import RecruiterAnalytics from "./pages/RecruiterAnalytics";
+
+
 function App() {
-
   return (
-
     <BrowserRouter>
 
+      {/* Global Navbar */}
       <Navbar />
 
+      {/* Global Chatbot */}
       <Chatbot />
-      
-<Routes>
-        {/* =====================================
-            PUBLIC ROUTES
-        ===================================== */}
 
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/jobs"
-              replace
-            />
-          }
-        />
+      <Routes>
+
+        {/* =====================================================
+            PUBLIC ROUTES
+        ===================================================== */}
+
+ <Route
+  path="/"
+  element={
+    <Navigate
+      to={
+        localStorage.getItem("token")
+          ? JSON.parse(localStorage.getItem("user") || "{}").role === "EMPLOYER"
+            ? "/employer"
+            : "/seeker"
+          : "/login"
+      }
+      replace
+    />
+  }
+/>
+        
 
         <Route
           path="/login"
@@ -74,18 +100,15 @@ function App() {
         />
 
 
-        {/* =====================================
+        {/* =====================================================
             PROFILE
-        ===================================== */}
+        ===================================================== */}
 
         <Route
           path="/profile"
           element={
             <ProtectedRoute
-              allowedRoles={[
-                "JOB_SEEKER",
-                "EMPLOYER"
-              ]}
+              allowedRoles={["JOB_SEEKER", "EMPLOYER"]}
             >
               <Profile />
             </ProtectedRoute>
@@ -93,9 +116,9 @@ function App() {
         />
 
 
-        {/* =====================================
+        {/* =====================================================
             JOB SEEKER
-        ===================================== */}
+        ===================================================== */}
 
         <Route
           path="/seeker"
@@ -119,10 +142,88 @@ function App() {
           }
         />
 
+        <Route
+          path="/saved-jobs"
+          element={
+            <ProtectedRoute
+              allowedRoles={["JOB_SEEKER"]}
+            >
+              <SavedJobs />
+            </ProtectedRoute>
+          }
+        />
+<Route
+  path="/job-matches"
+  element={
+    <ProtectedRoute
+      allowedRoles={["JOB_SEEKER"]}
+    >
+      <JobMatches />
+    </ProtectedRoute>
+  }
+/>
 
-        {/* =====================================
+<Route
+  path="/resume-analyzer"
+  element={
+    <ProtectedRoute
+      allowedRoles={["JOB_SEEKER"]}
+    >
+      <ResumeAnalyzer />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/resume-builder"
+  element={
+    <ProtectedRoute
+      allowedRoles={["JOB_SEEKER"]}
+    >
+      <ResumeBuilder />
+    </ProtectedRoute>
+  }
+/>
+
+
+        
+        <Route
+          path="/my-resumes"
+          element={
+            <ProtectedRoute
+              allowedRoles={["JOB_SEEKER"]}
+            >
+              <MyResume />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/resume-preview/:id"
+          element={
+            <ProtectedRoute
+              allowedRoles={["JOB_SEEKER"]}
+            >
+              <ResumePreview />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute
+              allowedRoles={["JOB_SEEKER", "EMPLOYER"]}
+            >
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* =====================================================
             EMPLOYER DASHBOARD
-        ===================================== */}
+        ===================================================== */}
 
         <Route
           path="/employer"
@@ -134,11 +235,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-
-        {/* =====================================
-            COMPANY
-        ===================================== */}
 
         <Route
           path="/company"
@@ -162,8 +258,6 @@ function App() {
           }
         />
 
-
-      
         <Route
           path="/create-job"
           element={
@@ -174,11 +268,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-
-        {/* =====================================
-            MANAGE JOBS
-        ===================================== */}
 
         <Route
           path="/employer/jobs"
@@ -191,11 +280,6 @@ function App() {
           }
         />
 
-
-        {/* =====================================
-            EDIT JOB
-        ===================================== */}
-
         <Route
           path="/employer/jobs/edit/:id"
           element={
@@ -206,11 +290,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-
-        {/* =====================================
-            EMPLOYER APPLICATIONS
-        ===================================== */}
 
         <Route
           path="/employer/applications"
@@ -224,96 +303,81 @@ function App() {
         />
 
 
-        {/* =====================================
-            RESUME ANALYZER
-        ===================================== */}
+        {/* =====================================================
+            RECRUITER
+        ===================================================== */}
 
         <Route
-          path="/resume-analyzer"
+          path="/recruiter-dashboard"
           element={
             <ProtectedRoute
-              allowedRoles={["JOB_SEEKER"]}
+              allowedRoles={["EMPLOYER"]}
             >
-              <ResumeAnalyzer />
+              <RecruiterDashboard />
             </ProtectedRoute>
           }
         />
 
-        {/* =====================================
-            AI JOB MATCHING
-        ===================================== */}
-
         <Route
-          path="/job-matches"
+          path="/ai-recommendations"
           element={
             <ProtectedRoute
-              allowedRoles={["JOB_SEEKER"]}
+              allowedRoles={["EMPLOYER"]}
             >
-              <JobMatches />
+              <AIJobRecommendations />
             </ProtectedRoute>
           }
         />
- {/* =====================================
-    RESUME BUILDER
-===================================== */}
 
-<Route
-  path="/resume-builder"
-  element={
-    <ProtectedRoute
-      allowedRoles={["JOB_SEEKER"]}
-    >
-      <ResumeBuilder />
-    </ProtectedRoute>
-  }
-/>
-{/* =====================================
-    RESUME PREVIEW
-===================================== */}
+        <Route
+          path="/candidate-ranking/:jobId"
+          element={
+            <ProtectedRoute
+              allowedRoles={["EMPLOYER"]}
+            >
+              <CandidateRanking />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/resume-preview/:id"
-  element={
-    <ProtectedRoute
-      allowedRoles={["JOB_SEEKER"]}
-    >
-      <ResumePreview />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/recruiter-candidates"
+          element={
+            <ProtectedRoute
+              allowedRoles={["EMPLOYER"]}
+            >
+              <RecruiterCandidateSearch />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/recruiter-analytics"
+          element={
+            <ProtectedRoute
+              allowedRoles={["EMPLOYER"]}
+            >
+              <RecruiterAnalytics />
+            </ProtectedRoute>
+          }
+        />
 
 
-{/* =====================================
-    MY RESUMES
-===================================== */}
+        {/* =====================================================
+            FALLBACK
+        ===================================================== */}
 
-<Route
-  path="/my-resumes"
-  element={
-    <ProtectedRoute
-      allowedRoles={["JOB_SEEKER"]}
-    >
-      <MyResume />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to="/jobs"
+              replace
+            />
+          }
+        />
 
-{/* =====================================
-    FALLBACK
-===================================== */}
-
-<Route
-  path="*"
-  element={
-    <Navigate
-      to="/jobs"
-      replace
-    />
-  }
-/>
-<Route path="/saved-jobs" element={<SavedJobs />} />
-<Route path="/notifications" element={<Notifications />}/>
-</Routes>
+      </Routes>
 
     </BrowserRouter>
   );

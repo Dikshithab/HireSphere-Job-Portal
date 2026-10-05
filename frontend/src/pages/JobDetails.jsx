@@ -6,25 +6,34 @@ import "../css/JobDetails.css";
 function JobDetails() {
   const { id } = useParams();
 
+  // ==========================================
+  // STATE
+  // ==========================================
+
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [applying, setApplying] = useState(false);
   const [applied, setApplied] = useState(false);
-  const [applicationMessage, setApplicationMessage] =
-    useState("");
+  const [applicationMessage, setApplicationMessage] = useState("");
+
+  // AI JOB MATCHING
+  const [matching, setMatching] = useState(false);
+  const [matchResult, setMatchResult] = useState(null);
+  const [matchError, setMatchError] = useState("");
+
+  // ==========================================
+  // AUTH
+  // ==========================================
 
   const token = localStorage.getItem("token");
-
   const storedUser = localStorage.getItem("user");
 
   let user = null;
 
   try {
-    user = storedUser
-      ? JSON.parse(storedUser)
-      : null;
+    user = storedUser ? JSON.parse(storedUser) : null;
   } catch (error) {
     console.error("Invalid user data:", error);
   }
@@ -38,27 +47,19 @@ function JobDetails() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await api.get(
-          `/jobs/${id}/`,
-          {
-            skipAuth: true,
-          }
-        );
+        const response = await api.get(`/jobs/${id}/`, {
+          skipAuth: true,
+        });
 
-        console.log(
-          "Job Details:",
-          response.data
-        );
+        console.log("Job Details:", response.data);
 
         setJob(response.data);
       } catch (error) {
-        console.error(
-          "Error fetching job:",
-          error
-        );
+        console.error("Error fetching job:", error);
 
         setError(
           error.response?.data?.message ||
+            error.response?.data?.detail ||
             "Unable to load job details."
         );
       } finally {
@@ -75,26 +76,21 @@ function JobDetails() {
 
   useEffect(() => {
     const checkApplication = async () => {
-      if (
-        !token ||
-        role !== "JOB_SEEKER"
-      ) {
+      if (!token || role !== "JOB_SEEKER") {
         return;
       }
 
       try {
-        const response = await api.get(
-          "/applications/my/"
+        const response = await api.get("/applications/my/");
+
+        const applications = Array.isArray(response.data)
+          ? response.data
+          : response.data?.applications || [];
+
+        const alreadyApplied = applications.some(
+          (application) =>
+            Number(application.job) === Number(id)
         );
-
-        const applications = response.data;
-
-        const alreadyApplied =
-          applications.some(
-            (application) =>
-              Number(application.job) ===
-              Number(id)
-          );
 
         if (alreadyApplied) {
           setApplied(true);
@@ -119,11 +115,8 @@ function JobDetails() {
   // ==========================================
 
   const handleApply = async () => {
-    const currentToken =
-      localStorage.getItem("token");
-
-    const storedCurrentUser =
-      localStorage.getItem("user");
+    const currentToken = localStorage.getItem("token");
+    const storedCurrentUser = localStorage.getItem("user");
 
     let currentUser = null;
 
@@ -132,20 +125,15 @@ function JobDetails() {
         ? JSON.parse(storedCurrentUser)
         : null;
     } catch (error) {
-      console.error(
-        "Invalid user data:",
-        error
-      );
+      console.error("Invalid user data:", error);
     }
 
-    const currentRole =
-      currentUser?.role;
+    const currentRole = currentUser?.role;
 
     if (!currentToken) {
       setApplicationMessage(
         "Please login as a job seeker to apply."
       );
-
       return;
     }
 
@@ -153,7 +141,6 @@ function JobDetails() {
       setApplicationMessage(
         "Only job seekers can apply for jobs."
       );
-
       return;
     }
 
@@ -161,7 +148,6 @@ function JobDetails() {
       setApplicationMessage(
         "You have already applied for this job."
       );
-
       return;
     }
 
@@ -202,8 +188,7 @@ function JobDetails() {
         );
 
         if (
-          typeof backendMessage ===
-            "string" &&
+          typeof backendMessage === "string" &&
           backendMessage
             .toLowerCase()
             .includes("already applied")
@@ -217,6 +202,87 @@ function JobDetails() {
       }
     } finally {
       setApplying(false);
+    }
+  };
+
+  // ==========================================
+  // AI JOB MATCHING
+  // ==========================================
+
+  const handleAIMatch = async () => {
+    try {
+      setMatching(true);
+      setMatchError("");
+      setMatchResult(null);
+
+      const currentToken = localStorage.getItem("token");
+      const storedCurrentUser = localStorage.getItem("user");
+
+      let currentUser = null;
+
+      try {
+        currentUser = storedCurrentUser
+          ? JSON.parse(storedCurrentUser)
+          : null;
+      } catch (error) {
+        console.error(
+          "Invalid user data:",
+          error
+        );
+      }
+
+      if (!currentToken) {
+        setMatchError(
+          "Please login as a job seeker to use AI Job Matching."
+        );
+        return;
+      }
+
+      if (currentUser?.role !== "JOB_SEEKER") {
+        setMatchError(
+          "AI Job Matching is available for job seekers only."
+        );
+        return;
+      }
+
+      // Get the latest uploaded resume ID
+      const resumeId =
+        localStorage.getItem("latestResumeId");
+
+      if (!resumeId) {
+        setMatchError(
+          "Please upload your resume in Resume Analyzer before using AI Match."
+        );
+        return;
+      }
+
+      const response = await api.post(
+        `/resumes/ai-job-match/${id}/`,
+        {
+          resume_id: Number(resumeId),
+        }
+      );
+
+      console.log(
+        "AI Job Match:",
+        response.data
+      );
+
+      setMatchResult(response.data);
+    } catch (error) {
+      console.error(
+        "AI Job Match Error:",
+        error
+      );
+
+      setMatchError(
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          error.response?.data?.detail ||
+          "Unable to analyze your match right now."
+      );
+    } finally {
+      setMatching(false);
     }
   };
 
@@ -297,6 +363,7 @@ function JobDetails() {
 
   return (
     <div className="job-details-page">
+
       {/* BACKGROUND */}
 
       <div className="job-details-bg-orb orb-one" />
@@ -305,13 +372,17 @@ function JobDetails() {
       <div className="job-details-bg-grid" />
 
       <div className="job-details-container">
+
         {/* BACK */}
 
         <Link
           to="/jobs"
           className="back-link"
         >
-          <span className="back-icon">←</span>
+          <span className="back-icon">
+            ←
+          </span>
+
           Back to Jobs
         </Link>
 
@@ -320,7 +391,9 @@ function JobDetails() {
         ===================================== */}
 
         <div className="job-details-card">
+
           <div className="job-hero">
+
             <div className="job-company-logo">
               {job.company_name
                 ?.charAt(0)
@@ -328,6 +401,7 @@ function JobDetails() {
             </div>
 
             <div className="job-hero-content">
+
               <div className="job-hero-eyebrow">
                 <span className="live-dot" />
                 OPEN POSITION
@@ -338,13 +412,14 @@ function JobDetails() {
               </h1>
 
               <h3>
-                {job.company_name ||
-                  "Company"}
+                {job.company_name || "Company"}
               </h3>
 
               <div className="job-hero-meta">
+
                 <span>
-                  ◎ {job.location ||
+                  ◎{" "}
+                  {job.location ||
                     "Location not specified"}
                 </span>
 
@@ -355,12 +430,14 @@ function JobDetails() {
                 <span>
                   {job.job_type}
                 </span>
+
               </div>
             </div>
 
             <div className="job-type-badge">
               {job.job_type}
             </div>
+
           </div>
 
           {/* =====================================
@@ -368,7 +445,9 @@ function JobDetails() {
           ===================================== */}
 
           <div className="job-snapshot">
+
             <div className="snapshot-card">
+
               <div className="snapshot-icon location">
                 ◎
               </div>
@@ -383,9 +462,11 @@ function JobDetails() {
                     "Not specified"}
                 </strong>
               </div>
+
             </div>
 
             <div className="snapshot-card">
+
               <div className="snapshot-icon salary">
                 ₹
               </div>
@@ -398,15 +479,15 @@ function JobDetails() {
                 <strong>
                   ₹
                   {Number(
-                    job.salary
-                  ).toLocaleString(
-                    "en-IN"
-                  )}
+                    job.salary || 0
+                  ).toLocaleString("en-IN")}
                 </strong>
               </div>
+
             </div>
 
             <div className="snapshot-card">
+
               <div className="snapshot-icon experience">
                 ✦
               </div>
@@ -420,7 +501,9 @@ function JobDetails() {
                   {job.experience_level}
                 </strong>
               </div>
+
             </div>
+
           </div>
 
           {/* =====================================
@@ -428,13 +511,17 @@ function JobDetails() {
           ===================================== */}
 
           <div className="job-details-layout">
+
             {/* LEFT */}
 
             <main className="job-details-main">
+
               {/* DESCRIPTION */}
 
               <section className="job-section">
+
                 <div className="section-title-row">
+
                   <div className="section-title-icon">
                     ✦
                   </div>
@@ -448,17 +535,21 @@ function JobDetails() {
                       Job Description
                     </h2>
                   </div>
+
                 </div>
 
                 <div className="job-description">
                   {job.description}
                 </div>
+
               </section>
 
               {/* REQUIREMENTS */}
 
               <section className="job-section">
+
                 <div className="section-title-row">
+
                   <div className="section-title-icon requirements-icon">
                     ✓
                   </div>
@@ -472,16 +563,21 @@ function JobDetails() {
                       Requirements
                     </h2>
                   </div>
+
                 </div>
 
                 <div className="job-description">
                   {job.requirements}
                 </div>
+
               </section>
 
-              {/* AI CAREER NOTE */}
+              {/* =====================================
+                  AI CAREER NOTE
+              ===================================== */}
 
               <div className="job-ai-note">
+
                 <div className="ai-note-icon">
                   ✦
                 </div>
@@ -492,32 +588,229 @@ function JobDetails() {
                   </span>
 
                   <strong>
-                    Think this role fits your
-                    profile?
+                    Check your match for this role.
                   </strong>
 
                   <p>
-                    Use the AI Resume Analyzer
-                    to check how well your resume
-                    matches this opportunity.
+                    Compare your resume with this
+                    job's skills and requirements
+                    using AI.
                   </p>
                 </div>
 
-                <Link
-                  to="/resume-analyzer"
-                  className="ai-note-btn"
-                >
-                  Analyze Resume
-                  <span>→</span>
-                </Link>
+                {role === "JOB_SEEKER" && token ? (
+
+                  <button
+                    className="ai-note-btn"
+                    onClick={handleAIMatch}
+                    disabled={matching}
+                  >
+                    {matching ? (
+                      <>
+                        <span className="apply-spinner" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        AI Match
+                        <span>→</span>
+                      </>
+                    )}
+                  </button>
+
+                ) : (
+
+                  <Link
+                    to="/login"
+                    className="ai-note-btn"
+                  >
+                    Login to Match
+                    <span>→</span>
+                  </Link>
+
+                )}
+
               </div>
+
+              {/* =====================================
+                  AI MATCH ERROR
+              ===================================== */}
+
+              {matchError && (
+                <div className="application-message info">
+
+                  <span>
+                    i
+                  </span>
+
+                  <p>
+                    {matchError}
+                  </p>
+
+                </div>
+              )}
+
+              {/* =====================================
+                  AI MATCH RESULT
+              ===================================== */}
+
+              {matchResult && (
+
+                <section className="ai-match-result">
+
+                  {/* HEADER */}
+
+                  <div className="ai-match-header">
+
+                    <div>
+                      <span>
+                        HIRESPHERE AI
+                      </span>
+
+                      <h2>
+                        Job Match Analysis
+                      </h2>
+                    </div>
+
+                    <div className="match-score">
+
+                      <strong>
+                        {matchResult.match_percentage}%
+                      </strong>
+
+                      <span>
+                        Match
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                  {/* SUMMARY */}
+
+                  <div className="ai-match-summary">
+
+                    <p>
+                      {matchResult.summary}
+                    </p>
+
+                  </div>
+
+                  {/* SKILLS */}
+
+                  <div className="ai-match-columns">
+
+                    {/* MATCHED */}
+
+                    <div className="match-section">
+
+                      <h3>
+                        ✓ Matched Skills
+                      </h3>
+
+                      {matchResult.matched_skills?.length > 0 ? (
+
+                        <div className="skill-list">
+
+                          {matchResult.matched_skills.map(
+                            (skill, index) => (
+                              <span key={index}>
+                                {skill}
+                              </span>
+                            )
+                          )}
+
+                        </div>
+
+                      ) : (
+
+                        <p>
+                          No matching skills found.
+                        </p>
+
+                      )}
+
+                    </div>
+
+                    {/* MISSING */}
+
+                    <div className="match-section">
+
+                      <h3>
+                        + Skills to Improve
+                      </h3>
+
+                      {matchResult.missing_skills?.length > 0 ? (
+
+                        <div className="skill-list">
+
+                          {matchResult.missing_skills.map(
+                            (skill, index) => (
+                              <span key={index}>
+                                {skill}
+                              </span>
+                            )
+                          )}
+
+                        </div>
+
+                      ) : (
+
+                        <p>
+                          No major missing skills
+                          identified.
+                        </p>
+
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  {/* EXPERIENCE */}
+
+                  <div className="experience-match">
+
+                    <h3>
+                      Experience Match
+                    </h3>
+
+                    <p>
+                      {matchResult.experience_match}
+                    </p>
+
+                  </div>
+
+                  {/* RECOMMENDATION */}
+
+                  <div className="ai-recommendation">
+
+                    <strong>
+                      AI Recommendation
+                    </strong>
+
+                    <p>
+                      {matchResult.recommendation}
+                    </p>
+
+                  </div>
+
+                </section>
+
+              )}
+
             </main>
 
-            {/* RIGHT — APPLY CARD */}
+            {/* =====================================
+                RIGHT — APPLY CARD
+            ===================================== */}
 
             <aside className="job-apply-sidebar">
+
               <div className="apply-card">
+
                 <div className="apply-card-top">
+
                   <span className="apply-card-label">
                     INTERESTED?
                   </span>
@@ -525,6 +818,7 @@ function JobDetails() {
                   <div className="apply-card-icon">
                     ↗
                   </div>
+
                 </div>
 
                 <h2>
@@ -539,42 +833,51 @@ function JobDetails() {
 
                 {/* JOB SEEKER */}
 
-                {role === "JOB_SEEKER" &&
-                token ? (
+                {role === "JOB_SEEKER" && token ? (
+
                   <>
+
                     <button
                       className={`apply-btn ${
-                        applied
-                          ? "applied"
-                          : ""
+                        applied ? "applied" : ""
                       }`}
-                      onClick={
-                        handleApply
-                      }
+                      onClick={handleApply}
                       disabled={
-                        applying ||
-                        applied
+                        applying || applied
                       }
                     >
+
                       {applied ? (
+
                         <>
-                          <span>✓</span>
+                          <span>
+                            ✓
+                          </span>
+
                           Already Applied
                         </>
+
                       ) : applying ? (
+
                         <>
                           <span className="apply-spinner" />
+
                           Applying...
                         </>
+
                       ) : (
+
                         <>
                           Apply Now
                           <span>→</span>
                         </>
+
                       )}
+
                     </button>
 
                     {applicationMessage && (
+
                       <div
                         className={`application-message ${
                           applied
@@ -582,29 +885,40 @@ function JobDetails() {
                             : "info"
                         }`}
                       >
+
                         <span>
-                          {applied
-                            ? "✓"
-                            : "i"}
+                          {applied ? "✓" : "i"}
                         </span>
 
                         <p>
                           {applicationMessage}
                         </p>
+
                       </div>
+
                     )}
+
                   </>
+
                 ) : role === "EMPLOYER" ? (
+
                   <div className="application-message employer-message">
-                    <span>!</span>
+
+                    <span>
+                      !
+                    </span>
 
                     <p>
                       Employers cannot apply
                       for jobs.
                     </p>
+
                   </div>
+
                 ) : (
+
                   <>
+
                     <Link
                       to="/login"
                       className="apply-btn login-apply-btn"
@@ -617,33 +931,53 @@ function JobDetails() {
                       Sign in to submit your
                       application.
                     </p>
+
                   </>
+
                 )}
 
                 <div className="apply-card-footer">
-                  <span>✦</span>
+
+                  <span>
+                    ✦
+                  </span>
 
                   <p>
                     Your application will be
                     securely submitted through
                     HireSphere.
                   </p>
+
                 </div>
+
               </div>
+
             </aside>
+
           </div>
+
         </div>
 
-        {/* FOOTER */}
+        {/* =====================================
+            FOOTER
+        ===================================== */}
 
         <div className="job-details-footer">
-          <span>✦</span>
+
+          <span>
+            ✦
+          </span>
+
           HireSphere
+
           <span className="footer-divider">
             •
           </span>
+
           Find work that moves you forward.
+
         </div>
+
       </div>
     </div>
   );

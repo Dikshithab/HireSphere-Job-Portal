@@ -1,0 +1,422 @@
+/* =========================================================
+   HIRESPHERE THEME SYSTEM
+   Blue + Violet + Cyan / Light + Dark
+========================================================= */
+
+:root {
+  color-scheme: light;
+
+  --hs-bg: #f8fafc;
+  --hs-bg-secondary: #f1f5f9;
+  --hs-surface: #ffffff;
+  --hs-surface-raised: #ffffff;
+  --hs-text: #0f172a;
+  --hs-text-secondary: #64748b;
+  --hs-text-muted: #94a3b8;
+  --hs-border: #e2e8f0;
+  --hs-border-strong: #cbd5e1;
+
+  --hs-primary: #2563eb;
+  --hs-primary-hover: #1d4ed8;
+  --hs-secondary: #7c3aed;
+  --hs-secondary-hover: #6d28d9;
+  --hs-accent: #06b6d4;
+
+  --hs-success: #059669;
+  --hs-warning: #d97706;
+  --hs-danger: #dc2626;
+
+  --hs-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+  --hs-ai-gradient: linear-gradient(135deg, #7c3aed, #06b6d4);
+
+  --hs-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+  --hs-shadow-lg: 0 24px 70px rgba(15, 23, 42, 0.12);
+
+  --hs-nav-bg: rgba(255, 255, 255, 0.86);
+  --hs-overlay: rgba(255, 255, 255, 0.72);
+  --hs-grid: rgba(15, 23, 42, 0.045);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --hs-bg: #0b1120;
+  --hs-bg-secondary: #0f172a;
+  --hs-surface: #111827;
+  --hs-surface-raised: #172033;
+  --hs-text: #f8fafc;
+  --hs-text-secondary: #94a3b8;
+  --hs-text-muted: #64748b;
+  --hs-border: #263449;
+  --hs-border-strong: #334155;
+
+  --hs-primary: #60a5fa;
+  --hs-primary-hover: #93c5fd;
+  --hs-secondary: #a78bfa;
+  --hs-secondary-hover: #c4b5fd;
+  --hs-accent: #22d3ee;
+
+  --hs-success: #34d399;
+  --hs-warning: #fbbf24;
+  --hs-danger: #f87171;
+
+  --hs-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+  --hs-ai-gradient: linear-gradient(135deg, #7c3aed, #06b6d4);
+
+  --hs-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  --hs-shadow-lg: 0 28px 80px rgba(0, 0, 0, 0.38);
+
+  --hs-nav-bg: rgba(11, 17, 32, 0.88);
+  --hs-overlay: rgba(17, 24, 39, 0.82);
+  --hs-grid: rgba(255, 255, 255, 0.035);
+}
+
+html,
+body,
+#root {
+  background: var(--hs-bg);
+  color: var(--hs-text);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+body {
+  min-height: 100vh;
+}
+
+::selection {
+  color: #ffffff;
+  background: #7c3aed;
+}
+
+/* Shared form controls */
+input,
+textarea,
+select {
+  color-scheme: inherit;
+}
+
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select {
+  color: var(--hs-text) !important;
+  background-color: var(--hs-surface) !important;
+  border-color: var(--hs-border) !important;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+  color: var(--hs-text-muted) !important;
+}
+
+/* Shared page surfaces */
+html[data-theme="light"] .jobs-page,
+html[data-theme="light"] .job-details-page,
+html[data-theme="light"] .seeker-dashboard,
+html[data-theme="light"] .employer-dashboard,
+html[data-theme="light"] .company-page,
+html[data-theme="light"] .create-company-page,
+html[data-theme="light"] .create-job-page,
+html[data-theme="light"] .edit-job-page,
+html[data-theme="light"] .applications-page,
+html[data-theme="light"] .job-matches-page,
+html[data-theme="light"] .manage-jobs-page,
+html[data-theme="light"] .my-resumes-page,
+html[data-theme="light"] .notifications-page,
+html[data-theme="light"] .profile-page,
+html[data-theme="light"] .analytics-page,
+html[data-theme="light"] .recruiter-candidate-page,
+html[data-theme="light"] .recruiter-dashboard,
+html[data-theme="light"] .resume-analyzer-page,
+html[data-theme="light"] .resume-builder-page,
+html[data-theme="light"] .resume-management-page,
+html[data-theme="light"] .resume-preview-page,
+html[data-theme="light"] .saved-jobs-page,
+html[data-theme="light"] .candidate-ranking-page,
+html[data-theme="light"] .ai-recommendations-page {
+  background-color: var(--hs-bg) !important;
+  color: var(--hs-text) !important;
+}
+
+/* Light-mode grid overlays */
+html[data-theme="light"] .jobs-bg-grid,
+html[data-theme="light"] .job-details-bg-grid,
+html[data-theme="light"] .dashboard-background-grid,
+html[data-theme="light"] .dashboard-bg-grid,
+html[data-theme="light"] .company-bg-grid,
+html[data-theme="light"] .create-company-bg-grid,
+html[data-theme="light"] .create-job-bg-grid,
+html[data-theme="light"] .edit-job-bg-grid,
+html[data-theme="light"] .applications-bg-grid,
+html[data-theme="light"] .matches-bg-grid,
+html[data-theme="light"] .resume-preview-bg-grid {
+  opacity: 0.8 !important;
+  background-image:
+    linear-gradient(var(--hs-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hs-grid) 1px, transparent 1px) !important;
+}
+
+/* Common surface/card classes used throughout the existing pages */
+html[data-theme="light"] [class*="card"],
+html[data-theme="light"] [class*="panel"],
+html[data-theme="light"] [class*="container-card"],
+html[data-theme="light"] [class*="job-card"],
+html[data-theme="light"] [class*="stat-card"],
+html[data-theme="light"] [class*="application-card"],
+html[data-theme="light"] [class*="candidate-card"],
+html[data-theme="light"] [class*="resume-card"],
+html[data-theme="light"] [class*="notification-item"] {
+  color: var(--hs-text);
+}
+
+/* Common text colors */
+html[data-theme="light"] [class*="subtitle"],
+html[data-theme="light"] [class*="description"],
+html[data-theme="light"] [class*="meta"],
+html[data-theme="light"] [class*="muted"] {
+  color: var(--hs-text-secondary);
+}
+
+/* Common borders */
+html[data-theme="light"] [class*="card"],
+html[data-theme="light"] [class*="panel"],
+html[data-theme="light"] [class*="input"],
+html[data-theme="light"] [class*="field"] {
+  border-color: var(--hs-border);
+}
+
+/* Common action buttons */
+.btn-primary,
+.primary-btn,
+button[type="submit"] {
+  --button-primary: var(--hs-primary);
+}
+
+/* Smooth theme transitions for common UI */
+.navbar,
+.navbar *,
+.page,
+[class*="-page"],
+button,
+input,
+textarea,
+select,
+[class*="card"],
+[class*="panel"] {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================================
+   NAVBAR THEMING
+========================================================= */
+
+.navbar {
+  background: var(--hs-nav-bg) !important;
+  border-bottom-color: var(--hs-border) !important;
+  box-shadow: 0 8px 35px rgba(15, 23, 42, 0.08) !important;
+}
+
+html[data-theme="dark"] .navbar {
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.18) !important;
+}
+
+html[data-theme="light"] .navbar-glow {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(37, 99, 235, 0.42),
+    rgba(124, 58, 237, 0.62),
+    rgba(6, 182, 212, 0.42),
+    transparent
+  ) !important;
+}
+
+html[data-theme="light"] .navbar-logo,
+html[data-theme="light"] .nav-link,
+html[data-theme="light"] .notification-nav-link,
+html[data-theme="light"] .user-profile,
+html[data-theme="light"] .logout-btn {
+  color: var(--hs-text) !important;
+}
+
+html[data-theme="light"] .nav-link:hover,
+html[data-theme="light"] .nav-link.active,
+html[data-theme="light"] .notification-nav-link:hover,
+html[data-theme="light"] .notification-nav-link.active {
+  color: var(--hs-primary) !important;
+  background: rgba(37, 99, 235, 0.07) !important;
+}
+
+html[data-theme="light"] .user-role {
+  color: var(--hs-text-muted) !important;
+}
+
+html[data-theme="light"] .user-details strong {
+  color: var(--hs-text) !important;
+}
+
+html[data-theme="light"] .navbar-user {
+  border-left-color: var(--hs-border) !important;
+}
+
+html[data-theme="light"] .user-profile:hover,
+html[data-theme="light"] .logout-btn:hover {
+  background: rgba(15, 23, 42, 0.045) !important;
+}
+
+html[data-theme="light"] .nav-icon {
+  color: var(--hs-text-secondary) !important;
+}
+
+html[data-theme="light"] .nav-link:hover .nav-icon,
+html[data-theme="light"] .nav-link.active .nav-icon {
+  color: var(--hs-primary) !important;
+}
+
+html[data-theme="light"] .menu-toggle span {
+  background: var(--hs-text) !important;
+}
+
+html[data-theme="light"] .mobile-menu-close {
+  color: var(--hs-text) !important;
+}
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 11px;
+  margin-left: 4px;
+  border: 1px solid var(--hs-border);
+  border-radius: 999px;
+  background: var(--hs-surface);
+  color: var(--hs-text-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--hs-primary);
+  border-color: rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 7px 20px rgba(37, 99, 235, 0.1);
+}
+
+.theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(124, 58, 237, 0.14));
+  color: var(--hs-primary);
+  font-size: 13px;
+}
+
+.guest-theme-toggle {
+  margin-left: 0;
+}
+
+@media (max-width: 1180px) {
+  .theme-toggle-label {
+    display: none;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .theme-toggle {
+    margin: 10px 0;
+    width: 100%;
+    min-height: 44px;
+    justify-content: flex-start;
+    padding: 0 14px;
+    border-radius: 12px;
+  }
+
+  .theme-toggle-label {
+    display: inline;
+  }
+
+  .guest-theme-toggle {
+    margin: 0 0 8px;
+  }
+}
+
+/* =========================================================
+   LIGHT-MODE SURFACE NORMALIZATION
+========================================================= */
+
+html[data-theme="light"] [class*="card"],
+html[data-theme="light"] [class*="panel"],
+html[data-theme="light"] [class*="modal"],
+html[data-theme="light"] [class*="table"],
+html[data-theme="light"] [class*="list-item"],
+html[data-theme="light"] [class*="job-card"],
+html[data-theme="light"] [class*="candidate-card"],
+html[data-theme="light"] [class*="resume-card"],
+html[data-theme="light"] [class*="stat-card"] {
+  background-color: var(--hs-surface) !important;
+  color: var(--hs-text) !important;
+  border-color: var(--hs-border) !important;
+  box-shadow: var(--hs-shadow);
+}
+
+html[data-theme="light"] [class*="title"],
+html[data-theme="light"] [class*="heading"],
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4 {
+  color: var(--hs-text) !important;
+}
+
+html[data-theme="light"] p {
+  color: inherit;
+}
+
+html[data-theme="light"] .btn,
+html[data-theme="light"] button:not(.theme-toggle):not(.menu-toggle) {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}

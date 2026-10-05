@@ -14,16 +14,18 @@ function ResumeAnalyzer() {
   const [analysisError, setAnalysisError] = useState("");
 
   const handleUploadSuccess = (resumeId, resumeData) => {
-    setUploadedResumeId(resumeId);
+  setUploadedResumeId(resumeId);
 
-    setUploadedFileName(
-      resumeData?.file_name ||
-      resumeData?.fileName ||
-      `Resume #${resumeId}`
-    );
+  localStorage.setItem("latestResumeId", resumeId);
 
-    setAnalysisError("");
-  };
+  setUploadedFileName(
+    resumeData?.file_name ||
+    resumeData?.fileName ||
+    `Resume #${resumeId}`
+  );
+
+  setAnalysisError("");
+};
 
   const handleAnalyze = async () => {
   if (!uploadedResumeId) {
