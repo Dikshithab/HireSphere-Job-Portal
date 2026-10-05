@@ -199,10 +199,10 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
 }
 CORS_ALLOWED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
-    if origin.strip()
+    "http://localhost:5173",
+    "https://hiresphere-frontend-mn01.onrender.com",
 ]
+CORS_ALLOW_CREDENTIALS = True
 # ==========================================
 # REDIS CACHE
 # ==========================================
