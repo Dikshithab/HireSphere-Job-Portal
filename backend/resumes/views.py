@@ -14,6 +14,7 @@ from django.conf import settings
 from jobs.models import Job
 from .models import Resume
 from hiresphere.throttles import AIRequestThrottle
+from .ai_job_matching import find_matching_jobs
 
 class ResumeUploadView(APIView):
 
@@ -298,6 +299,7 @@ class ResumeBuilderDetailView(APIView):
         )
 class AIResumeAnalyzeView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [AIRequestThrottle]
 
     def post(self, request):
         resume_id = request.data.get("resumeId")
@@ -306,62 +308,74 @@ class AIResumeAnalyzeView(APIView):
         if not resume_id:
             return Response(
                 {"error": "Resume ID is required."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if not job_description or not job_description.strip():
+        if not isinstance(job_description, str) or not job_description.strip():
             return Response(
                 {"error": "Job description is required."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         try:
             resume = Resume.objects.get(
                 id=resume_id,
-                user=request.user
+                user=request.user,
             )
-        except Resume.DoesNotExist:
+        except (Resume.DoesNotExist, ValueError, TypeError):
             return Response(
-                {"error": "Resume not found."},
-                status=status.HTTP_404_NOT_FOUND
+                {"error": "Resume not found or invalid resume ID."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        resume_text = (resume.extracted_text or "").strip()
+
+        if not resume_text:
+            return Response(
+                {
+                    "error": (
+                        "No text was extracted from this resume. "
+                        "Please upload a readable PDF or DOCX file again."
+                    )
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         try:
             result = analyze_resume(
-                resume_text=resume.extracted_text,
+                resume_text=resume_text,
                 job_description=job_description.strip(),
             )
 
-            return Response(result, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
             return Response(
                 result,
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
 
         except ValueError as e:
+            print("AI Resume Analysis Validation Error:", str(e))
+
             return Response(
-                {
-                    "error": str(e)
-                },
-                status=status.HTTP_400_BAD_REQUEST
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         except Exception as e:
-            print("AI Resume Analysis Error:", e)
+            # Keep the detailed error in server logs.
+            # Do not expose internal exception details to users.
+            print("AI Resume Analysis Error:", repr(e))
 
             return Response(
                 {
-                    "error": f"AI Resume Analysis failed: {str(e)}"
+                    "error": (
+                        "AI resume analysis failed. "
+                        "Please try again later."
+                    )
                 },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+        
 class AIJobMatchView(APIView):
     permission_classes = [IsAuthenticated]
     throttle_classes = [AIRequestThrottle]
@@ -1203,5 +1217,51 @@ Rules:
                         "ranking right now."
                     )
                 },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class AIJobMatchingListView(APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [AIRequestThrottle]
+
+    def get(self, request):
+        resume_id = request.query_params.get("resume_id")
+
+        if not resume_id:
+            return Response(
+                {"error": "resume_id is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            resume_id = int(resume_id)
+
+            matches = find_matching_jobs(
+                resume_id=resume_id,
+                user=request.user
+            )
+
+            return Response(
+                {"matches": matches},
+                status=status.HTTP_200_OK
+            )
+
+        except ValueError as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except PermissionError as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        except Exception as e:
+            print("AI JOB MATCHING ERROR:", repr(e))
+
+            return Response(
+                {"error": "Unable to generate job matches."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

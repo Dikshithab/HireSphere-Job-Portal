@@ -12,6 +12,8 @@ from .views import (
     ResumeBuilderDetailView,
     AIResumeAnalyzeView,
     AICandidateRankingView,
+    AIJobMatchingListView,
+
 )
 
 
@@ -27,12 +29,11 @@ urlpatterns = [
         ResumeBuilderDetailView.as_view(),
         name="resume-builder-detail",
     ),
-
     path(
-        "ai-resume/analyze/",
-        AIResumeAnalyzeView.as_view(),
-        name="ai-resume-analyze",
-    ),
+    "ai-resume/analyze/",
+    AIResumeAnalyzeView.as_view(),
+    name="ai-resume-analyze",
+),
     
 path(
     "ai-job-match/<int:job_id>/",
@@ -59,5 +60,10 @@ path(
     "ai-candidate-ranking/<int:job_id>/",
     AICandidateRankingView.as_view(),
     name="ai-candidate-ranking"
+),
+path(
+    "ai-job-matching/matches/",
+    AIJobMatchingListView.as_view(),
+    name="ai-job-matching-list",
 ),
 ]
