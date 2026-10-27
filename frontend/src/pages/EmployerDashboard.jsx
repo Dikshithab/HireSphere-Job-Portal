@@ -1,12 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Plus,
+  Briefcase,
+  Users,
+  Clock,
+  Star,
+  CheckCircle2,
+  Building,
+  ArrowRight,
+  ExternalLink,
+  Sparkles,
+  Percent,
+  RotateCcw,
+  AlertCircle,
+} from "lucide-react";
 import api from "../services/api";
 import "../css/EmployerDashboard.css";
 
 function EmployerDashboard() {
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -24,15 +38,10 @@ function EmployerDashboard() {
           ]);
 
         console.log("Employer Jobs:", jobsResponse.data);
-        console.log(
-          "Employer Applications:",
-          applicationsResponse.data
-        );
+        console.log("Employer Applications:", applicationsResponse.data);
 
         setJobs(
-          Array.isArray(jobsResponse.data)
-            ? jobsResponse.data
-            : []
+          Array.isArray(jobsResponse.data) ? jobsResponse.data : []
         );
 
         setApplications(
@@ -42,7 +51,6 @@ function EmployerDashboard() {
         );
       } catch (error) {
         console.error("Dashboard error:", error);
-
         setError(
           error.response?.data?.message ||
             error.response?.data?.detail ||
@@ -61,30 +69,21 @@ function EmployerDashboard() {
   // ==========================================
 
   const totalJobs = jobs.length;
-
-  const activeJobs = jobs.filter(
-    (job) => job.status === "ACTIVE"
-  ).length;
-
+  const activeJobs = jobs.filter((job) => job.status === "ACTIVE").length;
   const totalApplications = applications.length;
-
   const pendingApplications = applications.filter(
     (application) => application.status === "PENDING"
   ).length;
-
   const shortlistedApplications = applications.filter(
     (application) => application.status === "SHORTLISTED"
   ).length;
-
   const hiredApplications = applications.filter(
     (application) => application.status === "HIRED"
   ).length;
 
   const hiringRate =
     totalApplications > 0
-      ? Math.round(
-          (hiredApplications / totalApplications) * 100
-        )
+      ? Math.round((hiredApplications / totalApplications) * 100)
       : 0;
 
   // ==========================================
@@ -99,17 +98,10 @@ function EmployerDashboard() {
         <div className="dashboard-bg-grid" />
 
         <div className="dashboard-loading">
-          <div className="dashboard-loading-icon">
-            ✦
-          </div>
-
           <div className="dashboard-spinner" />
-
+          <span className="loading-label">EMPLOYER WORKSPACE</span>
           <h2>Loading your workspace</h2>
-
-          <p>
-            Fetching your jobs and applications...
-          </p>
+          <p>Fetching your jobs, candidates, and talent pipeline...</p>
         </div>
       </div>
     );
@@ -127,22 +119,18 @@ function EmployerDashboard() {
         <div className="dashboard-bg-grid" />
 
         <div className="dashboard-error">
-          <div className="error-icon">!</div>
-
-          <span className="error-eyebrow">
-            WORKSPACE ERROR
-          </span>
-
+          <div className="error-icon">
+            <AlertCircle className="error-icon-svg" />
+          </div>
+          <span className="error-eyebrow">WORKSPACE ERROR</span>
           <h2>Unable to load dashboard</h2>
-
           <p>{error}</p>
-
           <button
             className="dashboard-retry-btn"
             onClick={() => window.location.reload()}
           >
-            Try Again
-            <span>↻</span>
+            <RotateCcw className="retry-icon" />
+            <span>Try Again</span>
           </button>
         </div>
       </div>
@@ -156,7 +144,6 @@ function EmployerDashboard() {
   return (
     <div className="employer-dashboard">
       {/* BACKGROUND */}
-
       <div className="dashboard-bg-orb dashboard-orb-one" />
       <div className="dashboard-bg-orb dashboard-orb-two" />
       <div className="dashboard-bg-orb dashboard-orb-three" />
@@ -166,7 +153,6 @@ function EmployerDashboard() {
         {/* =====================================
             HEADER
         ===================================== */}
-
         <header className="dashboard-header">
           <div className="dashboard-header-content">
             <div className="dashboard-eyebrow">
@@ -176,51 +162,39 @@ function EmployerDashboard() {
 
             <h1>
               Manage your{" "}
-              <span>talent pipeline.</span>
+              <span className="gradient-text">talent pipeline.</span>
             </h1>
 
             <p>
-              Manage your job postings, review candidates,
-              and build your team from one intelligent
-              workspace.
+              Manage your job postings, review incoming candidates, and build high-performing teams from one intelligent workspace.
             </p>
           </div>
 
-          <Link
-            to="/create-job"
-            className="dashboard-post-btn"
-          >
-            <span className="post-btn-icon">＋</span>
-
+          <Link to="/create-job" className="dashboard-post-btn">
+            <Plus className="post-btn-icon" />
             <span>Post New Job</span>
-
-            <span className="post-btn-arrow">→</span>
+            <ArrowRight className="post-btn-arrow" />
           </Link>
         </header>
 
         {/* =====================================
             TOP STATUS STRIP
         ===================================== */}
-
         <div className="dashboard-status-strip">
           <div className="status-strip-icon">
-            ✦
+            <Sparkles className="strip-sparkle" />
           </div>
 
           <div className="status-strip-content">
-            <strong>
-              Your recruitment workspace is active
-            </strong>
-
+            <strong>Your recruitment workspace is active</strong>
             <span>
-              {activeJobs} active{" "}
-              {activeJobs === 1 ? "position" : "positions"}{" "}
-              are currently visible to candidates.
+              {activeJobs} active {activeJobs === 1 ? "position" : "positions"}{" "}
+              currently visible to candidates.
             </span>
           </div>
 
           <div className="status-strip-live">
-            <span />
+            <span className="live-dot-pulse" />
             LIVE
           </div>
         </div>
@@ -228,127 +202,83 @@ function EmployerDashboard() {
         {/* =====================================
             MAIN STATISTICS
         ===================================== */}
-
         <section className="dashboard-stats">
           {/* TOTAL JOBS */}
-
           <div className="stat-card stat-blue">
             <div className="stat-card-top">
               <div className="stat-icon">
-                💼
+                <Briefcase className="stat-svg" />
               </div>
-
-              <span className="stat-trend">
-                ↗
-              </span>
+              <span className="stat-trend">ROLES</span>
             </div>
-
             <div className="stat-content">
               <span>Total Jobs</span>
-
               <strong>{totalJobs}</strong>
-
-              <small>
-                Job postings
-              </small>
+              <small>Positions posted</small>
             </div>
           </div>
 
           {/* ACTIVE JOBS */}
-
           <div className="stat-card stat-green">
             <div className="stat-card-top">
               <div className="stat-icon">
-                ✓
+                <CheckCircle2 className="stat-svg" />
               </div>
-
-              <span className="stat-live-dot">
-                ●
-              </span>
+              <span className="stat-live-dot">● ACTIVE</span>
             </div>
-
             <div className="stat-content">
-              <span>Active Jobs</span>
-
+              <span>Active Openings</span>
               <strong>{activeJobs}</strong>
-
-              <small>
-                Currently active
-              </small>
+              <small>Accepting applications</small>
             </div>
           </div>
 
           {/* APPLICATIONS */}
-
           <div className="stat-card stat-purple">
             <div className="stat-card-top">
               <div className="stat-icon">
-                👥
+                <Users className="stat-svg" />
               </div>
-
-              <span className="stat-trend">
-                ↗
-              </span>
+              <span className="stat-trend">CANDIDATES</span>
             </div>
-
             <div className="stat-content">
-              <span>Applications</span>
-
-              <strong>
-                {totalApplications}
-              </strong>
-
-              <small>
-                Candidates received
-              </small>
+              <span>Total Applicants</span>
+              <strong>{totalApplications}</strong>
+              <small>Profiles received</small>
             </div>
           </div>
 
           {/* PENDING */}
-
           <div className="stat-card stat-orange">
             <div className="stat-card-top">
               <div className="stat-icon">
-                ⏳
+                <Clock className="stat-svg" />
               </div>
-
               {pendingApplications > 0 && (
-                <span className="pending-dot">
-                  {pendingApplications}
+                <span className="pending-badge">
+                  {pendingApplications} new
                 </span>
               )}
             </div>
-
             <div className="stat-content">
               <span>Pending Review</span>
-
-              <strong>
-                {pendingApplications}
-              </strong>
-
-              <small>
-                Need your attention
-              </small>
+              <strong>{pendingApplications}</strong>
+              <small>Awaiting evaluation</small>
             </div>
           </div>
         </section>
 
         {/* =====================================
-            SECONDARY STATS
+            SECONDARY STATS STRIP
         ===================================== */}
-
         <section className="secondary-stats">
           <div className="secondary-stat">
             <div className="secondary-stat-icon shortlisted">
-              ★
+              <Star className="sec-icon-svg" />
             </div>
-
             <div>
               <span>Shortlisted</span>
-
-              <strong>
-                {shortlistedApplications}
-              </strong>
+              <strong>{shortlistedApplications}</strong>
             </div>
           </div>
 
@@ -356,15 +286,11 @@ function EmployerDashboard() {
 
           <div className="secondary-stat">
             <div className="secondary-stat-icon hired">
-              ✓
+              <CheckCircle2 className="sec-icon-svg" />
             </div>
-
             <div>
-              <span>Hired</span>
-
-              <strong>
-                {hiredApplications}
-              </strong>
+              <span>Hired Candidates</span>
+              <strong>{hiredApplications}</strong>
             </div>
           </div>
 
@@ -372,15 +298,11 @@ function EmployerDashboard() {
 
           <div className="secondary-stat">
             <div className="secondary-stat-icon conversion">
-              %
+              <Percent className="sec-icon-svg" />
             </div>
-
             <div>
-              <span>Hiring Rate</span>
-
-              <strong>
-                {hiringRate}%
-              </strong>
+              <span>Hiring Conversion</span>
+              <strong>{hiringRate}%</strong>
             </div>
           </div>
 
@@ -388,13 +310,11 @@ function EmployerDashboard() {
 
           <div className="secondary-stat secondary-stat-insight">
             <div className="insight-icon">
-              ✦
+              <Sparkles className="sec-icon-svg" />
             </div>
-
             <div>
-              <span>Workspace</span>
-
-              <strong>Active</strong>
+              <span>Recruiter AI</span>
+              <strong>Ready</strong>
             </div>
           </div>
         </section>
@@ -402,222 +322,106 @@ function EmployerDashboard() {
         {/* =====================================
             QUICK ACTIONS
         ===================================== */}
-
         <section className="dashboard-section">
           <div className="section-header">
             <div>
-              <span className="section-eyebrow">
-                QUICK ACTIONS
-              </span>
-
-              <h2>
-                Manage your recruitment
-              </h2>
-
-              <p>
-                Everything you need to keep your hiring
-                workflow moving.
-              </p>
+              <span className="section-eyebrow">WORKFLOW</span>
+              <h2>Manage your recruitment</h2>
+              <p>Everything you need to accelerate your candidate hiring process.</p>
             </div>
           </div>
 
           <div className="quick-actions">
-            {/* POST JOB */}
-
-            <Link
-              to="/create-job"
-              className="quick-action-card quick-blue"
-            >
+            <Link to="/create-job" className="quick-action-card quick-blue">
               <div className="quick-action-icon">
-                ＋
+                <Plus className="qa-icon" />
               </div>
-
               <div className="quick-action-content">
-                <span className="quick-action-number">
-                  01
-                </span>
-
-                <h3>
-                  Post a Job
-                </h3>
-
-                <p>
-                  Create a new opportunity and start
-                  attracting candidates.
-                </p>
+                <span className="quick-action-number">01</span>
+                <h3>Post a Job</h3>
+                <p>Create a new opening and start receiving talent matches.</p>
               </div>
-
-              <span className="action-arrow">
-                →
-              </span>
+              <ArrowRight className="action-arrow" />
             </Link>
 
-            {/* MANAGE JOBS */}
-
-            <Link
-              to="/employer/jobs"
-              className="quick-action-card quick-purple"
-            >
+            <Link to="/employer/jobs" className="quick-action-card quick-purple">
               <div className="quick-action-icon">
-                💼
+                <Briefcase className="qa-icon" />
               </div>
-
               <div className="quick-action-content">
-                <span className="quick-action-number">
-                  02
-                </span>
-
-                <h3>
-                  Manage Jobs
-                </h3>
-
-                <p>
-                  Edit, monitor and manage your current
-                  job postings.
-                </p>
+                <span className="quick-action-number">02</span>
+                <h3>Manage Jobs</h3>
+                <p>Review, edit, and update statuses on your active postings.</p>
               </div>
-
-              <span className="action-arrow">
-                →
-              </span>
+              <ArrowRight className="action-arrow" />
             </Link>
 
-            {/* APPLICATIONS */}
-
-            <Link
-              to="/employer/applications"
-              className="quick-action-card quick-green"
-            >
+            <Link to="/employer/applications" className="quick-action-card quick-green">
               <div className="quick-action-icon">
-                👥
+                <Users className="qa-icon" />
               </div>
-
               <div className="quick-action-content">
-                <span className="quick-action-number">
-                  03
-                </span>
-
-                <h3>
-                  Applications
-                </h3>
-
-                <p>
-                  Review candidates and move them through
-                  your hiring pipeline.
-                </p>
+                <span className="quick-action-number">03</span>
+                <h3>Applications</h3>
+                <p>Review candidate resumes, shortlist, and hire talent.</p>
               </div>
-
-              <span className="action-arrow">
-                →
-              </span>
+              <ArrowRight className="action-arrow" />
             </Link>
 
-            {/* COMPANY */}
-
-            <Link
-              to="/company"
-              className="quick-action-card quick-orange"
-            >
+            <Link to="/company" className="quick-action-card quick-orange">
               <div className="quick-action-icon">
-                🏢
+                <Building className="qa-icon" />
               </div>
-
               <div className="quick-action-content">
-                <span className="quick-action-number">
-                  04
-                </span>
-
-                <h3>
-                  Company Profile
-                </h3>
-
-                <p>
-                  Keep your organization information
-                  updated for candidates.
-                </p>
+                <span className="quick-action-number">04</span>
+                <h3>Company Profile</h3>
+                <p>Keep your organization brand and company details updated.</p>
               </div>
-
-              <span className="action-arrow">
-                →
-              </span>
+              <ArrowRight className="action-arrow" />
             </Link>
           </div>
         </section>
 
         {/* =====================================
-            RECENT DATA
+            RECENT DATA (GRID)
         ===================================== */}
-
         <div className="dashboard-grid">
-          {/* ===================================
-              RECENT JOBS
-          =================================== */}
-
+          {/* RECENT JOBS */}
           <section className="dashboard-panel">
             <div className="panel-header">
               <div>
-                <span className="section-eyebrow">
-                  JOB POSTINGS
-                </span>
-
-                <h2>
-                  Recent Jobs
-                </h2>
+                <span className="section-eyebrow">JOB POSTINGS</span>
+                <h2>Recent Jobs</h2>
               </div>
-
-              <Link
-                to="/employer/jobs"
-                className="view-all"
-              >
-                View All
-                <span>→</span>
+              <Link to="/employer/jobs" className="view-all">
+                <span>View All</span>
+                <ArrowRight className="panel-arrow" />
               </Link>
             </div>
 
             {jobs.length === 0 ? (
               <div className="panel-empty">
                 <div className="empty-panel-icon">
-                  💼
+                  <Briefcase className="empty-panel-svg" />
                 </div>
-
-                <h3>
-                  No jobs posted yet
-                </h3>
-
-                <p>
-                  Start building your talent pipeline by
-                  creating your first job.
-                </p>
-
-                <Link
-                  to="/create-job"
-                  className="empty-action"
-                >
-                  <span>＋</span>
-                  Post a Job
+                <h3>No jobs posted yet</h3>
+                <p>Start building your talent pipeline by publishing your first job.</p>
+                <Link to="/create-job" className="empty-action">
+                  <Plus className="btn-icon" />
+                  <span>Post a Job</span>
                 </Link>
               </div>
             ) : (
               <div className="recent-list">
                 {jobs.slice(0, 5).map((job) => (
-                  <div
-                    className="recent-job"
-                    key={job.id}
-                  >
+                  <div className="recent-job" key={job.id}>
                     <div className="recent-job-icon">
-                      💼
+                      <Briefcase className="job-svg" />
                     </div>
 
                     <div className="recent-job-info">
-                      <h3>
-                        {job.title}
-                      </h3>
-
-                      <p>
-                        <span>◎</span>
-                        {job.location ||
-                          "Location not specified"}
-                      </p>
+                      <h3>{job.title}</h3>
+                      <p>{job.location || "Location not specified"}</p>
                     </div>
 
                     <div className="recent-job-meta">
@@ -629,10 +433,7 @@ function EmployerDashboard() {
                         }
                       >
                         <span className="status-dot" />
-
-                        {job.status === "ACTIVE"
-                          ? "Active"
-                          : "Closed"}
+                        {job.status === "ACTIVE" ? "Active" : "Closed"}
                       </span>
                     </div>
                   </div>
@@ -641,86 +442,54 @@ function EmployerDashboard() {
             )}
           </section>
 
-          {/* ===================================
-              RECENT APPLICATIONS
-          =================================== */}
-
+          {/* RECENT APPLICATIONS */}
           <section className="dashboard-panel">
             <div className="panel-header">
               <div>
-                <span className="section-eyebrow">
-                  CANDIDATES
-                </span>
-
-                <h2>
-                  Recent Applications
-                </h2>
+                <span className="section-eyebrow">CANDIDATES</span>
+                <h2>Recent Applications</h2>
               </div>
-
-              <Link
-                to="/employer/applications"
-                className="view-all"
-              >
-                View All
-                <span>→</span>
+              <Link to="/employer/applications" className="view-all">
+                <span>View All</span>
+                <ArrowRight className="panel-arrow" />
               </Link>
             </div>
 
             {applications.length === 0 ? (
               <div className="panel-empty">
                 <div className="empty-panel-icon">
-                  👥
+                  <Users className="empty-panel-svg" />
                 </div>
-
-                <h3>
-                  No applications yet
-                </h3>
-
-                <p>
-                  New candidate applications will appear
-                  here automatically.
-                </p>
+                <h3>No applications yet</h3>
+                <p>New candidate submissions will appear here automatically.</p>
               </div>
             ) : (
               <div className="recent-list">
-                {applications
-                  .slice(0, 5)
-                  .map((application) => {
-                    const applicantName =
-                      application.applicant_name ||
-                      application.applicant?.name ||
-                      "Applicant";
+                {applications.slice(0, 5).map((application) => {
+                  const applicantName =
+                    application.applicant_name ||
+                    application.applicant?.name ||
+                    "Applicant";
 
-                    return (
-                      <div
-                        className="recent-application"
-                        key={application.id}
-                      >
-                        <div className="applicant-avatar">
-                          {applicantName
-                            .charAt(0)
-                            .toUpperCase()}
-                        </div>
-
-                        <div className="application-info">
-                          <h3>
-                            {applicantName}
-                          </h3>
-
-                          <p>
-                            {application.job_title ||
-                              "Job Application"}
-                          </p>
-                        </div>
-
-                        <span
-                          className={`status status-${application.status?.toLowerCase()}`}
-                        >
-                          {application.status}
-                        </span>
+                  return (
+                    <div className="recent-application" key={application.id}>
+                      <div className="applicant-avatar">
+                        {applicantName.charAt(0).toUpperCase()}
                       </div>
-                    );
-                  })}
+
+                      <div className="application-info">
+                        <h3>{applicantName}</h3>
+                        <p>{application.job_title || "Job Application"}</p>
+                      </div>
+
+                      <span
+                        className={`status status-${application.status?.toLowerCase()}`}
+                      >
+                        {application.status}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </section>
@@ -729,21 +498,11 @@ function EmployerDashboard() {
         {/* =====================================
             FOOTER
         ===================================== */}
-
         <div className="dashboard-footer">
-          <span>✦</span>
-
-          <span>
-            HireSphere employer workspace
-          </span>
-
-          <span className="footer-dot">
-            •
-          </span>
-
-          <span>
-            Your next great hire starts here.
-          </span>
+          <Sparkles className="footer-sparkle" />
+          <span>HireSphere Employer Workspace</span>
+          <span className="footer-dot">•</span>
+          <span>Your intelligent talent acquisition platform</span>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { UploadCloud, FileText, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
 import api from "../services/api";
 
 function ResumeUpload({ onUploadSuccess, currentResumeId }) {
@@ -61,7 +62,6 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
       );
 
       const resumeData = response.data;
-
       setUploadedResume(resumeData);
 
       if (onUploadSuccess && resumeData.id) {
@@ -100,10 +100,9 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
 
   return (
     <div className="resume-upload-card">
-
       <div className="resume-upload-header">
         <div className="resume-upload-icon-box">
-          📄
+          <UploadCloud size={22} />
         </div>
 
         <div>
@@ -118,7 +117,6 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
       </div>
 
       <div className="resume-dropzone">
-
         <input
           id="resume-file-input"
           type="file"
@@ -133,7 +131,7 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
           className="resume-dropzone-label"
         >
           <span className="dropzone-icon">
-            📁
+            <UploadCloud size={36} />
           </span>
 
           <span className="dropzone-text">
@@ -143,16 +141,14 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
           </span>
 
           <span className="dropzone-hint">
-            Supports PDF and DOCX files
+            Supports PDF and DOCX files up to 10MB
           </span>
         </label>
       </div>
 
       {selectedFile && (
         <div className="selected-file-preview">
-
           <div className="file-info-left">
-
             <span className="file-format-badge">
               {selectedFile.name.toLowerCase().endsWith(".pdf")
                 ? "PDF"
@@ -160,7 +156,6 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
             </span>
 
             <div className="file-details">
-
               <span className="file-name">
                 {selectedFile.name}
               </span>
@@ -168,7 +163,6 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
               <span className="file-size">
                 {formatFileSize(selectedFile.size)}
               </span>
-
             </div>
           </div>
 
@@ -184,9 +178,15 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
                 <span>Uploading Resume...</span>
               </>
             ) : uploadedResume ? (
-              "✓ Re-upload"
+              <>
+                <RefreshCw size={14} />
+                <span>Re-upload</span>
+              </>
             ) : (
-              "⬆️ Upload Resume"
+              <>
+                <UploadCloud size={15} />
+                <span>Upload Resume</span>
+              </>
             )}
           </button>
         </div>
@@ -194,41 +194,29 @@ function ResumeUpload({ onUploadSuccess, currentResumeId }) {
 
       {error && (
         <div className="resume-upload-error">
-
           <span className="error-icon">
-            ⚠️
+            <AlertTriangle size={16} />
           </span>
-
-          <span>
-            {error}
-          </span>
-
+          <span>{error}</span>
         </div>
       )}
 
       {uploadedResume && (
         <div className="resume-upload-success">
-
           <span className="success-icon">
-            ✓
+            <CheckCircle2 size={20} />
           </span>
 
           <div>
-
-            <strong>
-              Resume Uploaded Successfully!
-            </strong>
-
+            <strong>Resume Ready for Analysis!</strong>
             <p>
-              Resume ID: #{uploadedResume.id} (
+              Resume #{uploadedResume.id} (
               {uploadedResume.file_name || uploadedResume.fileName}
-              ) ready for AI analysis.
+              ) parsed and ready. Proceed to Step 2.
             </p>
-
           </div>
         </div>
       )}
-
     </div>
   );
 }

@@ -690,18 +690,22 @@
 .secure-label {
   display: flex;
   align-items: center;
-
-  gap: 4px;
-
-  color: #626372;
-
-  font-size: 8px;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 11px;
 }
 
-.secure-label span {
-  color: #22c55e;
+.live-dot-mini {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  display: inline-block;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
 
-  font-size: 7px;
+.trust-icon {
+  color: #818cf8;
 }
 
 

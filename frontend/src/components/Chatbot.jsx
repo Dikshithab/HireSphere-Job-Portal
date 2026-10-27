@@ -103,24 +103,47 @@ function Chatbot() {
         },
       ]);
     } catch (error) {
-      console.error(
-        "Chatbot error:",
-        error.response?.data || error
-      );
+  console.error("Chatbot error:", {
+    message: error.message,
+    status: error.response?.status,
+    data: error.response?.data,
+    url: error.config?.url,
+  });
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "bot",
-          text: "Sorry, I'm unable to respond right now. Please try again.",
-          jobs: [],
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
+  const status = error.response?.status;
+
+  let errorMessage =
+    "Sorry, I'm unable to respond right now. Please try again.";
+
+  if (!error.response) {
+    errorMessage =
+      "Unable to connect to the server. Please check your internet connection or try again later.";
+  } else if (status === 404) {
+    errorMessage =
+      "The chatbot API endpoint was not found. Please check the backend URL configuration.";
+  } else if (status === 401 || status === 403) {
+    errorMessage =
+      "Your session may have expired. Please log in again.";
+  } else if (status === 429) {
+    errorMessage =
+      "The chatbot is receiving too many requests. Please try again shortly.";
+  } else if (status >= 500) {
+    errorMessage =
+      "The chatbot server encountered an error. Please check the backend logs.";
+  }
+
+  setMessages((prev) => [
+    ...prev,
+    {
+      sender: "bot",
+      text: errorMessage,
+      jobs: [],
+    },
+  ]);
+} finally {
+  setLoading(false);
+}
   };
-
   /* =====================================================
      ENTER KEY
      ===================================================== */

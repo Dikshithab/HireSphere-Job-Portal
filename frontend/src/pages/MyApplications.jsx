@@ -1,5 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Clock,
+  Sparkles,
+  XCircle,
+  CheckCircle2,
+  AlertTriangle,
+  Briefcase,
+  Building2,
+  MapPin,
+  Search,
+  ArrowRight,
+  ExternalLink,
+  Layers,
+  Inbox,
+  Check
+} from "lucide-react";
 import api from "../services/api";
 import "../css/MyApplication.css";
 
@@ -8,10 +24,6 @@ function MyApplications() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ==========================================
-  // FETCH MY APPLICATIONS
-  // ==========================================
-
   useEffect(() => {
     const fetchApplications = async () => {
       try {
@@ -19,40 +31,26 @@ function MyApplications() {
         setError("");
 
         const response = await api.get("/applications/my/");
-
         console.log("My Applications Response:", response.data);
-
-        // New backend response:
-        // {
-        //   count: 2,
-        //   applications: [...]
-        // }
 
         const applicationData = Array.isArray(response.data)
           ? response.data
           : response.data.applications || [];
 
-        const formattedApplications = applicationData.map(
-          (application) => ({
-            ...application,
-            jobId: application.job,
-            jobTitle: application.job_title,
-            companyName: application.company_name,
-            appliedAt: application.applied_at,
-          })
-        );
+        const formattedApplications = applicationData.map((application) => ({
+          ...application,
+          jobId: application.job,
+          jobTitle: application.job_title,
+          companyName: application.company_name,
+          appliedAt: application.applied_at,
+        }));
 
         setApplications(formattedApplications);
-
       } catch (error) {
-        console.error(
-          "Error fetching applications:",
-          error
-        );
-
+        console.error("Error fetching applications:", error);
         setError(
           error.response?.data?.message ||
-            "Unable to load applications. Please try again."
+          "Unable to load applications. Please try again."
         );
       } finally {
         setLoading(false);
@@ -62,26 +60,18 @@ function MyApplications() {
     fetchApplications();
   }, []);
 
-  // ==========================================
-  // STATUS HELPERS
-  // ==========================================
-
   const getStatusIcon = (status) => {
     switch (status) {
       case "PENDING":
-        return "◷";
-
+        return <Clock size={14} />;
       case "SHORTLISTED":
-        return "✦";
-
+        return <Sparkles size={14} />;
       case "REJECTED":
-        return "×";
-
+        return <XCircle size={14} />;
       case "HIRED":
-        return "✓";
-
+        return <CheckCircle2 size={14} />;
       default:
-        return "•";
+        return <Clock size={14} />;
     }
   };
 
@@ -89,16 +79,12 @@ function MyApplications() {
     switch (status) {
       case "PENDING":
         return "Under Review";
-
       case "SHORTLISTED":
         return "Shortlisted";
-
       case "REJECTED":
         return "Not Selected";
-
       case "HIRED":
         return "Hired";
-
       default:
         return status || "Unknown";
     }
@@ -107,626 +93,301 @@ function MyApplications() {
   const getStatusMessage = (status) => {
     switch (status) {
       case "PENDING":
-        return "Your application is currently under review.";
-
+        return "Your application is currently under review by the hiring team.";
       case "SHORTLISTED":
-        return "Great news! You've been shortlisted.";
-
+        return "Great news! Your profile was shortlisted for the next interview round.";
       case "REJECTED":
-        return "This application was not selected.";
-
+        return "This application was not selected at this time.";
       case "HIRED":
-        return "Congratulations! You have been hired.";
-
+        return "Congratulations! An offer was extended or finalized.";
       default:
         return "Application status updated.";
     }
   };
 
-  // ==========================================
-  // DATE FORMATTER
-  // ==========================================
-
   const formatDate = (date) => {
     if (!date) return null;
-
-    return new Date(date).toLocaleDateString(
-      "en-IN",
-      {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }
-    );
+    return new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   };
 
-  // ==========================================
-  // STATISTICS
-  // ==========================================
-
   const totalApplications = applications.length;
-
-  const pendingCount = applications.filter(
-    (application) =>
-      application.status === "PENDING"
-  ).length;
-
-  const shortlistedCount = applications.filter(
-    (application) =>
-      application.status === "SHORTLISTED"
-  ).length;
-
-  const rejectedCount = applications.filter(
-    (application) =>
-      application.status === "REJECTED"
-  ).length;
-
-  const hiredCount = applications.filter(
-    (application) =>
-      application.status === "HIRED"
-  ).length;
-
-  // ==========================================
-  // LOADING
-  // ==========================================
+  const pendingCount = applications.filter((app) => app.status === "PENDING").length;
+  const shortlistedCount = applications.filter((app) => app.status === "SHORTLISTED").length;
+  const rejectedCount = applications.filter((app) => app.status === "REJECTED").length;
+  const hiredCount = applications.filter((app) => app.status === "HIRED").length;
 
   if (loading) {
     return (
       <div className="applications-page">
-
         <div className="applications-bg-grid"></div>
-
         <div className="applications-orb applications-orb-one"></div>
         <div className="applications-orb applications-orb-two"></div>
 
         <div className="applications-loading">
-
           <div className="applications-loading-ring">
-            <span>✦</span>
+            <Sparkles size={24} className="ring-sparkle" />
           </div>
-
-          <span className="loading-label">
-            HIRESHERE
-          </span>
-
-          <h2>
-            Loading your applications
-          </h2>
-
-          <p>
-            Preparing your application workspace...
-          </p>
-
+          <span className="loading-label">HIRESPHERE WORKSPACE</span>
+          <h2>Loading your applications</h2>
+          <p>Preparing your application tracking workspace...</p>
         </div>
-
       </div>
     );
   }
-
-  // ==========================================
-  // ERROR
-  // ==========================================
 
   if (error) {
     return (
       <div className="applications-page">
-
         <div className="applications-bg-grid"></div>
-
         <div className="applications-orb applications-orb-one"></div>
         <div className="applications-orb applications-orb-two"></div>
 
         <div className="applications-error-state">
-
           <div className="error-state-icon">
-            !
+            <AlertTriangle size={24} />
           </div>
-
-          <span className="error-label">
-            APPLICATIONS UNAVAILABLE
-          </span>
-
-          <h1>
-            Something went wrong
-          </h1>
-
-          <p>
-            {error}
-          </p>
-
-          <Link
-            to="/jobs"
-            className="browse-jobs-btn"
-          >
+          <span className="error-label">APPLICATIONS UNAVAILABLE</span>
+          <h1>Something went wrong</h1>
+          <p>{error}</p>
+          <Link to="/jobs" className="browse-jobs-btn">
             <span>Browse Jobs</span>
-            <span>→</span>
+            <ArrowRight size={14} />
           </Link>
-
         </div>
-
       </div>
     );
   }
 
-  // ==========================================
-  // MAIN PAGE
-  // ==========================================
-
   return (
     <div className="applications-page">
-
-      {/* BACKGROUND */}
-
+      {/* Background Atmosphere */}
       <div className="applications-bg-grid"></div>
-
       <div className="applications-orb applications-orb-one"></div>
       <div className="applications-orb applications-orb-two"></div>
       <div className="applications-orb applications-orb-three"></div>
 
-
       <div className="applications-container">
-
-        {/* =====================================
-            HEADER
-        ===================================== */}
-
+        {/* HEADER */}
         <header className="applications-header">
-
           <div className="applications-header-content">
-
             <div className="applications-eyebrow">
-
               <span className="eyebrow-dot"></span>
-
-              CAREER WORKSPACE
-
-              <span className="ai-badge">
-                AI POWERED
-              </span>
-
+              APPLICATION TRACKER
+              <span className="ai-badge">LIVE STATUS</span>
             </div>
 
             <h1>
-              My{" "}
-              <span className="gradient-text">
-                Applications.
-              </span>
+              My <span className="gradient-text">Applications.</span>
             </h1>
 
             <p>
-              Track every opportunity you've applied
-              for and stay updated throughout your
-              job search journey.
+              Monitor every active job application, interview pipeline status, and hiring decision in one clean view.
             </p>
-
           </div>
 
-          <Link
-            to="/jobs"
-            className="browse-jobs-btn header-browse-btn"
-          >
-            <span className="search-icon">
-              ⌕
-            </span>
-
-            <span>
-              Find More Jobs
-            </span>
-
-            <span>
-              →
-            </span>
+          <Link to="/jobs" className="browse-jobs-btn header-browse-btn">
+            <Search size={15} />
+            <span>Find More Jobs</span>
+            <ArrowRight size={14} />
           </Link>
-
         </header>
 
-
-        {/* =====================================
-            STATISTICS
-        ===================================== */}
-
+        {/* STATISTICS STRIP */}
         {applications.length > 0 && (
-
           <section className="application-stats">
-
-            {/* TOTAL */}
-
             <div className="application-stat-card">
-
               <div className="application-stat-icon total">
-                ◫
+                <Layers size={16} />
               </div>
-
               <div>
-                <span>Total</span>
-
-                <strong>
-                  {totalApplications}
-                </strong>
+                <span>Total Applied</span>
+                <strong>{totalApplications}</strong>
               </div>
-
             </div>
 
-
-            {/* PENDING */}
-
             <div className="application-stat-card">
-
               <div className="application-stat-icon pending">
-                ◷
+                <Clock size={16} />
               </div>
-
               <div>
                 <span>Under Review</span>
-
-                <strong>
-                  {pendingCount}
-                </strong>
+                <strong>{pendingCount}</strong>
               </div>
-
             </div>
 
-
-            {/* SHORTLISTED */}
-
             <div className="application-stat-card">
-
               <div className="application-stat-icon shortlisted">
-                ✦
+                <Sparkles size={16} />
               </div>
-
               <div>
                 <span>Shortlisted</span>
-
-                <strong>
-                  {shortlistedCount}
-                </strong>
+                <strong>{shortlistedCount}</strong>
               </div>
-
             </div>
 
-
-            {/* REJECTED */}
-
             <div className="application-stat-card">
-
               <div className="application-stat-icon rejected">
-                ×
+                <XCircle size={16} />
               </div>
-
               <div>
-                <span>Rejected</span>
-
-                <strong>
-                  {rejectedCount}
-                </strong>
+                <span>Not Selected</span>
+                <strong>{rejectedCount}</strong>
               </div>
-
             </div>
-
-
-            {/* HIRED */}
 
             <div className="application-stat-card">
-
               <div className="application-stat-icon hired">
-                ✓
+                <CheckCircle2 size={16} />
               </div>
-
               <div>
-                <span>Hired</span>
-
-                <strong>
-                  {hiredCount}
-                </strong>
+                <span>Offers / Hired</span>
+                <strong>{hiredCount}</strong>
               </div>
-
             </div>
-
           </section>
-
         )}
 
-
-        {/* =====================================
-            NO APPLICATIONS
-        ===================================== */}
-
+        {/* EMPTY STATE */}
         {applications.length === 0 ? (
-
           <section className="no-applications">
-
             <div className="empty-glow"></div>
-
             <div className="empty-application-icon">
-              ◫
+              <Inbox size={32} />
             </div>
 
-            <span className="empty-label">
-              YOUR CAREER JOURNEY
-            </span>
-
-            <h2>
-              No applications yet
-            </h2>
-
+            <span className="empty-label">APPLICATION WORKSPACE</span>
+            <h2>No active applications</h2>
             <p>
-              You haven't applied for any jobs yet.
-              Explore opportunities and take the first
-              step toward your next career move.
+              You haven't submitted any job applications yet. Explore openings tailored to your skillset and apply directly.
             </p>
 
-            <Link
-              to="/jobs"
-              className="browse-jobs-btn empty-browse-btn"
-            >
-              <span>⌕</span>
-              Browse Jobs
-              <span>→</span>
+            <Link to="/jobs" className="browse-jobs-btn empty-browse-btn">
+              <Search size={15} />
+              <span>Browse Open Positions</span>
+              <ArrowRight size={14} />
             </Link>
-
           </section>
-
         ) : (
-
-          /* ===================================
-             APPLICATION LIST
-          =================================== */
-
+          /* APPLICATION LIST */
           <section className="applications-section">
-
             <div className="applications-section-header">
-
               <div>
-
-                <span className="section-kicker">
-                  APPLICATION ACTIVITY
-                </span>
-
-                <h2>
-                  Your Applications
-                </h2>
-
+                <span className="section-kicker">APPLICATION ACTIVITY</span>
+                <h2>Active Submissions</h2>
               </div>
 
               <span className="application-count">
-                {totalApplications}{" "}
-                {totalApplications === 1
-                  ? "application"
-                  : "applications"}
+                {totalApplications} {totalApplications === 1 ? "application" : "applications"}
               </span>
-
             </div>
-
 
             <div className="applications-list">
+              {applications.map((application, index) => (
+                <article className="application-card" key={application.id}>
+                  <div className="application-number">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
 
-              {applications.map(
-                (application, index) => (
+                  <div className="application-job-icon">
+                    <Briefcase size={18} />
+                  </div>
 
-                  <article
-                    className="application-card"
-                    key={application.id}
-                  >
+                  <div className="application-main">
+                    <h2>{application.jobTitle}</h2>
 
-                    {/* CARD NUMBER */}
+                    <h3>
+                      <Building2 size={14} />
+                      <span>{application.companyName}</span>
+                    </h3>
 
-                    <div className="application-number">
-                      {String(index + 1).padStart(2, "0")}
+                    <div className="application-meta">
+                      <span>
+                        <MapPin size={12} />
+                        {application.location || "Remote / Hybrid"}
+                      </span>
+
+                      <span>
+                        <Clock size={12} />
+                        Applied {formatDate(application.appliedAt)}
+                      </span>
+
+                      {application.job_type && (
+                        <span>
+                          <Briefcase size={12} />
+                          {application.job_type}
+                        </span>
+                      )}
                     </div>
 
-
-                    {/* JOB ICON */}
-
-                    <div className="application-job-icon">
-                      <span>💼</span>
-                    </div>
-
-
-                    {/* APPLICATION DETAILS */}
-
-                    <div className="application-main">
-
-                      <h2>
-                        {application.jobTitle}
-                      </h2>
-
-                      <h3>
-                        <span>◈</span>
-                        {application.companyName}
-                      </h3>
-
-
-                      <div className="application-meta">
-
-                        <span>
-                          <b>⌖</b>
-                          {application.location || "N/A"}
-                        </span>
-
-                        <span>
-                          <b>◷</b>
-
-                          Applied{" "}
-                          {formatDate(
-                            application.appliedAt
-                          )}
-                        </span>
-
-                        {application.job_type && (
-                          <span>
-                            <b>▣</b>
-                            {application.job_type}
-                          </span>
-                        )}
-
-                      </div>
-
-
-                      {/* =================================
-                          APPLICATION TIMELINE
-                      ================================= */}
-
-                      {application.timeline &&
-                        application.timeline.length > 0 && (
-
-                          <div className="application-timeline">
-
-                            <div className="timeline-title">
-                              APPLICATION TIMELINE
+                    {application.timeline && application.timeline.length > 0 && (
+                      <div className="application-timeline">
+                        <div className="timeline-title">PIPELINE MILESTONES</div>
+                        <div className="timeline">
+                          {application.timeline.map((event, timelineIndex) => (
+                            <div
+                              className={`timeline-item ${event.completed ? "completed" : ""}`}
+                              key={`${application.id}-${event.status}-${timelineIndex}`}
+                            >
+                              <div className="timeline-marker">
+                                {event.completed ? <Check size={10} /> : null}
+                              </div>
+                              <div className="timeline-content">
+                                <strong>{event.label}</strong>
+                                {event.date && <span>{formatDate(event.date)}</span>}
+                              </div>
                             </div>
-
-                            <div className="timeline">
-
-                              {application.timeline.map(
-                                (event, timelineIndex) => (
-
-                                  <div
-                                    className={`timeline-item ${
-                                      event.completed
-                                        ? "completed"
-                                        : ""
-                                    }`}
-                                    key={`${application.id}-${event.status}-${timelineIndex}`}
-                                  >
-
-                                    <div className="timeline-marker">
-                                      {event.completed
-                                        ? "✓"
-                                        : "○"}
-                                    </div>
-
-                                    <div className="timeline-content">
-
-                                      <strong>
-                                        {event.label}
-                                      </strong>
-
-                                      {event.date && (
-                                        <span>
-                                          {formatDate(
-                                            event.date
-                                          )}
-                                        </span>
-                                      )}
-
-                                    </div>
-
-                                  </div>
-
-                                )
-                              )}
-
-                            </div>
-
-                          </div>
-
-                        )}
-
-                    </div>
-
-
-                    {/* STATUS */}
-
-                    <div className="application-status">
-
-                      <div
-                        className={`status status-${application.status?.toLowerCase()}`}
-                      >
-
-                        <span className="status-icon">
-                          {getStatusIcon(
-                            application.status
-                          )}
-                        </span>
-
-                        {getStatusText(
-                          application.status
-                        )}
-
+                          ))}
+                        </div>
                       </div>
+                    )}
+                  </div>
 
-
-                      <p>
-                        {getStatusMessage(
-                          application.status
-                        )}
-                      </p>
-
-
-                      <Link
-                        to={`/jobs/${application.jobId}`}
-                        className="view-application-btn"
-                      >
-                        <span>
-                          View Job
-                        </span>
-
-                        <span>
-                          ↗
-                        </span>
-                      </Link>
-
+                  <div className="application-status">
+                    <div className={`status status-${application.status?.toLowerCase()}`}>
+                      <span className="status-icon">
+                        {getStatusIcon(application.status)}
+                      </span>
+                      <span>{getStatusText(application.status)}</span>
                     </div>
 
-                  </article>
+                    <p>{getStatusMessage(application.status)}</p>
 
-                )
-              )}
-
+                    <Link to={`/jobs/${application.jobId}`} className="view-application-btn">
+                      <span>View Job Details</span>
+                      <ExternalLink size={13} />
+                    </Link>
+                  </div>
+                </article>
+              ))}
             </div>
-
           </section>
-
         )}
 
-
-        {/* =====================================
-            BOTTOM CAREER CTA
-        ===================================== */}
-
+        {/* BOTTOM CTA */}
         {applications.length > 0 && (
-
           <section className="applications-cta">
-
             <div className="cta-glow"></div>
-
             <div className="cta-icon">
-              ✦
+              <Sparkles size={22} />
             </div>
 
             <div className="cta-content">
-
-              <span>
-                KEEP MOVING FORWARD
-              </span>
-
-              <h3>
-                Your next opportunity could be one
-                search away.
-              </h3>
-
-              <p>
-                Discover new jobs that match your
-                skills and career goals.
-              </p>
-
+              <span>EXPLORE MORE ROLES</span>
+              <h3>Looking to expand your opportunities?</h3>
+              <p>Browse newly posted openings and find additional roles aligned with your career trajectory.</p>
             </div>
 
-            <Link
-              to="/jobs"
-              className="cta-jobs-btn"
-            >
-              Explore Jobs
-              <span>→</span>
+            <Link to="/jobs" className="cta-jobs-btn">
+              <span>Discover Roles</span>
+              <ArrowRight size={14} />
             </Link>
-
           </section>
-
         )}
-
       </div>
-
     </div>
   );
 }

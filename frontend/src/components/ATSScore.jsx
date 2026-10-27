@@ -1,4 +1,5 @@
 import React from "react";
+import { CheckCircle2, Award, Zap } from "lucide-react";
 import "../css/ATSScore.css";
 
 function ATSScore({ score, ats_score }) {
@@ -19,6 +20,7 @@ function ATSScore({ score, ats_score }) {
       return {
         label: "Strong Match",
         statusClass: "match-strong",
+        strokeColor: "#10b981",
         message:
           "Your resume aligns exceptionally well with the target job requirements.",
       };
@@ -28,6 +30,7 @@ function ATSScore({ score, ats_score }) {
       return {
         label: "Good Match",
         statusClass: "match-good",
+        strokeColor: "#6366f1",
         message:
           "Your resume matches core qualifications with minor skill or experience gaps.",
       };
@@ -37,14 +40,16 @@ function ATSScore({ score, ats_score }) {
       return {
         label: "Moderate Match",
         statusClass: "match-moderate",
+        strokeColor: "#f59e0b",
         message:
           "Moderate match. Focus on missing critical skills and measurable project achievements.",
       };
     }
 
     return {
-      label: "Low Match",
+      label: "Needs Improvement",
       statusClass: "match-low",
+      strokeColor: "#f43f5e",
       message:
         "Significant skill and experience gaps identified compared to the target role.",
     };
@@ -55,17 +60,12 @@ function ATSScore({ score, ats_score }) {
   // SVG circular gauge
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
-
-  const strokeDashoffset =
-    circumference -
-    (numericScore / 100) * circumference;
+  const strokeDashoffset = circumference - (numericScore / 100) * circumference;
 
   return (
     <div className={`ats-score-container ${details.statusClass}`}>
-
       {/* Gauge */}
       <div className="ats-score-gauge-wrapper">
-
         <svg
           className="ats-score-svg"
           viewBox="0 0 130 130"
@@ -73,8 +73,7 @@ function ATSScore({ score, ats_score }) {
           height="130"
           aria-label={`ATS compatibility score ${numericScore} out of 100`}
         >
-
-          {/* Background Circle */}
+          {/* Background Track */}
           <circle
             className="ats-score-bg-circle"
             cx="65"
@@ -84,7 +83,7 @@ function ATSScore({ score, ats_score }) {
             fill="transparent"
           />
 
-          {/* Progress Circle */}
+          {/* Progress Circle with dynamic gradient */}
           <circle
             className="ats-score-progress-circle"
             cx="65"
@@ -94,38 +93,29 @@ function ATSScore({ score, ats_score }) {
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
+            stroke={details.strokeColor}
             fill="transparent"
           />
-
         </svg>
 
         <div className="ats-score-center-text">
-
-          <span className="ats-score-number">
-            {numericScore}
-          </span>
-
-          <span className="ats-score-percent">
-            /100
-          </span>
-
+          <span className="ats-score-number">{numericScore}</span>
+          <span className="ats-score-percent">/100</span>
         </div>
-
       </div>
 
       {/* Information */}
       <div className="ats-score-info">
-
         <div className="ats-score-header">
-
-          <span className="ats-score-title">
-            ATS Compatibility Score
-          </span>
+          <div className="ats-score-title-group">
+            <span className="ats-score-title">ATS Compatibility Score</span>
+            <span className="ats-score-subtitle">Calculated by Groq AI Analyzer</span>
+          </div>
 
           <span className="ats-score-badge">
+            <Zap size={13} />
             {details.label}
           </span>
-
         </div>
 
         <p className="ats-score-desc">
@@ -141,39 +131,31 @@ function ATSScore({ score, ats_score }) {
           aria-valuemin="0"
           aria-valuemax="100"
         >
-
           <div
             className="ats-score-meter-bar-fill"
             style={{
               width: `${numericScore}%`,
+              background: details.strokeColor,
             }}
           />
-
         </div>
 
-        {/* Breakdown */}
+        {/* Breakdown Factors */}
         <div className="ats-score-factors-row">
-
           <span className="ats-factor-tag">
-            ✓ Skills Match (40%)
+            <CheckCircle2 size={12} /> Skills Match (40%)
           </span>
-
           <span className="ats-factor-tag">
-            ✓ Experience (30%)
+            <CheckCircle2 size={12} /> Experience (30%)
           </span>
-
           <span className="ats-factor-tag">
-            ✓ Projects (15%)
+            <CheckCircle2 size={12} /> Projects (15%)
           </span>
-
           <span className="ats-factor-tag">
-            ✓ Keywords (15%)
+            <CheckCircle2 size={12} /> Keywords (15%)
           </span>
-
         </div>
-
       </div>
-
     </div>
   );
 }

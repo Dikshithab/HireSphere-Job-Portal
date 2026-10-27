@@ -1,5 +1,16 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {
+  Briefcase,
+  Mail,
+  Lock,
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  Building2,
+  AlertTriangle,
+  ShieldCheck
+} from "lucide-react";
 import api from "../services/api";
 import "../css/login.css";
 
@@ -11,13 +22,8 @@ function Login() {
 
   const navigate = useNavigate();
 
-  /* =====================================================
-     LOGIN
-     ===================================================== */
-
   const handleLogin = async (e) => {
     e.preventDefault();
-
     setError("");
     setLoading(true);
 
@@ -27,30 +33,16 @@ function Login() {
         password,
       });
 
-      localStorage.setItem(
-        "token",
-        response.data.access
-      );
-
-      localStorage.setItem(
-        "refreshToken",
-        response.data.refresh
-      );
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(response.data.user)
-      );
-
-      alert("Login successful!");
+      localStorage.setItem("token", response.data.access);
+      localStorage.setItem("refreshToken", response.data.refresh);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);
-
       setError(
         error.response?.data?.message ||
-          "Login failed. Please check your email and password."
+        "Login failed. Please check your email and password."
       );
     } finally {
       setLoading(false);
@@ -59,42 +51,27 @@ function Login() {
 
   return (
     <div className="auth-page">
-
-      {/* =================================================
-          BACKGROUND DECORATION
-          ================================================= */}
-
+      {/* Background Atmosphere */}
       <div className="auth-orb auth-orb-one" />
       <div className="auth-orb auth-orb-two" />
       <div className="auth-grid" />
 
-
-      {/* =================================================
-          BRAND PANEL
-          ================================================= */}
-
+      {/* BRAND PANEL */}
       <aside className="auth-brand-panel">
-
         <div className="auth-brand">
-
           <div className="brand-icon">
-            💼
+            <Briefcase size={20} />
           </div>
-
           <span>
             Hire<span>Sphere</span>
           </span>
-
         </div>
 
-
         <div className="brand-content">
-
           <div className="brand-badge">
             <span className="brand-badge-dot" />
-            YOUR CAREER. YOUR FUTURE.
+            INTELLIGENT RECRUITMENT PLATFORM
           </div>
-
 
           <h2>
             Find the work
@@ -102,364 +79,194 @@ function Login() {
             <span>you love.</span>
           </h2>
 
-
           <p>
-            Discover opportunities, connect with
-            employers, and build a career that
-            moves with you.
+            Discover high-growth career opportunities, benchmark your skills with Groq AI,
+            and match directly with engineering-focused teams.
           </p>
 
-
-          {/* =================================================
-              FEATURES
-              ================================================= */}
-
           <div className="brand-features">
-
             <div className="brand-feature">
-
               <span className="feature-icon">
-                ✓
+                <CheckCircle2 size={16} />
               </span>
-
               <div>
-                <strong>
-                  Smart job discovery
-                </strong>
-
-                <span>
-                  Find roles that match your skills.
-                </span>
+                <strong>Smart Job Discovery</strong>
+                <span>Instant semantic matching calibrated to your resume.</span>
               </div>
-
             </div>
 
-
             <div className="brand-feature">
-
               <span className="feature-icon">
-                ✦
+                <Sparkles size={16} />
               </span>
-
               <div>
-                <strong>
-                  AI-powered career tools
-                </strong>
-
-                <span>
-                  Optimize your resume with AI.
-                </span>
+                <strong>AI Resume & ATS Optimization</strong>
+                <span>Score higher with instant keyword gap analysis.</span>
               </div>
-
             </div>
 
-
             <div className="brand-feature">
-
               <span className="feature-icon">
-                ◈
+                <Building2 size={16} />
               </span>
-
               <div>
-                <strong>
-                  Connect with employers
-                </strong>
-
-                <span>
-                  Take your next career step.
-                </span>
+                <strong>Direct Employer Channels</strong>
+                <span>Fast-track hiring with verified company postings.</span>
               </div>
-
             </div>
-
           </div>
-
-
-          {/* =================================================
-              AI MINI CARD
-              ================================================= */}
 
           <div className="brand-ai-card">
-
             <div className="brand-ai-icon">
-              ✦
+              <Sparkles size={18} />
             </div>
-
             <div>
-
-              <span className="brand-ai-label">
-                HIRESPHERE AI
-              </span>
-
-              <p>
-                Your AI-powered career assistant
-              </p>
-
+              <span className="brand-ai-label">HIRESPHERE AI INTELLIGENCE</span>
+              <p>Powered by Groq high-speed LLM processing</p>
             </div>
-
             <span className="brand-ai-arrow">
-              →
+              <ArrowRight size={16} />
             </span>
-
           </div>
-
         </div>
-
-
-        {/* BRAND FOOTER */}
 
         <div className="brand-footer">
-          <span>
-            © 2026 HireSphere
-          </span>
-
-          <span className="footer-separator">
-            •
-          </span>
-
-          <span>
-            Career intelligence platform
-          </span>
+          <span>© 2026 HireSphere</span>
+          <span className="footer-separator">•</span>
+          <span>Next-gen AI career platform</span>
         </div>
-
       </aside>
 
-
-      {/* =================================================
-          FORM PANEL
-          ================================================= */}
-
+      {/* FORM PANEL */}
       <main className="auth-form-panel">
-
         <div className="auth-card">
-
-          {/* =================================================
-              MOBILE BRAND
-              ================================================= */}
-
+          {/* Mobile Brand */}
           <div className="mobile-brand">
-
             <div className="brand-icon">
-              💼
+              <Briefcase size={18} />
             </div>
-
             <span>
               Hire<span>Sphere</span>
             </span>
-
           </div>
 
-
-          {/* =================================================
-              HEADING
-              ================================================= */}
-
+          {/* Heading */}
           <div className="auth-heading">
-
             <div className="auth-eyebrow">
-              <span>✦</span>
+              <Sparkles size={12} />
               WELCOME BACK
             </div>
 
             <h1>
-              Sign in to your
-              <span> account.</span>
+              Sign in to your <span>account.</span>
             </h1>
 
             <p>
-              Continue your journey with
-              HireSphere and discover what's next.
+              Continue your journey with HireSphere and explore your personalized matches.
             </p>
-
           </div>
 
-
-          {/* =================================================
-              LOGIN FORM
-              ================================================= */}
-
+          {/* Login Form */}
           <form onSubmit={handleLogin}>
-
-            {/* EMAIL */}
-
+            {/* Email */}
             <div className="auth-group">
-
-              <label htmlFor="login-email">
-                Email Address
-              </label>
-
+              <label htmlFor="login-email">Email Address</label>
               <div className="input-wrapper">
-
-                <span
-                  className="input-icon"
-                  aria-hidden="true"
-                >
-                  @
+                <span className="input-icon" aria-hidden="true">
+                  <Mail size={16} />
                 </span>
-
                 <input
                   id="login-email"
                   type="email"
                   placeholder="you@example.com"
                   value={email}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
+                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                   required
                 />
-
               </div>
-
             </div>
 
-
-            {/* PASSWORD */}
-
+            {/* Password */}
             <div className="auth-group">
-
               <div className="password-label-row">
-
-                <label htmlFor="login-password">
-                  Password
-                </label>
-
+                <label htmlFor="login-password">Password</label>
                 <span className="secure-label">
-                  <span>●</span>
-                  Secure login
+                  <span className="live-dot-mini" />
+                  Secure TLS Encrypted
                 </span>
-
               </div>
 
               <div className="input-wrapper">
-
-                <span
-                  className="input-icon"
-                  aria-hidden="true"
-                >
-                  ••
+                <span className="input-icon" aria-hidden="true">
+                  <Lock size={16} />
                 </span>
-
                 <input
                   id="login-password"
                   type="password"
                   placeholder="Enter your password"
                   value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                   required
                 />
-
               </div>
-
             </div>
 
-
-            {/* ERROR */}
-
+            {/* Error Message */}
             {error && (
-              <div
-                className="auth-message auth-error"
-                role="alert"
-              >
+              <div className="auth-message auth-error" role="alert">
                 <span className="message-icon">
-                  !
+                  <AlertTriangle size={16} />
                 </span>
-
-                <span>
-                  {error}
-                </span>
+                <span>{error}</span>
               </div>
             )}
 
-
-            {/* LOGIN BUTTON */}
-
+            {/* Submit Button */}
             <button
               type="submit"
               className="auth-button"
               disabled={loading}
             >
-
               {loading ? (
                 <>
                   <span className="button-spinner" />
-                  Signing in...
+                  <span>Signing in...</span>
                 </>
               ) : (
                 <>
-                  <span>
-                    Sign In
-                  </span>
-
-                  <span className="button-arrow">
-                    →
-                  </span>
+                  <span>Sign In</span>
+                  <ArrowRight size={16} className="button-arrow" />
                 </>
               )}
-
             </button>
 
-
-            {/* DIVIDER */}
-
+            {/* Divider */}
             <div className="auth-divider">
               <span />
               <b>OR</b>
               <span />
             </div>
 
-
-            {/* REGISTER */}
-
-            <Link
-              to="/register"
-              className="secondary-auth-button"
-            >
-              <span>
-                Create a new account
-              </span>
-
-              <span>
-                →
-              </span>
+            {/* Register Link */}
+            <Link to="/register" className="secondary-auth-button">
+              <span>Create a new account</span>
+              <ArrowRight size={15} />
             </Link>
 
-
-            {/* BOTTOM TEXT */}
-
             <p className="auth-bottom-text">
-              By continuing, you agree to HireSphere's
-              <span> terms</span> and
-              <span> privacy policy</span>.
+              By continuing, you agree to HireSphere's <span>Terms of Service</span> and <span>Privacy Policy</span>.
             </p>
-
           </form>
 
-
-          {/* =================================================
-              TRUST FOOTER
-              ================================================= */}
-
+          {/* Trust Footer */}
           <div className="auth-trust">
-
-            <span>
-              🔒
-            </span>
-
-            <span>
-              Your account is protected with secure
-              authentication
-            </span>
-
+            <ShieldCheck size={16} className="trust-icon" />
+            <span>Protected with end-to-end JWT token encryption</span>
           </div>
-
         </div>
-
       </main>
-
     </div>
   );
 }

@@ -1,588 +1,291 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  User,
+  Mail,
+  Phone,
+  Briefcase,
+  ArrowLeft,
+  CheckCircle2,
+  AlertTriangle,
+  Edit3,
+  Trash2,
+  ShieldCheck,
+  Save,
+  X
+} from "lucide-react";
 import api from "../services/api";
 import "../css/Profile.css";
 
 function Profile() {
-
   const navigate = useNavigate();
 
   const [profile, setProfile] = useState(null);
-
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-
-  // ==========================================
-  // LOAD PROFILE
-  // ==========================================
 
   useEffect(() => {
     loadProfile();
   }, []);
 
-
   const loadProfile = async () => {
-
     try {
-
       setLoading(true);
       setError("");
-
       const response = await api.get("/users/profile/");
-
       const user = response.data;
 
       setProfile(user);
-
       setFullName(user.name || "");
       setPhone(user.phone || "");
-
     } catch (error) {
-
-      console.error(
-        "Profile loading error:",
-        error
-      );
-
+      console.error("Profile loading error:", error);
       setError(
         error.response?.data?.message ||
         error.response?.data ||
         "Unable to load profile."
       );
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
-
-  // ==========================================
-  // UPDATE PROFILE
-  // ==========================================
-
   const handleUpdate = async (e) => {
-
     e.preventDefault();
 
     try {
-
       setSaving(true);
       setMessage("");
       setError("");
 
-      const response = await api.put(
-        "/users/profile/",
-        {
-          name: fullName.trim(),
-          phone: phone.trim()
-        }
-      );
+      const response = await api.put("/users/profile/", {
+        name: fullName.trim(),
+        phone: phone.trim(),
+      });
 
       const updatedProfile = response.data;
-
       setProfile(updatedProfile);
+      setFullName(updatedProfile.name || "");
+      setPhone(updatedProfile.phone || "");
 
-      setFullName(
-        updatedProfile.name || ""
-      );
-
-      setPhone(
-        updatedProfile.phone || ""
-      );
-
-
-      // ========================================
-      // UPDATE NAVBAR NAME
-      // ========================================
-
-      localStorage.setItem(
-        "fullName",
-        updatedProfile.name || ""
-      );
-
-      // Custom event for same browser tab
-      window.dispatchEvent(
-        new Event("profileUpdated")
-      );
-
+      localStorage.setItem("fullName", updatedProfile.name || "");
+      window.dispatchEvent(new Event("profileUpdated"));
 
       setEditing(false);
-
-      setMessage(
-        "Profile updated successfully!"
-      );
-
+      setMessage("Profile updated successfully!");
     } catch (error) {
-
-      console.error(
-        "Profile update error:",
-        error
-      );
-
+      console.error("Profile update error:", error);
       setError(
         error.response?.data?.message ||
         error.response?.data ||
         "Unable to update profile."
       );
-
     } finally {
-
       setSaving(false);
-
     }
   };
 
-
-  // ==========================================
-  // CANCEL EDITING
-  // ==========================================
-
   const handleCancel = () => {
-
     setEditing(false);
-
     setMessage("");
     setError("");
-
-    setFullName(
-      profile?.name || ""
-    );
-
-    setPhone(
-      profile?.phone || ""
-    );
+    setFullName(profile?.name || "");
+    setPhone(profile?.phone || "");
   };
 
-
-  // ==========================================
-  // DELETE ACCOUNT
-  // ==========================================
-
   const handleDelete = async () => {
-  const confirmed = window.confirm(
-    "Are you sure you want to permanently delete your account?\n\nThis action cannot be undone."
-  );
-
-  if (!confirmed) return;
-
-  try {
-    setError("");
-    setMessage("");
-
-    await api.delete("/users/profile/delete/");
-
-    localStorage.clear();
-
-    alert("Your account has been deleted successfully.");
-
-    navigate("/login");
-  } catch (error) {
-    console.error("Delete account error:", error);
-
-    setError(
-      error.response?.data?.message ||
-      error.response?.data ||
-      "Unable to delete account."
+    const confirmed = window.confirm(
+      "Are you sure you want to permanently delete your account?\n\nThis action cannot be undone."
     );
-  }
-};
 
+    if (!confirmed) return;
 
-  // ==========================================
-  // LOADING
-  // ==========================================
+    try {
+      setError("");
+      setMessage("");
+      await api.delete("/users/profile/delete/");
+      localStorage.clear();
+      alert("Your account has been deleted successfully.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Delete account error:", error);
+      setError(
+        error.response?.data?.message ||
+        error.response?.data ||
+        "Unable to delete account."
+      );
+    }
+  };
 
   if (loading) {
-
     return (
       <div className="profile-page">
-
         <div className="profile-loading">
-
           <div className="profile-loading-icon">
-            👤
+            <User size={32} />
           </div>
-
-          <h2>
-            Loading profile...
-          </h2>
-
-          <p>
-            Please wait.
-          </p>
-
+          <h2>Loading profile...</h2>
+          <p>Retrieving your account details.</p>
         </div>
-
       </div>
     );
   }
-
-
-  // ==========================================
-  // PROFILE LOAD ERROR
-  // ==========================================
 
   if (!profile) {
-
     return (
       <div className="profile-page">
-
         <div className="profile-error">
-
-          <h2>
-            Unable to load profile
-          </h2>
-
-          <p>
-            {error || "Something went wrong."}
-          </p>
-
-          <button
-            onClick={() => navigate("/jobs")}
-          >
-            Go Back
+          <h2>Unable to load profile</h2>
+          <p>{error || "Something went wrong."}</p>
+          <button onClick={() => navigate("/jobs")}>
+            Go Back to Catalog
           </button>
-
         </div>
-
       </div>
     );
   }
 
-
-  // ==========================================
-  // PROFILE DATA
-  // ==========================================
-
-  const displayName =
-    profile.fullName?.trim() ||
-    "User";
-
-  const initial =
-    displayName
-      .charAt(0)
-      .toUpperCase();
-
-  const isEmployer =
-    profile.role === "EMPLOYER";
-
-
-  // ==========================================
-  // UI
-  // ==========================================
+  const displayName = profile.name?.trim() || "User";
+  const initial = displayName.charAt(0).toUpperCase();
+  const isEmployer = profile.role === "EMPLOYER";
 
   return (
-
     <div className="profile-page">
-
       <div className="profile-container">
-
-
-        {/* =====================================
-            HEADER
-        ====================================== */}
-
+        {/* HEADER */}
         <div className="profile-header">
-
           <div>
-
-            <p className="profile-label">
-              MY ACCOUNT
-            </p>
-
-            <h1>
-              My Profile
-            </h1>
-
-            <p>
-              Manage your personal information
-              and account.
-            </p>
-
+            <p className="profile-label">ACCOUNT SETTINGS</p>
+            <h1>My Profile</h1>
+            <p>Manage your account credentials, preferences, and personal details.</p>
           </div>
 
-
-          <button
-            className="profile-back-btn"
-            onClick={() => navigate(-1)}
-          >
-            ← Back
+          <button className="profile-back-btn" onClick={() => navigate(-1)}>
+            <ArrowLeft size={14} />
+            <span>Back</span>
           </button>
-
         </div>
 
-
-        {/* =====================================
-            SUCCESS MESSAGE
-        ====================================== */}
-
+        {/* FEEDBACK NOTICES */}
         {message && (
-
           <div className="profile-success">
-            ✓ {message}
+            <CheckCircle2 size={16} />
+            <span>{message}</span>
           </div>
-
         )}
-
-
-        {/* =====================================
-            ERROR MESSAGE
-        ====================================== */}
 
         {error && (
-
           <div className="profile-error-message">
-            ⚠ {error}
+            <AlertTriangle size={16} />
+            <span>{error}</span>
           </div>
-
         )}
 
-
-        {/* =====================================
-            PROFILE CARD
-        ====================================== */}
-
+        {/* MAIN PROFILE CARD */}
         <div className="profile-card">
-
-
-          {/* ===================================
-              PROFILE HEADER
-          ==================================== */}
-
           <div className="profile-card-top">
-
-            <div className="profile-avatar">
-              {initial}
-            </div>
-
+            <div className="profile-avatar">{initial}</div>
 
             <div className="profile-heading">
-
-              <h2>
-                {displayName}
-              </h2>
-
+              <h2>{displayName}</h2>
               <span className="profile-role">
-
-                {isEmployer
-                  ? "Employer"
-                  : "Job Seeker"}
-
+                {isEmployer ? "Employer Account" : "Job Seeker Account"}
               </span>
-
             </div>
-
           </div>
 
-
-          {/* ===================================
-              VIEW PROFILE
-          ==================================== */}
-
+          {/* VIEW MODE */}
           {!editing ? (
-
             <div className="profile-details">
-
-
-              {/* FULL NAME */}
-
               <div className="profile-detail">
-
                 <span className="detail-icon">
-                  👤
+                  <User size={16} />
                 </span>
-
                 <div>
-
-                  <small>
-                    Full Name
-                  </small>
-
-                  <strong>
-                    {displayName}
-                  </strong>
-
+                  <small>Full Name</small>
+                  <strong>{displayName}</strong>
                 </div>
-
               </div>
 
-
-              {/* EMAIL */}
-
               <div className="profile-detail">
-
                 <span className="detail-icon">
-                  📧
+                  <Mail size={16} />
                 </span>
-
                 <div>
-
-                  <small>
-                    Email
-                  </small>
-
-                  <strong>
-                    {profile.email || "Not provided"}
-                  </strong>
-
+                  <small>Email Address</small>
+                  <strong>{profile.email || "Not provided"}</strong>
                 </div>
-
               </div>
 
-
-              {/* PHONE */}
-
               <div className="profile-detail">
-
                 <span className="detail-icon">
-                  📱
+                  <Phone size={16} />
                 </span>
-
                 <div>
-
-                  <small>
-                    Phone
-                  </small>
-
-                  <strong>
-                    {profile.phone || "Not provided"}
-                  </strong>
-
+                  <small>Phone Number</small>
+                  <strong>{profile.phone || "Not provided"}</strong>
                 </div>
-
               </div>
 
-
-              {/* ACCOUNT TYPE */}
-
               <div className="profile-detail">
-
                 <span className="detail-icon">
-                  💼
+                  <Briefcase size={16} />
                 </span>
-
                 <div>
-
-                  <small>
-                    Account Type
-                  </small>
-
-                  <strong>
-
-                    {isEmployer
-                      ? "Employer"
-                      : "Job Seeker"}
-
-                  </strong>
-
+                  <small>Account Type</small>
+                  <strong>{isEmployer ? "Employer" : "Job Seeker"}</strong>
                 </div>
-
               </div>
-
             </div>
-
           ) : (
-
-
-            /* =================================
-               EDIT PROFILE
-            ================================== */
-
-            <form
-              className="profile-edit-form"
-              onSubmit={handleUpdate}
-            >
-
-
-              {/* FULL NAME */}
-
+            /* EDIT MODE */
+            <form className="profile-edit-form" onSubmit={handleUpdate}>
               <div className="profile-input-group">
-
-                <label>
-                  Full Name
-                </label>
-
+                <label>Full Name</label>
                 <input
                   type="text"
                   value={fullName}
-                  onChange={(e) =>
-                    setFullName(e.target.value)
-                  }
+                  onChange={(e) => setFullName(e.target.value)}
                   placeholder="Enter your full name"
                   required
                 />
-
               </div>
 
-
-              {/* EMAIL */}
-
               <div className="profile-input-group">
-
-                <label>
-                  Email
-                </label>
-
+                <label>Email Address</label>
                 <input
                   type="email"
                   value={profile.email || ""}
                   disabled
                 />
-
-                <small>
-                  Email cannot be changed here.
-                </small>
-
+                <small>Email address cannot be changed.</small>
               </div>
 
-
-              {/* PHONE */}
-
               <div className="profile-input-group">
-
-                <label>
-                  Phone Number
-                </label>
-
+                <label>Phone Number</label>
                 <input
                   type="tel"
                   value={phone}
-                  onChange={(e) =>
-                    setPhone(e.target.value)
-                  }
+                  onChange={(e) => setPhone(e.target.value)}
                   placeholder="Enter your phone number"
                   required
                 />
-
               </div>
 
-
-              {/* ACTION BUTTONS */}
-
               <div className="profile-edit-actions">
-
                 <button
                   type="submit"
                   className="save-profile-btn"
                   disabled={saving}
                 >
-
-                  {saving
-                    ? "Saving..."
-                    : "💾 Save Changes"}
-
+                  <Save size={15} />
+                  <span>{saving ? "Saving Changes..." : "Save Changes"}</span>
                 </button>
-
 
                 <button
                   type="button"
@@ -590,96 +293,57 @@ function Profile() {
                   onClick={handleCancel}
                   disabled={saving}
                 >
-                  Cancel
+                  <X size={15} />
+                  <span>Cancel</span>
                 </button>
-
               </div>
-
             </form>
-
           )}
 
-
-          {/* =====================================
-              PROFILE ACTIONS
-          ====================================== */}
-
+          {/* ACTIONS */}
           {!editing && (
-
             <div className="profile-actions">
-
-
-              {/* EDIT */}
-
               <button
                 type="button"
                 className="edit-profile-btn"
                 onClick={() => {
-
                   setMessage("");
                   setError("");
-
-                  setFullName(
-                    profile.fullName || ""
-                  );
-
-                  setPhone(
-                    profile.phone || ""
-                  );
-
+                  setFullName(profile.name || "");
+                  setPhone(profile.phone || "");
                   setEditing(true);
-
                 }}
               >
-                ✏️ Edit Profile
+                <Edit3 size={14} />
+                <span>Edit Profile</span>
               </button>
-
-
-              {/* DELETE */}
 
               <button
                 type="button"
                 className="delete-profile-btn"
                 onClick={handleDelete}
               >
-                🗑️ Delete Account
+                <Trash2 size={14} />
+                <span>Delete Account</span>
               </button>
-
             </div>
-
           )}
-
         </div>
 
-
-        {/* =====================================
-            SECURITY CARD
-        ====================================== */}
-
+        {/* SECURITY INFO CARD */}
         <div className="profile-info-card">
-
           <div className="info-card-icon">
-            🔐
+            <ShieldCheck size={22} />
           </div>
 
           <div>
-
-            <h3>
-              Account Security
-            </h3>
-
+            <h3>Account & Session Security</h3>
             <p>
-              Your account is protected by secure
-              authentication.
+              Your account credentials and JWT tokens are securely stored and encrypted in accordance with industry security best practices.
             </p>
-
           </div>
-
         </div>
-
-
       </div>
-
     </div>
   );
 }

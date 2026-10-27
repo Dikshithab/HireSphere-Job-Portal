@@ -1,4 +1,5 @@
 import React from "react";
+import { Target, AlertCircle, CheckCircle2 } from "lucide-react";
 
 function SkillMatch({
   missingSkills = [],
@@ -16,68 +17,50 @@ function SkillMatch({
 
   return (
     <div className="skill-match-container">
-
       <div className="skill-match-header">
-
         <h3 className="skill-match-title">
-          <span className="skill-match-icon">🎯</span>
-          Missing Skills & Keywords
+          <span className="skill-match-icon">
+            <Target size={18} />
+          </span>
+          Missing Skills & Target Keywords
         </h3>
 
         {hasMissingSkills && (
           <span className="skill-gap-count-badge">
-            {skills.length} gap
-            {skills.length > 1 ? "s" : ""} detected
+            {skills.length} gap{skills.length > 1 ? "s" : ""} detected
           </span>
         )}
-
       </div>
 
       <p className="skill-match-subtitle">
-        Skills required or mentioned in the job description that were
-        not detected in your resume:
+        Keywords and competencies required for your target role that are currently missing from your resume:
       </p>
 
       {hasMissingSkills ? (
-
         <div className="skill-pills-list">
-
           {skills.map((skill, index) => (
-
             <span
               key={`${skill}-${index}`}
               className="skill-pill missing-skill-pill"
             >
               <span className="skill-pill-dot">
-                ⚠️
+                <AlertCircle size={13} />
               </span>
-
               {skill}
-
             </span>
-
           ))}
-
         </div>
-
       ) : (
-
         <div className="skill-match-empty">
-
           <span className="skill-match-success-icon">
-            🎉
+            <CheckCircle2 size={26} />
           </span>
 
           <p>
-            <strong>Great job!</strong>{" "}
-            No critical missing skills were identified compared
-            to this job description.
+            <strong>Great alignment!</strong> No critical skill gaps were detected for this role.
           </p>
-
         </div>
-
       )}
-
     </div>
   );
 }
