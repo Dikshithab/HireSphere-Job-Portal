@@ -8,8 +8,7 @@ import "../css/ResumeAnalyzer.css";
 function ResumeAnalyzer() {
   const [uploadedResumeId, setUploadedResumeId] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
-  const [analyzing, setAnalyzing] = useState(false);
+  const [targetRole, setTargetRole] = useState("Python Full Stack Developer");  const [analyzing, setAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [analysisError, setAnalysisError] = useState("");
 
@@ -35,9 +34,9 @@ function ResumeAnalyzer() {
     return;
   }
 
-  if (!jobDescription.trim()) {
+  if (!targetRole.trim()) {
     setAnalysisError(
-      "Please enter or paste a job description to compare against."
+      "Please enter a target role to analyze against."
     );
     return;
   }
@@ -46,17 +45,10 @@ function ResumeAnalyzer() {
     setAnalyzing(true);
     setAnalysisError("");
     setAnalysisResult(null);
-
-    const response = await api.post(
-      "/resumes/ai-resume/analyze/",
-      {
-        // Django backend expects resumeId
-        resumeId: uploadedResumeId,
-
-        // Job description
-        job_description: jobDescription.trim(),
-      }
-    );
+    const response = await api.post("/resumes/ai-resume/analyze/", {
+  resumeId: uploadedResumeId,
+  target_role: targetRole.trim(),
+});
 
     const data = response.data;
 
@@ -67,50 +59,40 @@ function ResumeAnalyzer() {
      * into the format expected by React.
      */
     const normalizedResult = {
-      ...data,
+  ...data,
 
-      atsScore:
-        data.atsScore ??
-        data.ats_score ??
-        0,
+  // Resume score returned by Groq
+  atsScore: data.resume_score ?? 0,
 
-      summary:
-        data.summary ??
-        data.executive_summary ??
-        "",
+  // Professional summary
+  summary: data.professional_summary ?? "",
 
-      strengths:
-        Array.isArray(data.strengths)
-          ? data.strengths
-          : [],
+  // Key strengths
+  strengths: Array.isArray(data.strengths)
+    ? data.strengths
+    : [],
 
-      weaknesses:
-        Array.isArray(data.weaknesses)
-          ? data.weaknesses
-          : [],
+  // Suggestions for improvement
+  weaknesses: Array.isArray(data.improvement_suggestions)
+    ? data.improvement_suggestions
+    : [],
 
-      missingSkills:
-        Array.isArray(data.missingSkills)
-          ? data.missingSkills
-          : Array.isArray(data.missing_skills)
-          ? data.missing_skills
-          : [],
+  // Missing skills
+  missingSkills: Array.isArray(data.missing_skills)
+    ? data.missing_skills
+    : [],
 
-      recommendations:
-        Array.isArray(data.recommendations)
-          ? data.recommendations
-          : [],
+  // Relevant resume keywords
+  recommendations: Array.isArray(data.keywords)
+    ? data.keywords
+    : [],
 
-      experienceAnalysis:
-        data.experienceAnalysis ??
-        data.experience_analysis ??
-        "",
+  targetRole: data.target_role ?? targetRole,
 
-      projectAnalysis:
-        data.projectAnalysis ??
-        data.project_analysis ??
-        "",
-    };
+  experienceAnalysis: data.experience_analysis ?? "",
+
+  projectAnalysis: data.project_analysis ?? "",
+};
 
     console.log(
       "Normalized Analysis Result:",
@@ -207,45 +189,39 @@ function ResumeAnalyzer() {
       )}
 
       {/* STEP 2 */}
-      <div className="analyzer-step-card">
+      {/* STEP 2: TARGET ROLE */}
+<div className="analyzer-step-card">
+  <div className="step-card-header">
+    <div className="step-number-icon">💼</div>
 
-        <div className="step-card-header">
+    <div>
+      <h2 className="step-card-title">
+        Step 2: Select Your Target Role
+      </h2>
 
-          <div className="step-number-icon">
-            💼
-          </div>
+      <p className="step-card-desc">
+        Tell the AI which role you are targeting so it can
+        evaluate your resume and suggest relevant improvements.
+      </p>
+    </div>
+  </div>
 
-          <div>
+  <input
+    type="text"
+    className="job-desc-textarea"
+    value={targetRole}
+    onChange={(e) => {
+      setTargetRole(e.target.value);
 
-            <h2 className="step-card-title">
-              Step 2: Enter Job Description
-            </h2>
-
-            <p className="step-card-desc">
-              Paste the requirements and responsibilities for
-              the role you're targeting.
-            </p>
-
-          </div>
-
-        </div>
-
-        <textarea
-          className="job-desc-textarea"
-          value={jobDescription}
-          onChange={(e) => {
-            setJobDescription(e.target.value);
-
-            if (analysisError) {
-              setAnalysisError("");
-            }
-          }}
-          placeholder="Paste the job description, required skills, and responsibilities here..."
-          rows={7}
-          disabled={analyzing}
-        />
-
-      </div>
+      if (analysisError) {
+        setAnalysisError("");
+      }
+    }}
+    placeholder="Example: Python Full Stack Developer"
+    maxLength={150}
+    disabled={analyzing}
+  />
+</div>
 
       {/* Error */}
       {analysisError && (

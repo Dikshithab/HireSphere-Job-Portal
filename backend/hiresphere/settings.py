@@ -77,7 +77,6 @@ INSTALLED_APPS = [
     "jobs",
     "applications",
     "resumes",
-    "chatbot",
     "notifications",]
 
 MIDDLEWARE = [
