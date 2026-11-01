@@ -1,359 +1,254 @@
-# HireSphere – AI-Powered Job Portal
+# 🚀 HireSphere — AI-Powered Job Portal
 
-> **HireSphere is a full-stack AI-powered job portal that connects job seekers with employers while providing intelligent resume analysis, ATS scoring, skill insights, job discovery, and application tracking.**
+<p align="center">
+  <strong>Discover Opportunities. Analyze Your Resume. Accelerate Your Career.</strong>
+</p>
 
-Built with **React, Django REST Framework, PostgreSQL, and Groq AI**, and deployed on **Render**.
+<p align="center">
+  A full-stack AI-powered recruitment platform connecting job seekers and employers through intelligent resume analysis, ATS scoring, skill matching, and application tracking.
+</p>
 
----
-
-## 🌐 Live Demo
-
-### Frontend
-
-https://hiresphere-frontend-mn01.onrender.com
-
-### Backend API
-
-https://hiresphere-backend-6ksv.onrender.com
+<p align="center">
+  <a href="https://hiresphere-frontend-mn01.onrender.com">🌐 Live Demo</a> •
+  <a href="https://github.com/Dikshithab/HireSphere-Job-Portal">💻 Source Code</a> •
+  <a href="https://hiresphere-backend-6ksv.onrender.com">⚙️ Backend API</a>
+</p>
 
 ---
 
-# 🚀 Overview
+## 📌 About the Project
 
-Traditional job portals mainly focus on searching and applying for jobs.
+Traditional job portals primarily focus on job searching and applications. **HireSphere takes the process further by integrating AI-powered career assistance into the recruitment workflow.**
 
-**HireSphere** combines the complete recruitment workflow with AI-powered career assistance.
+It provides a unified platform where:
 
-The platform supports two types of users:
+* Job seekers can discover opportunities, manage applications, and evaluate their resumes.
+* Employers can manage companies, publish job openings, and review candidates.
+* AI helps candidates understand resume quality, identify skill gaps, and improve job alignment.
 
-* 👩‍💻 **Job Seekers**
-* 🏢 **Employers**
-
-Job seekers can discover jobs, save opportunities, apply for positions, upload resumes, and analyze their resumes using AI.
-
-Employers can manage their companies, create job postings, and review applications.
+The goal is to make recruitment more organized and help candidates make better career decisions.
 
 ---
 
-# ✨ Key Features
+## ✨ Key Features
 
-## 🔐 Authentication & Authorization
+### 🔐 Authentication & Role-Based Access
 
-* User registration and login
-* JWT-based authentication
-* Protected API endpoints
-* Role-based access control
-* Job seeker and employer workflows
+* User registration and login.
+* JWT-based authentication.
+* Protected API endpoints.
+* Role-based access control.
+* Separate workflows for job seekers and employers.
 
----
+### 👩‍💻 Job Seeker Dashboard
 
-## 👩‍💻 Job Seeker Features
+* Browse available job opportunities.
+* Search jobs using keywords and location.
+* Filter by job type, skills, experience, salary, and remote options.
+* Save and manage favorite jobs.
+* Apply for jobs.
+* Track application progress.
+* View application notifications.
 
-### 🔎 Advanced Job Search
+### 🏢 Employer Dashboard
 
-Users can search and filter jobs based on:
+* Create and manage company profiles.
+* Publish new job openings.
+* Edit and delete job postings.
+* View applicants for posted jobs.
+* Review candidate applications.
+* Update application statuses.
 
-* Keywords
-* Location
-* Job type
-* Skills
-* Experience
-* Salary range
-* Remote opportunities
+### 🤖 AI-Powered Resume Analysis
 
----
+HireSphere integrates Groq AI to provide intelligent resume insights.
 
-### 💾 Save Jobs
+Users can upload their resumes and analyze them against job requirements.
 
-Users can:
+The system provides insights into:
 
-* Save interesting jobs
-* Remove saved jobs
-* View saved opportunities
+* Technical skills and qualifications.
+* Relevant experience.
+* Resume content.
+* Job description alignment.
+* Matched and missing skills.
+* ATS compatibility.
 
-This allows users to maintain a personal shortlist of relevant jobs.
+### 📊 ATS Score & Resume Insights
 
----
+The resume analysis system provides a score to help candidates understand how closely their resume aligns with a target job.
 
-### 📩 Job Applications
-
-Job seekers can:
-
-* Apply for jobs
-* Track applications
-* View application status
-* Receive status notifications
-
----
-
-# 🏢 Employer Features
-
-Employers can:
-
-* Create and manage companies
-* Create job postings
-* Edit job postings
-* Delete job postings
-* View applicants
-* Manage application statuses
-
-This creates a complete recruitment workflow between candidates and employers.
-
----
-
-# 🤖 AI-Powered Resume Analysis
-
-One of HireSphere's main differentiating features is its **AI-powered resume analysis system**.
-
-Users can upload their resumes and receive insights based on the resume content.
-
-The system analyzes:
-
-* Resume content
-* Technical skills
-* Relevant experience
-* Job requirements
-* Skill gaps
-* ATS compatibility
-
----
-
-## 📊 ATS Score
-
-HireSphere evaluates how well a resume matches a target job.
-
-Example:
+**Example analysis:**
 
 ```text
-ATS SCORE
-──────────────
-78 / 100
+           RESUME ANALYSIS
+        ─────────────────────
 
-Matched Skills
-✓ Python
-✓ Django
-✓ REST APIs
-✓ PostgreSQL
+             ATS SCORE
+               78/100
 
-Missing Skills
-• Docker
-• AWS
-• Redis
+        MATCHED SKILLS
+        ✓ Python
+        ✓ Django
+        ✓ REST APIs
+        ✓ PostgreSQL
+
+        MISSING SKILLS
+        • Docker
+        • AWS
+
+        ─────────────────────
+        Resume improvement insights
 ```
 
-This helps users understand how competitive their resume is for a particular position.
+*Illustrative example, not a fixed system result.*
 
----
+### 🎯 Intelligent Skill Matching
 
-# 🎯 Skill Matching
-
-HireSphere compares:
+HireSphere compares resume skills with job requirements.
 
 ```text
-Resume Skills
-      ↓
-Job Requirements
-      ↓
-Skill Matching
-      ↓
-Matched Skills
-      +
-Missing Skills
-      ↓
-Recommendations
+       Uploaded Resume
+              |
+              v
+       Extract Resume Text
+              |
+              v
+       Identify Candidate Skills
+              |
+              v
+       Analyze Job Requirements
+              |
+              v
+        Compare Skills
+              |
+       +------+------+
+       |             |
+       v             v
+ Matched Skills   Missing Skills
+       |             |
+       +------+------+
+              |
+              v
+       AI Recommendations
 ```
 
-Users can identify the skills they already have and the skills they may need to improve.
+This helps candidates understand their strengths and identify areas where additional learning may be useful.
 
----
+### 🔔 Application Notifications
 
-# 🔔 Application Notifications
+Stay informed about recruitment progress through application notifications.
 
-HireSphere includes an application notification system.
+Features include:
 
-Users can receive notifications when application statuses change.
+* Application status updates.
+* Unread notification count.
+* Notification badge.
+* Application progress tracking.
 
-The platform also provides:
-
-* Unread notification count
-* Notification badge
-* Application status updates
-
-Example workflow:
+**Application workflow:**
 
 ```text
 Application Submitted
-        ↓
-     Pending
-        ↓
+         |
+         v
+      Pending
+         |
+         v
     Shortlisted
-        ↓
-    Interview
-        ↓
-     Selected
+         |
+         v
+     Interview
+         |
+         v
+      Selected
 ```
 
----
+### 📱 Responsive Interface
 
-# 📱 Responsive UI
+The frontend supports:
 
-The frontend is designed to work across:
+* Desktop screens.
+* Tablets.
+* Mobile devices.
 
-* Desktop
-* Tablet
-* Mobile
-
-The interface includes separate workflows for job seekers and employers.
+Separate interfaces support the needs of job seekers and employers.
 
 ---
 
-# 🏗️ System Architecture
+## 🏗️ System Architecture
+
+HireSphere follows a frontend-backend architecture using REST APIs.
 
 ```text
-                    ┌──────────────────────┐
-                    │     React Frontend   │
-                    │                      │
-                    │ Job Search            │
-                    │ Applications          │
-                    │ Resume Analysis       │
-                    │ Employer Dashboard    │
-                    │ Notifications         │
-                    └──────────┬───────────┘
-                               │
-                            REST API
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Django REST Framework│
-                    │                      │
-                    │ Authentication       │
-                    │ Job APIs              │
-                    │ Application APIs      │
-                    │ Resume APIs           │
-                    │ Notification APIs     │
-                    └──────────┬───────────┘
-                               │
-                    ┌──────────┴───────────┐
-                    │                      │
-                    ▼                      ▼
-             ┌──────────────┐       ┌──────────────┐
-             │ PostgreSQL   │       │   Groq AI    │
-             │              │       │              │
-             │ Users        │       │ Resume       │
-             │ Companies    │       │ Analysis     │
-             │ Jobs         │       │ ATS Insights │
-             │ Applications │       │ Skill Match  │
-             │ Notifications│       │              │
-             └──────────────┘       └──────────────┘
+             REACT FRONTEND
+                   |
+                   | HTTP Requests
+                   v
+          DJANGO REST FRAMEWORK
+                   |
+          +--------+--------+
+          |                 |
+          v                 v
+      POSTGRESQL          GROQ AI
+          |                 |
+          v                 v
+     Application       Resume Analysis
+     User Data         ATS Insights
+     Job Data          Skill Matching
+     Company Data      AI Responses
+     Notifications
 ```
 
+### Application Workflow
+
+1. A user registers and logs in.
+2. The platform identifies the user's role.
+3. Job seekers browse and apply for jobs.
+4. Employers publish openings and manage applications.
+5. Candidates upload resumes for AI analysis.
+6. The platform provides resume insights and skill comparisons.
+7. Users track application updates and notifications.
+
 ---
 
-# 🔄 Application Workflow
+## 🛠️ Technology Stack
+
+| Category          | Technologies                 |
+| ----------------- | ---------------------------- |
+| Frontend          | React, Vite, JavaScript, CSS |
+| API Communication | Axios                        |
+| Routing           | React Router                 |
+| Backend           | Python, Django               |
+| API Framework     | Django REST Framework        |
+| Authentication    | Simple JWT                   |
+| Database          | PostgreSQL                   |
+| AI Integration    | Groq API                     |
+| Deployment        | Render                       |
+
+---
+
+## 🔐 Security
+
+Security is an important part of HireSphere.
+
+Implemented security features include:
+
+* JWT-based authentication.
+* Protected API endpoints.
+* Role-based authorization.
+* User-specific data access.
+* Server-side validation.
+* Environment-based configuration.
+* CORS configuration.
+* Secure handling of API credentials through environment variables.
+
+---
+
+## 📂 Project Structure
 
 ```text
-                 ┌──────────────┐
-                 │    Register  │
-                 └──────┬───────┘
-                        ↓
-                 ┌──────────────┐
-                 │    Login     │
-                 └──────┬───────┘
-                        ↓
-                ┌────────────────┐
-                │   Job Search   │
-                └───────┬────────┘
-                        ↓
-                 ┌──────────────┐
-                 │ Apply / Save │
-                 └──────┬───────┘
-                        ↓
-                 ┌──────────────┐
-                 │ Application  │
-                 │   Tracking   │
-                 └──────┬───────┘
-                        ↓
-                 ┌──────────────┐
-                 │ Notifications│
-                 └──────────────┘
-```
-
----
-
-# 🧠 AI Resume Workflow
-
-```text
-Resume Upload
-      ↓
-Resume Text Extraction
-      ↓
-Resume Content Analysis
-      ↓
-Job Requirement Analysis
-      ↓
-Skill Matching
-      ↓
-ATS Score
-      ↓
-Missing Skills
-      ↓
-Career Recommendations
-```
-
----
-
-# 🛠️ Tech Stack
-
-## Frontend
-
-* React
-* Vite
-* Axios
-* React Router
-* CSS
-
-## Backend
-
-* Python
-* Django
-* Django REST Framework
-* Simple JWT
-
-## Database
-
-* PostgreSQL
-
-## AI
-
-* Groq API
-
-## Deployment
-
-* Render
-* PostgreSQL
-
----
-
-# 🔐 Security
-
-The application implements:
-
-* JWT authentication
-* Protected API routes
-* Role-based authorization
-* User-specific data access
-* Server-side validation
-* Environment variables for sensitive credentials
-* CORS configuration
-
-API credentials and secrets are not stored directly in the source code.
-
----
-
-# 📂 Project Structure
-
-```text
-HireSphere/
+HireSphere-Job-Portal/
 │
 ├── backend/
 │   ├── config/
@@ -367,12 +262,12 @@ HireSphere/
 │   └── requirements.txt
 │
 ├── frontend/
+│   ├── public/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   ├── services/
 │   │   └── ...
-│   ├── public/
 │   └── package.json
 │
 └── README.md
@@ -380,25 +275,41 @@ HireSphere/
 
 ---
 
-# ⚙️ Local Setup
+## ⚙️ Installation & Local Setup
 
-## 1. Clone the Repository
+Follow these steps to run HireSphere locally.
+
+### Prerequisites
+
+* Python 3.10+
+* Node.js and npm
+* PostgreSQL
+* Groq API key
+* Git
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Dikshithab/HireSphere-Job-Portal.git
+
 cd HireSphere-Job-Portal
 ```
 
----
+### 2. Backend Setup
 
-## 2. Backend Setup
+Navigate to the backend directory:
 
 ```bash
 cd backend
+```
+
+Create a virtual environment:
+
+```bash
 python -m venv venv
 ```
 
-### Windows
+Activate it on Windows:
 
 ```powershell
 venv\Scripts\activate
@@ -410,7 +321,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Create a `.env` file:
+Create a `.env` file inside the backend directory:
 
 ```env
 SECRET_KEY=your_secret_key
@@ -421,144 +332,148 @@ DATABASE_URL=your_postgresql_database_url
 GROQ_API_KEY=your_groq_api_key
 ```
 
-Run migrations:
+Apply database migrations:
 
 ```bash
 python manage.py migrate
 ```
 
-Start the backend:
+Start the Django development server:
 
 ```bash
 python manage.py runserver
 ```
 
----
+Backend runs at:
 
-## 3. Frontend Setup
+```text
+http://127.0.0.1:8000/
+```
 
-Open another terminal:
+### 3. Frontend Setup
+
+Open another terminal and navigate to the frontend directory:
 
 ```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Configure the backend API URL in your frontend environment file:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-The frontend will run using the Vite development server.
+The frontend will be available at the local Vite development URL displayed in your terminal.
 
 ---
 
-# 🧪 Core Testing Checklist
+## ☁️ Deployment
 
-* [x] User registration
-* [x] User login
+HireSphere is deployed using Render.
+
+| Component | Deployment                                                             |
+| --------- | ---------------------------------------------------------------------- |
+| Frontend  | [Open Live Application](https://hiresphere-frontend-mn01.onrender.com) |
+| Backend   | [Open Backend API](https://hiresphere-backend-6ksv.onrender.com)       |
+| Database  | PostgreSQL                                                             |
+
+Sensitive credentials and environment variables should be configured through the deployment platform rather than committed to the repository.
+
+---
+
+## 🧪 Core Feature Checklist
+
+* [x] User registration and login
 * [x] JWT authentication
-* [x] Role-based access
+* [x] Role-based access control
 * [x] Company management
-* [x] Job creation
-* [x] Job editing
-* [x] Job deletion
-* [x] Job search
-* [x] Advanced job filters
-* [x] Save/unsave jobs
+* [x] Job creation and management
+* [x] Advanced job search and filters
+* [x] Save and unsave jobs
 * [x] Job applications
 * [x] Employer application management
 * [x] Application status updates
-* [x] Notifications
-* [x] Unread notification badge
+* [x] Application notifications
 * [x] Resume upload
 * [x] Resume analysis
 * [x] ATS scoring
 * [x] Skill matching
 * [x] Missing skill detection
-* [x] Responsive UI
+* [x] Responsive user interface
 
 ---
 
-# 🎯 Why HireSphere?
+## 💡 What Makes HireSphere Different?
 
-HireSphere goes beyond basic job searching by combining **recruitment, resume intelligence, and application management** in one platform.
+HireSphere combines three important areas into one platform:
 
-Instead of simply asking:
+| Recruitment        | AI Career Assistance   | Application Management |
+| ------------------ | ---------------------- | ---------------------- |
+| Job discovery      | Resume analysis        | Application tracking   |
+| Job applications   | ATS scoring            | Status notifications   |
+| Employer dashboard | Skill matching         | Candidate management   |
+| Job management     | Missing skill insights | Recruitment workflow   |
 
-> **"Which jobs can I apply for?"**
-
-HireSphere also helps answer:
-
-> **"How well does my resume match this job?"**
-
-> **"Which skills am I missing?"**
-
-> **"How ATS-friendly is my resume?"**
-
-> **"What is the status of my application?"**
-
-This makes HireSphere both a **job marketplace workflow** and a **career assistance platform**.
+Instead of simply helping candidates find jobs, HireSphere also helps them understand how well their resumes align with those opportunities.
 
 ---
 
-# 🚀 Future Improvements
+## 🔮 Future Enhancements
 
-Potential future enhancements include:
+Potential improvements include:
 
-* AI Interview Coach
-* Personalized job recommendations
-* Resume improvement suggestions
-* Recruiter analytics dashboard
-* Email notifications
-* Advanced candidate ranking
-* Interview scheduling
-* Job recommendation engine
-
----
-
-# 📌 Project Highlights
-
-```text
-React + Django Full Stack
-        +
-REST API Architecture
-        +
-JWT Authentication
-        +
-Role-Based Access Control
-        +
-Job Search & Applications
-        +
-Resume Processing
-        +
-AI Resume Analysis
-        +
-ATS Scoring
-        +
-Skill Matching
-        +
-Application Notifications
-        +
-PostgreSQL
-        +
-Cloud Deployment
-```
+* AI-powered interview preparation.
+* Personalized job recommendations.
+* Automated resume improvement suggestions.
+* Advanced candidate ranking.
+* Recruiter analytics dashboard.
+* Interview scheduling.
+* Email notifications.
+* Enhanced job recommendation engine.
 
 ---
 
-# 👩‍💻 Author
+## 👩‍💻 About the Developer
 
 **Shiva Dikshitha Burra**
 
-B.Tech Computer Science Engineering — Cyber Security
+B.Tech — Computer Science Engineering (Cyber Security)
 
-Interested in:
+Interested in building practical applications using full-stack development, artificial intelligence, and cybersecurity.
+
+**Technical Interests**
 
 * Python Full Stack Development
-* Artificial Intelligence
+* Django & REST APIs
+* React Development
 * Generative AI
-* Backend Development
+* AI-powered Applications
 * Cybersecurity
+
+<p>
+  <a href="https://github.com/Dikshithab">GitHub</a> •
+  <a href="https://www.linkedin.com/in/burra-shiva-dikshitha-353173350/">LinkedIn</a>
+</p>
 
 ---
 
 ## ⭐ Support
 
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
+If you find HireSphere interesting, consider giving the repository a ⭐ on GitHub.
+
+<p align="center">
+  <strong>HireSphere — Bringing Recruitment and AI-Powered Career Assistance Together.</strong>
+</p>
